@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-21 19:28:18
+ * @LastEditTime: 2021-04-03 21:46:09
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-antd-admin\src\layouts\components\navBar\breadCrumb.vue
+-->
 <template>
   <a-breadcrumb class="flex-sub bread-wrapper" separator="/">
     <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.path">
@@ -23,12 +31,12 @@ export default {
     getBreadCrumb() {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
       let home = {
-        path: '/index',
+        path: '/dashboard',
         meta: {
-          title: '首页'
+          title: '仪表盘'
         }
       };
-      if (matched[0].path == '/index') {
+      if (matched[0].path == '/dashboard') {
         this.breadList = [home];
       } else {
         this.breadList = [home, ...matched];

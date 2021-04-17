@@ -55,3 +55,7 @@ export function getHotSearchData(data) {
 export function getMoreData(data) {
   return request.post('/dashboard/moreData', data);
 }
+
+export function editDashboard() {
+  return request.post('/dashboard/edit', data);
+}

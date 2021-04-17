@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-21 19:28:18
+ * @LastEditTime: 2021-04-03 21:34:11
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-antd-admin\src\layouts\components\sideBar\index.vue
+-->
 <template>
   <div class="side-wrapper">
     <logo :collapse="collapsed" />
@@ -27,6 +35,7 @@ import logo from './logo';
 import subMenu from './subMenu';
 import menuItem from './menuItem';
 import { mapGetters } from 'vuex';
+import { getChartList } from '@/api/user';
 export default {
   name: 'sideBar',
   props: {
@@ -46,13 +55,29 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['baseRoute'])
+    ...mapGetters(['baseRoute']),
+    dashboard() {
+      return {
+        name: 'index',
+        path: '/index',
+        component: () => import('@/views/index/index'),
+        meta: {
+          role: ['admin', 'test'],
+          title: '仪表盘',
+          icon: 'dashboard'
+        }
+      };
+    }
   },
-  mounted() {
+  async mounted() {
     let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
     if (matched.length > 1) {
       this.openKeys = matched.map(item => item.path);
     }
+    await getChartList({ username: 'admin' }).then(data => {
+      let { chartlist } = data;
+      console.log(this.dashboard);
+    });
   },
   methods: {
     changeOpen(keys) {

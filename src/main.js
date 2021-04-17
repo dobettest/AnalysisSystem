@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-
+import bus from './bus';
 Vue.config.productionTip = false;
 
 import 'normalize.css/normalize.css'; //css resets
@@ -17,9 +17,10 @@ import 'ant-design-vue/dist/antd.css';
 Vue.use(Antd);
 
 import scrollBar from '@/components/scrollBar';
+import card from '@/components/card';
 import '@/components/scrollBar/index.scss';
 Vue.component('scroll-bar', scrollBar);
-
+Vue.component('chart-panel', card);
 import { mockXHR } from '../mock';
 if (process.env.NODE_ENV === 'production') {
   mockXHR();
@@ -27,6 +28,11 @@ if (process.env.NODE_ENV === 'production') {
 
 import loading from '@/components/loading/loading'; // 引入loading
 Vue.use(loading); // 全局使用loading
+
+import chart from '@/components/echart';
+
+Vue.use(chart);
+Vue.prototype.$bus = bus;
 
 new Vue({
   router,

@@ -8,8 +8,8 @@ const system = require('./controller/system');
 const role = require('./controller/role');
 const lottery = require('./controller/lottery');
 const table = require('./controller/table');
-
-const mocks = [...user, ...dashboard, ...system, ...role, ...lottery, ...table];
+const database = require('./controller/database');
+const mocks = [...user, ...dashboard, ...system, ...role, ...lottery, ...table, ...database];
 
 function mockXHR() {
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send;

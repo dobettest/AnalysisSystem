@@ -112,3 +112,33 @@ export function getGeoJson(adcode, childAdcode = '') {
 export function formatJson(arr, filterVal) {
   return arr.map(v => filterVal.map(j => v[j].toString()));
 }
+/**
+ * 分类
+ * @param  {Array}
+ * @param  {key}
+ * @return {Array}
+ */
+export function groupBy(arr = [], key) {
+  var map = new Map();
+  for (var i = 0; i < arr.length; i++) {
+    var obj = arr[i];
+    var value = map.get(obj[key]);
+    if (value !== undefined) {
+      map.set(obj[key], ++value);
+    } else {
+      map.set(obj[key], 1);
+    }
+  }
+  return map;
+}
+export function rangeBy(arr = [], key, descrptions = []) {
+  var map=new Map();
+  for (var i = 0; i < arr.length; i++) {
+    var obj=arr[i];
+    let { min, max } = descrptions[i].split('~');
+    if(obj[key]>min&&abj[key]<max){
+      
+    }
+  }
+  return map;
+}

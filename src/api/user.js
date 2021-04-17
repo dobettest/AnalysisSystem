@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-21 19:28:18
+ * @LastEditTime: 2021-04-03 16:11:47
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-antd-admin\src\api\user.js
+ */
 import request from '@/utils/request';
 
 /**
@@ -45,4 +53,13 @@ export function getCodeTest(data) {
  */
 export function getInfo(data) {
   return request.post('/user/userInfo', data);
+}
+
+/**
+ * @description 获取用户仪表盘列表
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function getChartList(data) {
+  return request.post('/user/chartlist', data);
 }

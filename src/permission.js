@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-21 19:28:18
+ * @LastEditTime: 2021-04-03 21:40:14
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-antd-admin\src\permission.js
+ */
 import router from './router';
 import { getCache } from '@/utils/session';
 import getPageTitle from '@/utils/getPageTitle';

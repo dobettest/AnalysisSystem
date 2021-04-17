@@ -1,31 +1,31 @@
 <template>
   <div class="map-wrapper">
     <div class="map-list">
-      <a-card title="分布图 (点击可下钻到县)" :hoverable="true" :bordered="false" class="darkBg">
+      <chart-panel title="分布图 (点击可下钻到县)" :hoverable="true" :bordered="false" class="darkBg">
         <series-map class="chart-map" />
-      </a-card>
+      </chart-panel>
     </div>
     <div class="map-list">
-      <a-card title="散点图 (点击可下钻到县)" :hoverable="true" :bordered="false" class="darkBg">
+      <chart-panel title="散点图 (点击可下钻到县)" :hoverable="true" :bordered="false" class="darkBg">
         <scatter-map class="chart-map" />
-      </a-card>
+      </chart-panel>
     </div>
     <div class="map-list">
-      <a-card title="热力图" :hoverable="true" :bordered="false" class="darkBg">
+      <chart-panel title="热力图" :hoverable="true" :bordered="false" class="darkBg">
         <hot-map class="chart-map" />
-      </a-card>
+      </chart-panel>
     </div>
 
     <div class="map-list">
-      <a-card title="航线图" :hoverable="true" :bordered="false" class="darkBg">
+      <chart-panel title="航线图" :hoverable="true" :bordered="false" class="darkBg">
         <line-map class="chart-map" />
-      </a-card>
+      </chart-panel>
     </div>
 
     <div class="map-list">
-      <a-card title="时间轴地图" :hoverable="true" :bordered="false" class="darkBg">
+      <chart-panel title="时间轴地图" :hoverable="true" :bordered="false" class="darkBg">
         <time-map class="chart-map" />
-      </a-card>
+      </chart-panel>
     </div>
   </div>
 </template>

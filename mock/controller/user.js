@@ -36,11 +36,77 @@ const userInfo = {
     skill: '暂无'
   }
 };
-
+const chartlists = {
+  admin: {
+    chartlist: [
+      {
+        taobao: {
+          alia: 'taobao',
+          title: '淘宝',
+          children: [
+            {
+              alia: 'clothes',
+              title: '服装'
+            }
+          ]
+        }
+      }
+    ]
+  }
+};
 const Mock = require('mockjs');
-
+const fs = require('fs');
+const Random = Mock.Random;
 const phoneCode = Mock.mock('@natural(147895,995425)');
-
+function genUserList() {
+  let result = [];
+  let k = 0;
+  for (var i = 0; i < 100; i++) {
+    result.push({
+      id: Random.id(), // 身份证号
+      guid: Random.guid(),
+      name: Random.cname(),
+      gender: ['男', '女'][Random.integer(0, 1)],
+      age: Random.integer(20, 50),
+      married: Random.boolean(),
+      birth: Random.datetime('yyyy-MM-dd HH:mm:ss'), // 值是指定格式的日期字符串
+      // birth2: new Date(Random.datetime("yyyy-MM-dd HH:mm:ss")),  // 值是 Date 类型
+      addr: `${Random.province()}-${Random.city()}-${Random.county()}`,
+      email: Random.email('qq.com')
+    });
+  }
+  return result;
+}
+function genSchoolUser() {
+  let result = [];
+  let y = new Date().getFullYear();
+  for (var i = 0; i < 100; i++) {
+    let year = Random.integer(1997, 2002);
+    let classID = Random.integer(16, 19);
+    let num = Random.integer(10, 30);
+    let age = y - year;
+    result.push({
+      id: `20172018${classID}${num}`, // 身份证号
+      name: Random.cname(),
+      classID: `17218${classID}${num}`,
+      gender: ['男', '女'][Random.integer(0, 1)],
+      age,
+      birth: {
+        year,
+        month: Random.integer(1, 12),
+        day: Random.integer(1, 31)
+      }, // 值是指定格式的日期字符串
+      addr: {
+        province: Random.province(),
+        city: Random.city(),
+        country: '中国'
+      },
+      email: `${Random.integer(1364525216, 1999999999)}qq.com`
+    });
+  }
+  result = result.sort((a, b) => a.id - b.id);
+  return result;
+}
 module.exports = [
   {
     url: '/user/login',
@@ -102,6 +168,19 @@ module.exports = [
     }
   },
   {
+    url: '/user/chartlist',
+    type: 'post',
+    response: config => {
+      const { username } = config.body;
+      const chartlist = chartlists[username] || [];
+      return {
+        data: chartlist,
+        code: 200,
+        message: 'success'
+      };
+    }
+  },
+  {
     url: '/user/userInfo',
     type: 'post',
     response: config => {
@@ -119,6 +198,18 @@ module.exports = [
         data: info,
         code: 200,
         message: '获取用户信息成功！'
+      };
+    }
+  },
+  {
+    url: '/user/list',
+    type: 'post',
+    response: config => {
+      //fs.writeFileSync('users.js', JSON.stringify(data), { encoding: 'utf8' });
+      return {
+        data: genSchoolUser(),
+        code: 200,
+        message: '数据获取成功'
       };
     }
   }

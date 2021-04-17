@@ -54,7 +54,7 @@ export default {
       breadList: [
         {
           path: '/dashboard',
-          meta: { title: '首页', icon: 'dashboard' }
+          meta: { title: '仪表盘', icon: 'dashboard' }
         }
       ],
       count: 6,

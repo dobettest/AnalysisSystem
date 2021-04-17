@@ -7,10 +7,12 @@ import Layout from '@/layouts';
 import mainLayout from '@/layouts/mainLayout';
 import echartRouter from './modules/echarts';
 import componentsRouter from './modules/components';
-import nestRouter from './modules/nest';
+import customRouter from './modules/custom'
+//import nestRouter from './modules/nest';
 
 //基础路由
 export const baseRoute = [
+
   {
     name: 'login',
     path: '/login',
@@ -38,16 +40,16 @@ export const asyncRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/index',
+    redirect: '/dashboard',
     hidden: true,
     children: [
       {
-        name: 'index',
-        path: '/index',
+        name: 'dashboard',
+        path: '/dashboard',
         component: () => import('@/views/index/index'),
         meta: {
           role: ['admin', 'test'],
-          title: '首页',
+          title: '仪表盘',
           icon: 'dashboard'
         }
       },
@@ -62,70 +64,8 @@ export const asyncRoutes = [
           icon: 'icon'
         }
       },
-      {
-        name: 'permission',
-        path: '/permission',
-        component: () => import('@/views/permission/index'),
-        meta: {
-          title: '权限测试页',
-          icon: 'permission'
-        }
-      },
-      {
-        name: 'webGl',
-        component: mainLayout,
-        path: '/webGl',
-        redirect: '/webGl/ArcGis',
-        meta: {
-          role: ['admin', 'test'],
-          title: '地图',
-          icon: 'webGl'
-        },
-        children: [
-          {
-            name: 'ArcGis',
-            path: '/webGl/ArcGis',
-            component: () => import('@/views/webGl/ArcGis/index'),
-            meta: { title: 'ArcGis' }
-          },
-          {
-            name: 'OpenLayers',
-            path: '/webGl/OpenLayers',
-            component: () => import('@/views/webGl/OpenLayers/index'),
-            meta: { title: '插值分析图' }
-          }
-        ]
-      },
       echartRouter,
-      componentsRouter,
-      nestRouter,
-      {
-        name: 'error',
-        path: '/error',
-        component: mainLayout,
-        redirect: '/error/403',
-        meta: { title: '错误页面', icon: 'error' },
-        children: [
-          {
-            name: '403',
-            path: '/error/403',
-            component: () => import('@/views/error/403'),
-            meta: { title: '403' }
-          },
-          {
-            name: '404',
-            path: '/error/404',
-            component: () => import('@/views/error/404'),
-            meta: { title: '404' }
-          },
-          {
-            name: '500',
-            path: '/error/500',
-            component: () => import('@/views/error/500'),
-            meta: { title: '500' }
-          }
-        ]
-      },
+      customRouter,
       {
         name: 'userSystem',
         component: mainLayout,

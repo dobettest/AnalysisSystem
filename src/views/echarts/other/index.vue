@@ -2,31 +2,31 @@
   <div class="other-wrapper">
     <a-row :gutter="24" class="other-list">
       <a-col :span="12">
-        <a-card title="水球图" :hoverable="true" :bordered="false">
+        <chart-panel title="水球图" :hoverable="true" :bordered="false">
           <liquid-chart class="chart-other" />
-        </a-card>
+        </chart-panel>
       </a-col>
       <a-col :span="12">
-        <a-card title="仪表盘" :hoverable="true" :bordered="false">
+        <chart-panel title="仪表盘" :hoverable="true" :bordered="false">
           <gauge-chart class="chart-other" />
-        </a-card>
+        </chart-panel>
       </a-col>
     </a-row>
     <div class="other-list">
-      <a-card title="词云图" :hoverable="true" :bordered="false">
+      <chart-panel title="词云图" :hoverable="true" :bordered="false">
         <word-chart class="chart-other" />
-      </a-card>
+      </chart-panel>
     </div>
     <a-row :gutter="24" class="other-list">
       <a-col :span="12">
-        <a-card title="雷达图" :hoverable="true" :bordered="false">
+        <chart-panel title="雷达图" :hoverable="true" :bordered="false">
           <radar-chart class="chart-other" />
-        </a-card>
+        </chart-panel>
       </a-col>
       <a-col :span="12">
-        <a-card title="矩形树图" :hoverable="true" :bordered="false">
+        <chart-panel title="矩形树图" :hoverable="true" :bordered="false">
           <tree-chart class="chart-other" />
-        </a-card>
+        </chart-panel>
       </a-col>
     </a-row>
   </div>

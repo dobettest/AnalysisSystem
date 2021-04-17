@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-21 19:28:18
+ * @LastEditTime: 2021-04-03 21:29:46
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-antd-admin\src\store\modules\permission.js
+ */
 import { baseRoute, asyncRoutes } from '@/router';
 import { setCache } from '@/utils/session';
 import router, { resetRouter } from '@/router';
@@ -31,7 +39,7 @@ const actions = {
     await dispatch('user/getInfo', token, { root: true });
     resetRouter();
     const accessedRoutes = await dispatch('getRoute', role);
-    router.addRoutes(accessedRoutes);
+    router.addRoute(accessedRoutes);
     await dispatch('tagsView/clearTag', null, { root: true });
   }
 };
