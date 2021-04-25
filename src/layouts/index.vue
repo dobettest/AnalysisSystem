@@ -3,16 +3,13 @@
     <side-bar class="aside-container" :collapsed="open" v-if="!horizontal" />
     <div class="main-container" :class="{ hasTag: tagShow }">
       <div :class="{ 'fixed-header': fixHeader }">
-        <nav-bar :collapsed="open" v-if="!horizontal" />
+        <!--<nav-bar :collapsed="open" v-if="!horizontal" />
         <div v-else class="horizontal-nav flex">
           <horizontal-side />
           <nav-bar :horizontal="horizontal" class="nav-user"></nav-bar>
         </div>
+        -->
         <tag-view v-if="tagShow" />
-      </div>
-      <div class="rightPanl fixed pointer" @click="changeVisivle">
-        <a-icon type="setting" class="settingIcon" />
-        <setting />
       </div>
       <div class="app-main">
         <router-view />
@@ -85,7 +82,7 @@ export default {
 .hasTag {
   .fixed-header {
     & ~ .app-main {
-      padding-top: 100px !important;
+      //padding-top: 100px !important;
       min-height: 100vh;
     }
   }

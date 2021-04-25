@@ -48,7 +48,7 @@ export default {
     return {
       showMore: false,
       loading: false,
-      dialogVisible: false,
+      dialogVisible: false
     };
   },
   mixins: [emitter, resolveData],
@@ -62,7 +62,7 @@ export default {
     }
   },
   mounted() {
-  console.log("1")
+    console.log('1');
     this.$nextTick(() => this.init());
     let lazyhandler = lazyload(this.$refs.card, this.getData);
     window.addEventListener('scroll', lazyhandler);
@@ -121,7 +121,7 @@ export default {
         data
       });
       //console.log("card getData")
-      this.config =this.cardInfo;
+      this.config = this.cardInfo;
     }
   },
   computed: {

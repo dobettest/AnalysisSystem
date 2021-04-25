@@ -132,12 +132,11 @@ export function groupBy(arr = [], key) {
   return map;
 }
 export function rangeBy(arr = [], key, descrptions = []) {
-  var map=new Map();
+  var map = new Map();
   for (var i = 0; i < arr.length; i++) {
-    var obj=arr[i];
+    var obj = arr[i];
     let { min, max } = descrptions[i].split('~');
-    if(obj[key]>min&&abj[key]<max){
-      
+    if (obj[key] > min && abj[key] < max) {
     }
   }
   return map;

@@ -63,3 +63,38 @@ export function getInfo(data) {
 export function getChartList(data) {
   return request.post('/user/chartlist', data);
 }
+
+/**
+ * @description 获取用户数据库列表
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function getDbList(data) {
+  return request.post('/user/dbList', data);
+}
+
+/**
+ * @description 获取用户数据表详情
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function getDbDetail(data) {
+  return request.post('/user/dbDetail', data);
+}
+/**
+ * @description 获取用户仪表盘列表
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function getDashList(data) {
+  return request.post('/user/dashList', data);
+}
+
+/**
+ * @description 获取用户仪表盘详情
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function getDashDetail(data) {
+  return request.post('/user/dashDetail', data);
+}

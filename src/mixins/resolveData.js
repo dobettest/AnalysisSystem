@@ -55,10 +55,9 @@ export default {
       let { range, key } = this.config;
       if (!range) {
         Object.keys(data).forEach(v => {
-          if (type == 'wordcloud'){
-            source.push([{name:v,value: data[v].length}]);
-          }else
-          source.push([v, data[v].length]);
+          if (type == 'wordcloud') {
+            source.push([{ name: v, value: data[v].length }]);
+          } else source.push([v, data[v].length]);
         });
       }
       if (type == 'wordcloud') {

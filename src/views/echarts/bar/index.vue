@@ -436,7 +436,7 @@ export default {
     async getCardList() {
       const { data } = await request.post('/dashbord/list', { company: 'ecut', group: '年龄' });
       this.list = data;
-      console.log("list getData")
+      console.log('list getData');
     }
   },
   mounted() {
@@ -449,7 +449,7 @@ export default {
   width: 100%;
   height: 100%;
   .card-item {
-    padding:0 15px;
+    padding: 0 15px;
     width: 50%;
     display: inline-block;
   }

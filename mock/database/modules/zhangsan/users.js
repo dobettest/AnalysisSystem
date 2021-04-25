@@ -1,4 +1,4 @@
-[
+module.exports=[
     {
       id: '510000197411236379',
       guid: '86835A17-25EE-56BC-D1FF-EcC9BbfdD5AD',

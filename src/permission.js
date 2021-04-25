@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-03-21 19:28:18
- * @LastEditTime: 2021-04-03 21:40:14
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \vue-antd-admin\src\permission.js
- */
 import router from './router';
 import { getCache } from '@/utils/session';
 import getPageTitle from '@/utils/getPageTitle';
@@ -15,11 +7,11 @@ import { message } from 'ant-design-vue';
 import store from './store';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
-
+const defaultTitle = 'Analysis-WebSite';
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
-  document.title = getPageTitle(to.meta.title);
-  const isLogin = getCache('TOKEN');
+  document.title = getPageTitle(to.meta.title) || defaultTitle;
+  const isLogin = getCache('USER_INFO');
   if (to.path == '/login') {
     next();
     NProgress.done();
@@ -27,24 +19,8 @@ router.beforeEach(async (to, from, next) => {
     if (!isLogin) {
       next('/login');
     } else {
-      const userInfo = store.state.user.accountInfo;
-      if (userInfo) {
-        next();
-        NProgress.done();
-      } else {
-        try {
-          const { username } = await store.dispatch('user/getInfo');
-          const accountRoute = await store.dispatch('permission/getRoute', username);
-
-          router.addRoutes(accountRoute);
-          next({ ...to, replace: true });
-          NProgress.done();
-        } catch {
-          message.error('获取用户信息失败');
-          next('/login');
-          NProgress.done();
-        }
-      }
+      next();
+      NProgress.done();
     }
   }
 });

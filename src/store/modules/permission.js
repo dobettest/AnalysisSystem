@@ -1,70 +1,22 @@
-/*
- * @Author: your name
- * @Date: 2021-03-21 19:28:18
- * @LastEditTime: 2021-04-03 21:29:46
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \vue-antd-admin\src\store\modules\permission.js
- */
-import { baseRoute, asyncRoutes } from '@/router';
-import { setCache } from '@/utils/session';
-import router, { resetRouter } from '@/router';
+import { baseRoute } from '@/router';
 const state = {
-  routes: []
+  routes: baseRoute
 };
 
 const mutations = {
   SET_ROUTE(state, route) {
-    state.routes = baseRoute.concat(route);
+    state.routes = route;
   }
 };
 
 const actions = {
-  getRoute({ commit }, role) {
+  setRoute({ commit }, routes) {
     return new Promise((resolve, reject) => {
-      let accessedRoutes = [];
-      if (role == 'admin') {
-        accessedRoutes = asyncRoutes;
-      } else {
-        accessedRoutes = filterAsyncRoute(asyncRoutes, role);
-      }
-      commit('SET_ROUTE', accessedRoutes);
-      resolve(accessedRoutes);
+      commit('SET_ROUTE', routes);
+      resolve();
     });
-  },
-  async changeRole({ commit, dispatch }, role) {
-    const token = role + '20201013';
-    commit('user/SET_TOKEN', token, { root: true });
-    setCache('TOKEN', token);
-    await dispatch('user/getInfo', token, { root: true });
-    resetRouter();
-    const accessedRoutes = await dispatch('getRoute', role);
-    router.addRoute(accessedRoutes);
-    await dispatch('tagsView/clearTag', null, { root: true });
   }
 };
-
-export function filterAsyncRoute(routes, role) {
-  let arr = [];
-  routes.forEach(item => {
-    const temp = { ...item };
-    if (hasChildren(temp, role)) {
-      if (temp.children) {
-        temp.children = filterAsyncRoute(temp.children, role);
-      }
-      arr.push(temp);
-    }
-  });
-  return arr;
-}
-
-export function hasChildren(route, role) {
-  if (route.meta && route.meta.role) {
-    return route.meta.role.some(item => item == role);
-  } else {
-    return true;
-  }
-}
 
 export default {
   namespaced: true,

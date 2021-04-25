@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-03-21 19:28:18
- * @LastEditTime: 2021-04-03 21:49:10
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \vue-antd-admin\src\store\modules\tagsView.js
- */
 const state = {
   tagList: [
     {

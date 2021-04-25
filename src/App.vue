@@ -1,15 +1,7 @@
-<!--
- * @Author: your name
- * @Date: 2021-03-21 19:28:18
- * @LastEditTime: 2021-04-03 22:13:28
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \vue-antd-admin\src\App.vue
--->
 <template>
   <div id="app">
-    <chart-panel v-if="isFull" :title="title" :isFull="isFull" class="full"></chart-panel>
-    <router-view v-show="!isFull" />
+    <!--<chart-panel v-if="isFull" :title="title" :isFull="isFull" class="full"></chart-panel>-->
+    <router-view />
   </div>
 </template>
 <script>
@@ -77,15 +69,6 @@ export default {
   }
   .full .ant-card-head {
     height: 60px;
-  }
-}
-@media screen and (max-width: 375px) {
-  #app {
-    background-color: red;
-    .wrap {
-      width: 100%;
-      height: 50%;
-    }
   }
 }
 </style>

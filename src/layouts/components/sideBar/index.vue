@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2021-03-21 19:28:18
- * @LastEditTime: 2021-04-03 21:34:11
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \vue-antd-admin\src\layouts\components\sideBar\index.vue
--->
 <template>
   <div class="side-wrapper">
     <logo :collapse="collapsed" />
@@ -14,17 +6,41 @@
         :mode="mode"
         :inline-collapsed="!collapsed"
         theme="dark"
-        :selectedKeys="[$route.path]"
+        :selectedKeys="[current]"
         :open-keys="openKeys"
+        @click="handleClick"
         @openChange="changeOpen"
       >
-        <template v-for="item in baseRoute">
-          <menu-item v-if="!item.children && !item.hidden" :key="item.path" :currentRoute="item" />
-          <template v-else v-for="temp in item.children">
-            <menu-item v-if="!temp.children" :key="temp.path" :currentRoute="temp" />
-            <sub-menu v-else :key="temp.path" :currentRoute="temp"></sub-menu>
-          </template>
-        </template>
+        <a-sub-menu key="dashboard">
+          <span slot="title"><svg-icon icon="dashboard" /><span style="margin-left:16px">仪表盘</span></span>
+          <a-menu-item key="dashboardeg">
+            <router-link :to="{ name: 'dashboard', params: { name: 'default' } }">
+              <span style="margin-left:16px" class="menu-title">样例</span>
+            </router-link>
+          </a-menu-item>
+          <a-menu-item v-for="(item, index) in dashList" :key="'dashboard' + index">
+            <router-link :to="{ name: 'dashboard', params: { name: item.name } }">
+              <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="database">
+          <span slot="title"><svg-icon icon="database" /><span style="margin-left:16px">数据源</span></span>
+          <a-menu-item key="databaseeg">
+            <router-link :to="{ name: 'database', params: { name: 'default' } }">
+              <span style="margin-left:16px" class="menu-title">样例</span>
+            </router-link>
+          </a-menu-item>
+          <a-menu-item v-for="(item, index) in dbList" :key="'database' + index">
+            <router-link :to="{ name: 'database', params: { name: item.name } }">
+              <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="diy">
+          <span slot="title"><svg-icon icon="diy" /><span style="margin-left:16px">个性化</span></span>
+          <a-menu-item v-for="(item, index) in dbList" :key="'diy' + index"> </a-menu-item>
+        </a-sub-menu>
       </a-menu>
     </scroll-bar>
   </div>
@@ -35,7 +51,7 @@ import logo from './logo';
 import subMenu from './subMenu';
 import menuItem from './menuItem';
 import { mapGetters } from 'vuex';
-import { getChartList } from '@/api/user';
+import { getCache } from '@/utils/session';
 export default {
   name: 'sideBar',
   props: {
@@ -51,33 +67,20 @@ export default {
   components: { logo, subMenu, menuItem },
   data() {
     return {
-      openKeys: []
+      openKeys: [],
+      current: 'dashboardeg'
     };
   },
   computed: {
     ...mapGetters(['baseRoute']),
-    dashboard() {
-      return {
-        name: 'index',
-        path: '/index',
-        component: () => import('@/views/index/index'),
-        meta: {
-          role: ['admin', 'test'],
-          title: '仪表盘',
-          icon: 'dashboard'
-        }
-      };
-    }
+    ...mapGetters(['dbList']),
+    ...mapGetters(['dashList'])
   },
   async mounted() {
     let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
     if (matched.length > 1) {
       this.openKeys = matched.map(item => item.path);
     }
-    await getChartList({ username: 'admin' }).then(data => {
-      let { chartlist } = data;
-      console.log(this.dashboard);
-    });
   },
   methods: {
     changeOpen(keys) {
@@ -89,6 +92,9 @@ export default {
       } else {
         this.openKeys = currentOpenKey ? [currentOpenKey] : [];
       }
+    },
+    handleClick(e) {
+      this.current = e.key;
     }
   }
 };

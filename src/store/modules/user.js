@@ -1,18 +1,26 @@
 import { getCache, setCache, removeCache } from '@/utils/session';
-import { login, logout, getCodeTest, getInfo } from '@/api/user';
-import { resetRouter } from '@/router';
-
+import { login, logout, getCodeTest, getInfo, getDbList, getDashList } from '@/api/user';
+import { resetRouter, baseRoute } from '@/router';
 const state = {
-  accountInfo: null,
-  token: getCache('TOKEN') || ''
+  accountInfo: getCache('USER_INFO') || null,
+  token: getCache('TOKEN') || '',
+  dbList: getCache('DB_LIST') || null,
+  dashList: getCache('DASH_LIST') || null,
+  baseRoute
 };
 
 const mutations = {
   SET_TOKEN(state, token) {
     state.token = token;
   },
-  SET_USERINFO(state, userInfo) {
+  SET_USER_INFO(state, userInfo) {
     state.accountInfo = userInfo;
+  },
+  SET_DB_LIST(state, dbList) {
+    state.dbList = dbList;
+  },
+  SET_DASH_LIST(state, dashList) {
+    state.dashList = dashList;
   }
 };
 
@@ -23,10 +31,43 @@ const actions = {
         .then(res => {
           const { data } = res;
           if (data) {
-            commit('SET_TOKEN', data.token);
-            setCache('TOKEN', data.token);
+            commit('SET_USER_INFO', data);
+            resolve(data);
+          } else {
+            reject(res);
           }
-          resolve();
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  initDb({ commit }, userInfo) {
+    return new Promise((resolve, reject) => {
+      getDbList(userInfo)
+        .then(res => {
+          const { data } = res;
+          if (data) {
+            commit('SET_DB_LIST', data);
+            setCache("DB_LIST", data)
+          }
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  initDash({ commit }, userInfo) {
+    return new Promise((resolve, reject) => {
+      getDashList(userInfo)
+        .then(res => {
+          const { data } = res;
+          if (data) {
+            commit('SET_DASH_LIST', data);
+            setCache("DASH_LIST", data)
+          }
+          resolve(res);
         })
         .catch(err => {
           reject(err);
@@ -54,9 +95,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout()
         .then(() => {
-          commit('SET_TOKEN', '');
           commit('SET_USERINFO', '');
-          removeCache('TOKEN');
+          removeCache('USER_INFO');
           resetRouter();
           resolve();
         })
@@ -84,7 +124,7 @@ const actions = {
 
   updateInfo({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      commit('SET_USERINFO', userInfo);
+      commit('SET_USER_INFO', userInfo);
       resolve();
     });
   }

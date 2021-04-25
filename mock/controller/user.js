@@ -1,111 +1,13 @@
-const tokens = {
-  admin: {
-    token: 'admin20201013'
-  },
-  test: {
-    token: 'test20201013'
-  },
-  editor: {
-    token: 'editor20201013'
-  }
-};
-
-const userInfo = {
-  admin20201013: {
-    username: 'admin',
-    location: 'Wuhan',
-    position: '混元太极门掌门人',
-    role: '超级管理员',
-    label: '年轻人不讲武德',
-    skill: '闪电五连鞭'
-  },
-  test20201013: {
-    username: 'test',
-    location: 'Wuhan',
-    position: '四皇',
-    role: '普通用户',
-    label: '给我一个面子',
-    skill: '面子果实'
-  },
-  editor20201013: {
-    username: 'editor',
-    location: 'Wuhan',
-    position: '金牌作者',
-    role: '作家',
-    label: '暂无',
-    skill: '暂无'
-  }
-};
-const chartlists = {
-  admin: {
-    chartlist: [
-      {
-        taobao: {
-          alia: 'taobao',
-          title: '淘宝',
-          children: [
-            {
-              alia: 'clothes',
-              title: '服装'
-            }
-          ]
-        }
-      }
-    ]
-  }
-};
 const Mock = require('mockjs');
-const fs = require('fs');
-const Random = Mock.Random;
+const { default: dbList } = require('../database/modules/zhangsan/dbList');
 const phoneCode = Mock.mock('@natural(147895,995425)');
-function genUserList() {
-  let result = [];
-  let k = 0;
-  for (var i = 0; i < 100; i++) {
-    result.push({
-      id: Random.id(), // 身份证号
-      guid: Random.guid(),
-      name: Random.cname(),
-      gender: ['男', '女'][Random.integer(0, 1)],
-      age: Random.integer(20, 50),
-      married: Random.boolean(),
-      birth: Random.datetime('yyyy-MM-dd HH:mm:ss'), // 值是指定格式的日期字符串
-      // birth2: new Date(Random.datetime("yyyy-MM-dd HH:mm:ss")),  // 值是 Date 类型
-      addr: `${Random.province()}-${Random.city()}-${Random.county()}`,
-      email: Random.email('qq.com')
-    });
+const users = require("../database/users");
+const load_table = (db, table) => {
+  try {
+    return require(`../database/modules/${db}/${table}`)
+  } catch (error) {
+
   }
-  return result;
-}
-function genSchoolUser() {
-  let result = [];
-  let y = new Date().getFullYear();
-  for (var i = 0; i < 100; i++) {
-    let year = Random.integer(1997, 2002);
-    let classID = Random.integer(16, 19);
-    let num = Random.integer(10, 30);
-    let age = y - year;
-    result.push({
-      id: `20172018${classID}${num}`, // 身份证号
-      name: Random.cname(),
-      classID: `17218${classID}${num}`,
-      gender: ['男', '女'][Random.integer(0, 1)],
-      age,
-      birth: {
-        year,
-        month: Random.integer(1, 12),
-        day: Random.integer(1, 31)
-      }, // 值是指定格式的日期字符串
-      addr: {
-        province: Random.province(),
-        city: Random.city(),
-        country: '中国'
-      },
-      email: `${Random.integer(1364525216, 1999999999)}qq.com`
-    });
-  }
-  result = result.sort((a, b) => a.id - b.id);
-  return result;
 }
 module.exports = [
   {
@@ -113,18 +15,28 @@ module.exports = [
     type: 'post',
     response: config => {
       const { username, password } = config.body;
-      const token = tokens[username];
-      if (!token) {
+      var index = users.findIndex(v => v.username === username);
+      if (index !== -1) {
+        if (users[index].password === password) {
+          return {
+            data: users[index],
+            code: 200,
+            message: '登录成功'
+          }
+        } else {
+          return {
+            code: 200,
+            message: '密码错误',
+            data: null
+          }
+        }
+      } else {
         return {
-          code: 403,
-          message: '账号不存在！'
-        };
+          code: 200,
+          message: '账户不存在',
+          data: null
+        }
       }
-      return {
-        data: token,
-        code: 200,
-        message: '登录成功'
-      };
     }
   },
   {
@@ -168,49 +80,46 @@ module.exports = [
     }
   },
   {
-    url: '/user/chartlist',
+    url: '/user/dbList',
     type: 'post',
     response: config => {
-      const { username } = config.body;
-      const chartlist = chartlists[username] || [];
-      return {
-        data: chartlist,
-        code: 200,
-        message: 'success'
-      };
-    }
-  },
-  {
-    url: '/user/userInfo',
-    type: 'post',
-    response: config => {
-      const { token } = config.body;
-
-      const info = userInfo[token];
-
-      if (!token || !info) {
+      let { username } = config.body;
+      if (!username) {
         return {
-          code: 403,
-          message: '用户信息不存在！'
-        };
+          code: 200,
+          message: '缺少必要参数'
+        }
+      } else {
+        const dbList = load_table(username, "dbList");
+        return {
+          code: 200,
+          data: dbList,
+          message: '数据库获取成功'
+        }
       }
-      return {
-        data: info,
-        code: 200,
-        message: '获取用户信息成功！'
-      };
     }
   },
   {
-    url: '/user/list',
+    url: '/user/dbDetail',
     type: 'post',
     response: config => {
-      //fs.writeFileSync('users.js', JSON.stringify(data), { encoding: 'utf8' });
-      return {
-        data: genSchoolUser(),
-        code: 200,
-        message: '数据获取成功'
-      };
+      let { username, table, offset, limit } = config.body;
+      offset = offset ? offset : 0
+      limit = limit ? limit : 15
+      if (!username || !table) {
+        return {
+          code: 200,
+          message: '缺少必要参数'
+        }
+      } else {
+        let dbList = load_table(username, table);
+        dbList = dbList.slice(offset, offset + limit);
+        return {
+          code: 200,
+          data: dbList,
+          message: '数据库获取成功'
+        }
+      }
     }
   }
 ];

@@ -91,7 +91,7 @@
 <script>
 import { isPhone, isPassWord, isCode } from '@/utils/validate';
 import { getCache, setCache, removeCache } from '@/utils/session';
-import { getPhoneCode } from '@/api/user';
+import { getPhoneCode} from '@/api/user';
 export default {
   name: 'login',
   data() {
@@ -146,7 +146,7 @@ export default {
     };
   },
   mounted() {
-    const cache = getCache('LOGIN_INFO');
+    const cache = getCache('USER_INFO');
     if (cache) {
       this.loginForm.username = cache.username;
       this.loginForm.password = cache.password;
@@ -199,20 +199,15 @@ export default {
             const { username, password } = this.loginForm;
             this.$store
               .dispatch('user/login', { username, password })
-              .then(() => {
+              .then((res) => {
                 if (this.loginForm.remember) {
-                  setCache('LOGIN_INFO', { username, password });
-                  let path = '/index';
-                  if (this.loginForm.username == 'editor') {
-                    path = '/components/editor';
-                  }
-                  this.$router.push({
-                    path: path
-                  });
-                  this.loading = false;
-                } else {
-                  removeCache('LOGIN_INFO');
+                  setCache('USER_INFO',res);
                 }
+                this.$store.dispatch('user/initDb',{username})
+                this.$router.push({
+                  path: '/'
+                });
+                this.loading = false;
               })
               .catch(() => {
                 setTimeout(() => {
@@ -224,9 +219,8 @@ export default {
             this.$store
               .dispatch('user/codeTest', { phone, code })
               .then(() => {
-                removeCache('LOGIN_INFO');
                 this.$router.push({
-                  path: '/index'
+                  path: '/dashboard'
                 });
                 this.loading = false;
               })

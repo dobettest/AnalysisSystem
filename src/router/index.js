@@ -5,14 +5,10 @@ Vue.use(VueRouter);
 
 import Layout from '@/layouts';
 import mainLayout from '@/layouts/mainLayout';
-import echartRouter from './modules/echarts';
-import componentsRouter from './modules/components';
-import customRouter from './modules/custom'
-//import nestRouter from './modules/nest';
+import customRouter from './modules/custom';
 
 //基础路由
 export const baseRoute = [
-
   {
     name: 'login',
     path: '/login',
@@ -33,10 +29,7 @@ export const baseRoute = [
     path: '/500',
     component: () => import('@/views/error/500'),
     hidden: true
-  }
-];
-
-export const asyncRoutes = [
+  },
   {
     path: '/',
     component: Layout,
@@ -48,76 +41,32 @@ export const asyncRoutes = [
         path: '/dashboard',
         component: () => import('@/views/index/index'),
         meta: {
-          role: ['admin', 'test'],
           title: '仪表盘',
           icon: 'dashboard'
-        }
-      },
-
-      {
-        name: 'icon',
-        path: '/icon',
-        component: () => import('@/views/icon/index'),
-        meta: {
-          role: ['admin', 'test'],
-          title: '图标',
-          icon: 'icon'
-        }
-      },
-      echartRouter,
-      customRouter,
-      {
-        name: 'userSystem',
-        component: mainLayout,
-        path: '/userSystem',
-        redirect: '/userSystem/userInfo',
-        meta: { title: '个人设置', icon: 'user' },
-        children: [
-          {
-            name: 'userInfo',
-            path: '/userSystem/userInfo',
-            component: () => import('@/views/userSystem/userInfo/index'),
-            meta: { title: '个人中心' }
-          },
-          {
-            name: 'setting',
-            path: '/userSystem/setting',
-            component: () => import('@/views/userSystem/setting/index'),
-            meta: { title: '用户设置' }
-          }
-        ]
-      },
-      {
-        name: 'system',
-        component: mainLayout,
-        path: '/system',
-        redirect: '/system/userManage',
-        meta: {
-          role: ['admin'],
-          title: '系统设置',
-          icon: 'system'
         },
-        children: [
-          {
-            name: 'userManage',
-            path: '/system/userManage',
-            component: () => import('@/views/system/userManage/index'),
-            meta: { title: '用户管理' }
-          },
-          {
-            name: 'roleManage',
-            path: '/system/roleManage',
-            component: () => import('@/views/system/roleManage/index'),
-            meta: { title: '角色管理' }
-          }
-        ]
-      }
+        props: {
+          name: null
+        },
+      },
+      {
+        name: 'database',
+        path: '/database',
+        component: () => import('@/views/database/index'),
+        props: {
+          name: null
+        },
+        meta: {
+          title: '数据库',
+          icon: 'database'
+        }
+      },
+      customRouter
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
 ];
 
-const createRouter = function() {
+const createRouter = function () {
   return new VueRouter({
     routes: baseRoute,
     scrollBehavior: () => ({ y: 0 })
