@@ -13,15 +13,32 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, ' ') +
-      '"}'
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"')
+      .replace(/\+/g, ' ') +
+    '"}'
   );
 }
-
+/**
+ * 比较两个对象是否相等1
+ * @param {Object,Object} Object
+ * @returns {Boolean}
+ */
+export function objEqual(a, b) {
+  let keys = Object.keys(a)
+  for (var i = 0; i < keys.length; i++) {
+    if (a[keys[i]] instanceof Object) {
+      objEqual(a[keys[i]], b[keys[i]]);
+    } else {
+      if (a[keys[i]] != b[keys[i]]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
 /**
  * 函数防抖
  * @param {Function} func
@@ -75,7 +92,7 @@ export function getGeoJson(adcode, childAdcode = '') {
       // eslint-disable-next-line
       AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
         var districtExplorer = new DistrictExplorer();
-        districtExplorer.loadAreaNode(adcode, function(error, areaNode) {
+        districtExplorer.loadAreaNode(adcode, function (error, areaNode) {
           if (error) {
             console.error(error);
             reject(error);

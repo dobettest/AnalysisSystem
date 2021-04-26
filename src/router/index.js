@@ -33,7 +33,12 @@ export const baseRoute = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: {
+      name:'dashboard',
+      params:{
+        name:'default'
+      }
+    },
     hidden: true,
     children: [
       {

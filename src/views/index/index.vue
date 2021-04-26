@@ -36,7 +36,6 @@ export default {
   methods: {
     async initData() {
       let { name } = this.$route.params;
-      console.log(this.$route, 'name', name);
       this.dashboard = name;
       let { offset, limit } = this;
       let { username } = this.userInfo;

@@ -13,12 +13,12 @@
       >
         <a-sub-menu key="dashboard">
           <span slot="title"><svg-icon icon="dashboard" /><span style="margin-left:16px">仪表盘</span></span>
-          <a-menu-item key="dashboardeg">
+          <a-menu-item key="dashboarddefault">
             <router-link :to="{ name: 'dashboard', params: { name: 'default' } }">
               <span style="margin-left:16px" class="menu-title">样例</span>
             </router-link>
           </a-menu-item>
-          <a-menu-item v-for="(item, index) in dashList" :key="'dashboard' + index">
+          <a-menu-item v-for="(item, index) in dashList" :key="'dashboard' + item.name">
             <router-link :to="{ name: 'dashboard', params: { name: item.name } }">
               <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
             </router-link>
@@ -26,12 +26,12 @@
         </a-sub-menu>
         <a-sub-menu key="database">
           <span slot="title"><svg-icon icon="database" /><span style="margin-left:16px">数据源</span></span>
-          <a-menu-item key="databaseeg">
+          <a-menu-item key="databasedefault">
             <router-link :to="{ name: 'database', params: { name: 'default' } }">
               <span style="margin-left:16px" class="menu-title">样例</span>
             </router-link>
           </a-menu-item>
-          <a-menu-item v-for="(item, index) in dbList" :key="'database' + index">
+          <a-menu-item v-for="(item, index) in dbList" :key="'database' + item.name">
             <router-link :to="{ name: 'database', params: { name: item.name } }">
               <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
             </router-link>
@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       openKeys: [],
-      current: 'dashboardeg'
+      current: ''
     };
   },
   computed: {
@@ -76,10 +76,24 @@ export default {
     ...mapGetters(['dbList']),
     ...mapGetters(['dashList'])
   },
+  watch: {
+    $route() {
+      let { name, params } = this.$route;
+      var str = name;
+      Object.keys(params).forEach(key => {
+        str += params[key];
+      });
+      this.current = str;
+    }
+  },
   async mounted() {
     let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
     if (matched.length > 1) {
-      this.openKeys = matched.map(item => item.path);
+      this.openKeys = matched.map(item => {
+        let { name, meta, params } = item;
+        delete meta['icon'];
+        return { name, meta, params };
+      });
     }
   },
   methods: {

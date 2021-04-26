@@ -5,10 +5,10 @@
       <div class="scroll-body absolute" ref="scrollBody" :style="{ left: tagBodyLeft + 'px' }">
         <router-link
           class="tag-item pointer inline-block"
-          :to="item.path"
+          :to="{ name: item.name, params: item.params }"
           v-for="(item, index) in tagList"
-          :key="item.path"
-          :class="isActive(item.path) ? 'activeTag' : ''"
+          :key="index"
+          :class="isActive(item) ? 'activeTag' : ''"
           ref="tagWrapper"
         >
           <span class="tag-title">{{ item.meta.title }}</span>
@@ -17,7 +17,7 @@
             v-if="index != 0"
             class="verticalMiddle tag-icon"
             :size="14"
-            @click.prevent.stop.native="closeTag(item.path)"
+            @click.prevent.stop.native="closeTag(item)"
           />
         </router-link>
       </div>
@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+import { objEqual } from '@/utils';
 export default {
   name: 'tagView',
   data() {
@@ -44,9 +45,7 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      tagList: state => state.tagsView.tagList
-    }),
+    ...mapGetters(['tagList']),
     outerWidth() {
       if (this.hanldeBtn) {
         return {
@@ -61,24 +60,26 @@ export default {
     }
   },
   mounted() {
+  console.log(this.$route)
     this.addTag();
     this.changeTagWidth();
   },
 
   methods: {
-    isActive(path) {
-      return path == this.$route.path;
+    isActive(item) {
+      let { name, meta, params } = this.$route;
+      delete meta['icon'];
+      return objEqual(item, { name, meta, params });
     },
     addTag() {
-      const { path, meta } = this.$route;
-      this.$store.dispatch('tagsView/addTag', { path, meta });
+      let { name, meta, params } = this.$route;
+      delete meta['icon'];
+      this.$store.dispatch('tagsView/addTag', { name, meta, params });
     },
-    closeTag(path) {
-      this.$store.dispatch('tagsView/removeTag', path).then(data => {
-        if (this.isActive(path)) {
-          this.$router.push({
-            path: data[data.length - 1].path
-          });
+    closeTag(item) {
+      this.$store.dispatch('tagsView/removeTag', item).then(data => {
+        if (this.isActive(item)) {
+          this.$router.push(data[data.length - 1]);
         }
         this.changeTagWidth();
         this.moveToTag();
@@ -104,7 +105,9 @@ export default {
     },
     moveToTag() {
       this.$nextTick(() => {
-        const index = this.tagList.findIndex(item => item.path == this.$route.path);
+        let { name, meta, params } = this.$route;
+        delete meta['icon'];
+        const index = this.tagList.findIndex(item => objEqual(item, { name, meta, params }));
         const eleWidth = this.$refs.tagWrapper[index].$el.offsetWidth;
         const eleLeft = this.$refs.tagWrapper[index].$el.offsetLeft;
         const scrollOuterWidth = this.$refs.scrollOuter.offsetWidth;
@@ -124,7 +127,7 @@ export default {
     }
   },
   watch: {
-    $route(nl) {
+    $route(to,from) {
       this.changeTagWidth();
       this.addTag();
       this.moveToTag();

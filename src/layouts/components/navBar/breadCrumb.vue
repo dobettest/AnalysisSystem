@@ -1,15 +1,9 @@
-<!--
- * @Author: your name
- * @Date: 2021-03-21 19:28:18
- * @LastEditTime: 2021-04-03 21:46:09
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \vue-antd-admin\src\layouts\components\navBar\breadCrumb.vue
--->
 <template>
   <a-breadcrumb class="flex-sub bread-wrapper" separator="/">
-    <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.path">
-      <router-link v-if="index == 0 && breadList.length > 1" :to="item.path">{{ item.meta.title }}</router-link>
+    <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.name">
+      <router-link v-if="index == 0 && breadList.length > 1" :to="{ name: item.name, params: item.params }">{{
+        item.meta.title
+      }}</router-link>
       <span v-else>{{ item.meta.title }}</span>
     </a-breadcrumb-item>
   </a-breadcrumb>
@@ -31,12 +25,12 @@ export default {
     getBreadCrumb() {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
       let home = {
-        path: '/dashboard',
+        name: 'dashboard',
         meta: {
           title: '仪表盘'
         }
       };
-      if (matched[0].path == '/dashboard') {
+      if (matched[0].name == 'dashboard') {
         this.breadList = [home];
       } else {
         this.breadList = [home, ...matched];

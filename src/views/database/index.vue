@@ -21,14 +21,14 @@
           <svg-icon icon="add" class="mr8"></svg-icon>
           新增
         </a-button>
-        <a-button type="danger" class="mr8" @click="handleDelete('muti')">
+        <a-button type="danger" class="mr8">
           <svg-icon icon="clear" class="mr8"></svg-icon>
           批量删除
         </a-button>
         <a-input-search placeholder="输入查询条件" style="width:180px" enter-button @search="onSearch" />
       </template>
       <template slot="extra">
-        <a-button type="primary" class="mr8" @click="handleDelete('muti')">
+        <a-button type="primary" class="mr8" @click="handleExport">
           <svg-icon icon="export" class="mr8"></svg-icon>
           导出
         </a-button>
@@ -42,6 +42,7 @@ import { getDbDetail } from '@/api/user';
 import { getCache } from '@/utils/session';
 import { mapGetters } from 'vuex';
 import defaultList from './default';
+import { formatJson } from '@/utils';
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {},
   onSelect: (record, selected, selectedRows) => {
@@ -85,8 +86,7 @@ export default {
   methods: {
     async initData() {
       let { name } = this.$route.params;
-      console.log(this.$route, 'name', name);
-      this.dashboard = name;
+      this.table = name;
       let { offset, limit } = this;
       let { username } = this.userInfo;
       if (name === 'default') {
@@ -105,10 +105,6 @@ export default {
     handleAdd() {
       this.List.push(this.model);
     },
-    handleDelete(filter) {
-      if (filter === 'muti') {
-      }
-    },
     onSearch(value) {
       try {
         let filterArr = value.split(',');
@@ -125,6 +121,22 @@ export default {
     onDelete(id) {
       const dataSource = [...this.List];
       this.List = dataSource.filter(item => item.id !== id);
+    },
+    handleExport() {
+      try {
+        import('@/vendor/Export2Excel').then(excel => {
+          const header = this.columns.map(v => v.title);
+          header.pop();
+          const data = this.List.map(v => Object.values(v));
+          excel.export_json_to_excel({
+            header,
+            data,
+            filename: `${this.table}`
+          });
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
 

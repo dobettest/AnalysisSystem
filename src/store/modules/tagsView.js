@@ -1,9 +1,14 @@
+import { getCache, setCache } from '@/utils/session'
+import { objEqual } from '@/utils';
 const state = {
-  tagList: [
+  tagList: getCache('tagList') || [
     {
-      path: '/dashboard',
+      name: 'dashboard',
       meta: {
-        title: '仪表盘'
+        title: '仪表盘',
+      },
+      params: {
+        name: 'default'
       }
     }
   ]
@@ -11,26 +16,30 @@ const state = {
 
 const mutations = {
   ADD_TAGS(state, route) {
-    const index = state.tagList.findIndex(item => item.path == route.path);
+    const index = state.tagList.findIndex(item => objEqual(item, route));
     if (index == -1) {
-      state.tagList.push({
-        ...route
-      });
+      state.tagList.push(route);
+      setCache('tagList', state.tagList);
     }
   },
-  REMOVE_TAGS(state, path) {
-    const index = state.tagList.findIndex(item => item.path == path);
+  REMOVE_TAGS(state, route) {
+    const index = state.tagList.findIndex(item => objEqual(item, route));
     state.tagList.splice(index, 1);
+    setCache('tagList', state.tagList);
   },
   CLEAR_TAGS(state) {
     state.tagList = [
       {
-        path: '/dashboard',
+        name: 'dashboard',
         meta: {
           title: '仪表盘'
+        },
+        params: {
+          name: 'default'
         }
       }
     ];
+    setCache('tagList', state.tagList);
   }
 };
 
@@ -38,9 +47,9 @@ const actions = {
   addTag({ commit }, route) {
     commit('ADD_TAGS', route);
   },
-  removeTag({ state, commit }, path) {
+  removeTag({ state, commit }, route) {
     return new Promise((resolve, reject) => {
-      commit('REMOVE_TAGS', path);
+      commit('REMOVE_TAGS', route);
       resolve(state.tagList);
     });
   },
