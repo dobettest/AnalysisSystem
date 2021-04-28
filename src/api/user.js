@@ -70,7 +70,9 @@ export function getChartList(data) {
  * @returns {string}
  */
 export function getDbList(data) {
-  return request.post('/user/dbList', data);
+  const res=request.post('/user/dbList', data);
+  console.log("api",res)
+  return res;
 }
 
 /**
@@ -96,5 +98,6 @@ export function getDashList(data) {
  * @returns {string}
  */
 export function getDashDetail(data) {
+  
   return request.post('/user/dashDetail', data);
 }

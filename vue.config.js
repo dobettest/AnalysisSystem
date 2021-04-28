@@ -49,7 +49,7 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    externals: isProd ? cdn.externals : {}
+    externals: isProd?cdn.externals:{}
   },
   chainWebpack(config) {
     config.plugins.delete('prefetch');
@@ -70,7 +70,6 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end();
-
     //设置开发环境sourceMap
     config.when(!isProd, config => config.devtool('cheap-source-map'));
     //生产环境

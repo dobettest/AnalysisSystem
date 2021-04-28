@@ -70,6 +70,7 @@ export default {
   },
   watch: {
     List(newVal, oldVal) {
+      if (newVal == null) return;
       this.model = newVal[0];
       let columns = Object.keys(this.model).map(v => {
         var obj = {
@@ -95,7 +96,8 @@ export default {
       } else {
         await getDbDetail({ username, table: name, offset, limit })
           .then(res => {
-            console.log(res);
+            let {data}=res;
+            this.List=data;
           })
           .catch(err => {
             console.log(err);
@@ -139,6 +141,15 @@ export default {
       }
     }
   },
+  beforeRouteUpdate(to, from, next) {
+    if (to.fullPath != from.fullPath) {
+      next();
+      this.List = null;
+      this.model=null;
+      this.columns=null;
+      this.initData();
+    }
+  },
 
   mounted() {
     this.$nextTick(() => {
@@ -150,7 +161,7 @@ export default {
 
 <style scoped lang="scss">
 .database-container {
-  min-height: calc(100vh - 54px);
+  min-height: calc(100vh - 46px);
   background-color: #f0f2f5;
   padding: 24px;
 }

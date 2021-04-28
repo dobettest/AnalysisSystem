@@ -36,14 +36,14 @@ export const baseRoute = [
     redirect: {
       name:'dashboard',
       params:{
-        name:'default'
+        name:'system'
       }
     },
     hidden: true,
     children: [
       {
         name: 'dashboard',
-        path: '/dashboard',
+        path: '/dashboard/:id',
         component: () => import('@/views/index/index'),
         meta: {
           title: '仪表盘',

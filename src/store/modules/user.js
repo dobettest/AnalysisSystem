@@ -1,6 +1,19 @@
 import { getCache, setCache, removeCache } from '@/utils/session';
 import { login, logout, getCodeTest, getInfo, getDbList, getDashList } from '@/api/user';
 import { resetRouter, baseRoute } from '@/router';
+const defaultDASH = [
+  {
+    name: 'system',
+    alia: '系统'
+  }]
+const defaultDB = [
+  {
+    name: 'dashboard',
+    alia: '仪表盘'
+  }, {
+    name: 'db',
+    alia: '数据库'
+  }]
 const state = {
   accountInfo: getCache('USER_INFO') || null,
   token: getCache('TOKEN') || '',
@@ -20,7 +33,7 @@ const mutations = {
     state.dbList = dbList;
   },
   SET_DASH_LIST(state, dashList) {
-    state.dashList = dashList;
+    state.dashList =dashList;
   }
 };
 
@@ -48,8 +61,9 @@ const actions = {
         .then(res => {
           const { data } = res;
           if (data) {
-            commit('SET_DB_LIST', data);
-            setCache("DB_LIST", data)
+            let dbList = [...defaultDB, ...data]
+            commit('SET_DB_LIST', dbList);
+            setCache("DB_LIST", dbList);
           }
           resolve(res);
         })
@@ -62,10 +76,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       getDashList(userInfo)
         .then(res => {
+          console.log("dashList",res);
           const { data } = res;
           if (data) {
-            commit('SET_DASH_LIST', data);
-            setCache("DASH_LIST", data)
+            let dashList = [...defaultDASH, ...data]
+            commit('SET_DASH_LIST', dashList);
+            setCache("DASH_LIST", dashList)
           }
           resolve(res);
         })

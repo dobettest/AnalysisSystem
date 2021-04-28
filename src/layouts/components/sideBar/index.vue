@@ -13,26 +13,16 @@
       >
         <a-sub-menu key="dashboard">
           <span slot="title"><svg-icon icon="dashboard" /><span style="margin-left:16px">仪表盘</span></span>
-          <a-menu-item key="dashboarddefault">
-            <router-link :to="{ name: 'dashboard', params: { name: 'default' } }">
-              <span style="margin-left:16px" class="menu-title">样例</span>
-            </router-link>
-          </a-menu-item>
           <a-menu-item v-for="(item, index) in dashList" :key="'dashboard' + item.name">
-            <router-link :to="{ name: 'dashboard', params: { name: item.name } }">
+            <router-link :to="{ name: 'dashboard', params: { name: item.name },query:{id:index} }">
               <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
             </router-link>
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="database">
           <span slot="title"><svg-icon icon="database" /><span style="margin-left:16px">数据源</span></span>
-          <a-menu-item key="databasedefault">
-            <router-link :to="{ name: 'database', params: { name: 'default' } }">
-              <span style="margin-left:16px" class="menu-title">样例</span>
-            </router-link>
-          </a-menu-item>
           <a-menu-item v-for="(item, index) in dbList" :key="'database' + item.name">
-            <router-link :to="{ name: 'database', params: { name: item.name } }">
+            <router-link :to="{ name: 'database', params: { name: item.name }, query: { id: index } }">
               <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
             </router-link>
           </a-menu-item>
@@ -68,7 +58,7 @@ export default {
   data() {
     return {
       openKeys: [],
-      current: ''
+      current: 'dashboardsystem'
     };
   },
   computed: {
@@ -77,24 +67,25 @@ export default {
     ...mapGetters(['dashList'])
   },
   watch: {
-    $route() {
+    $route(to, from) {
       let { name, params } = this.$route;
       var str = name;
       Object.keys(params).forEach(key => {
         str += params[key];
       });
       this.current = str;
+      console.log(str);
     }
   },
   async mounted() {
-    let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
+    /*let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
     if (matched.length > 1) {
       this.openKeys = matched.map(item => {
         let { name, meta, params } = item;
         delete meta['icon'];
         return { name, meta, params };
       });
-    }
+    }*/
   },
   methods: {
     changeOpen(keys) {

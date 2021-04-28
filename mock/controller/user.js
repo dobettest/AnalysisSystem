@@ -6,7 +6,9 @@ const load_table = (db, table) => {
   try {
     return require(`../database/modules/${db}/${table}`)
   } catch (error) {
-
+    return {
+      errstr: "数据表未找到"
+    }
   }
 }
 module.exports = [
@@ -91,6 +93,12 @@ module.exports = [
         }
       } else {
         const dbList = load_table(username, "dbList");
+        if (dbList["errstr"]) {
+          return {
+            code: 1003,
+            message: dbList["errstr"]
+          }
+        }
         return {
           code: 200,
           data: dbList,
@@ -118,6 +126,55 @@ module.exports = [
           code: 200,
           data: dbList,
           message: '数据库获取成功'
+        }
+      }
+    }
+  },
+  {
+    url: '/user/dashList',
+    type: 'post',
+    response: config => {
+      let { username } = config.body;
+      if (!username) {
+        return {
+          code: 200,
+          message: '缺少必要参数'
+        }
+      } else {
+        const dashList = load_table(username, "dashList");
+        if (dashList["errstr"]) {
+          return {
+            code: 1003,
+            message: dashList["errstr"]
+          }
+        }
+        return {
+          code: 200,
+          data: dashList,
+          message: '仪表盘获取成功'
+        }
+      }
+    }
+  },
+  {
+    url: '/user/dashDetail',
+    type: 'post',
+    response: config => {
+      let { username, table, offset, limit } = config.body;
+      offset = offset ? offset : 0
+      limit = limit ? limit : 15
+      if (!username || !table) {
+        return {
+          code: 200,
+          message: '缺少必要参数'
+        }
+      } else {
+        let dashList = load_table(username, table);
+        dashList = dashList.slice(offset, offset + limit);
+        return {
+          code: 200,
+          data: dbList,
+          message: '仪表盘获取成功'
         }
       }
     }

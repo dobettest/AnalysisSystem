@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <!--<chart-panel v-if="isFull" :title="title" :isFull="isFull" class="full"></chart-panel>-->
-    <router-view />
+    <chart v-if="isFull" :title="title" :isFull="isFull" class="full" :option="option"></chart>
+    <router-view v-show="!isFull" />
   </div>
 </template>
 <script>
@@ -13,36 +13,12 @@ export default {
     return {
       isFull: false,
       title: '',
-      config: null
+      option: null
     };
   },
   mounted() {
     let chart = null;
-    /*this.$nextTick(() => {
-        let fragment = document.createDocumentFragment();
-        let copy = document.createElement('div');
-        copy.innerHTML = el.innerHTML;
-        fragment.appendChild(copy);
-        document.getElementById('full-container').appendChild(fragment);
-      });*/
-    /*this.$bus.$on('screenfy', props => {
-      let { isFull } = props;
-      if (isFull) {
-        this.screenfull = true;
-        this.$nextTick(() => {
-          chart=new Vue({
-            render: h => h(card, { class: ['full'], props })
-          }).$mount('#full-container');
-        });
-      } else {
-        this.screenfull = false;
-        this.$nextTick(() => {
-          chart.$
-        });
-      }
-    });*/
     this.$bus.$on('screenfy', props => {
-      this.config = null;
       this.$nextTick(() => {
         Object.keys(props).forEach(v => {
           this.$set(this, v, props[v]);
@@ -54,18 +30,15 @@ export default {
 </script>
 <style lang="scss">
 #app {
-  .wrap {
-    float: left;
-    width: 50%;
-    height: 100%;
-  }
   .full .ant-card-body {
-    height: calc(100% - 60px) !important;
+    height: calc(100% - 60px);
+    .chart{
+      height: 100%;
+    }
   }
   .full,
-  .full .ant-card,
-  .full .panel {
-    height: 100% !important;
+  .full .ant-card {
+    height: 100%;
   }
   .full .ant-card-head {
     height: 60px;

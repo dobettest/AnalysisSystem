@@ -16,7 +16,7 @@
 import { getDashDetail } from '@/api/user';
 import { mapGetters } from 'vuex';
 import defaultList from './default';
-import chart from './components/chart';
+import chart from '@/components/echart/src';
 export default {
   name: 'pie',
   data() {
@@ -39,7 +39,7 @@ export default {
       this.dashboard = name;
       let { offset, limit } = this;
       let { username } = this.userInfo;
-      if (name === 'default') {
+      if (name === 'system') {
         this.$set(this, 'dashList', defaultList);
         return;
       } else {
@@ -53,16 +53,23 @@ export default {
       }
     }
   },
+  beforeRouteUpdate(to, from, next) {
+    if (to.fullPath != from.fullPath) {
+      next();
+      this.dashList = null;
+      this.initData();
+    }
+  },
   mounted() {
-    this.$nextTick(()=>{
-      this.initData()
-    })
+    this.$nextTick(() => {
+      this.initData();
+    });
   }
 };
 </script>
 <style lang="scss" scoped>
 .dashboard-container {
-  min-height:calc(100vh - 54px);
+  min-height: calc(100vh - 46px);
   padding: 24px;
   background: #f0f2f5;
   .chart-list {
@@ -70,11 +77,6 @@ export default {
       display: inline-block;
       width: calc(50% - 20px);
       margin: 10px;
-      &:hover{
-        /deep/ .extra-list{
-        display:block;
-        }
-      }
     }
   }
 }

@@ -71,7 +71,7 @@ export default {
     transition: width 0.28s;
     width: calc(100% - 256px);
     & ~ .app-main {
-      padding-top: 54px;
+      padding-top: 46px;
       min-height: 100vh;
     }
   }

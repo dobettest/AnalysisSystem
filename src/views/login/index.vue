@@ -91,7 +91,7 @@
 <script>
 import { isPhone, isPassWord, isCode } from '@/utils/validate';
 import { getCache, setCache, removeCache } from '@/utils/session';
-import { getPhoneCode} from '@/api/user';
+import { getPhoneCode } from '@/api/user';
 export default {
   name: 'login',
   data() {
@@ -199,11 +199,12 @@ export default {
             const { username, password } = this.loginForm;
             this.$store
               .dispatch('user/login', { username, password })
-              .then((res) => {
+              .then(res => {
                 if (this.loginForm.remember) {
-                  setCache('USER_INFO',res);
+                  setCache('USER_INFO', res);
                 }
-                this.$store.dispatch('user/initDb',{username})
+                this.$store.dispatch('user/initDb', { username });
+                this.$store.dispatch('user/initDash', { username });
                 this.$router.push({
                   path: '/'
                 });
