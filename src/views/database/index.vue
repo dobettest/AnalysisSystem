@@ -1,7 +1,7 @@
 <template>
   <div class="database-container">
     <a-card :hoverable="true" :bordered="false">
-      <a-table :columns="columns" :data-source="filterList || List" :row-selection="rowSelection">
+      <a-table :columns="columns" :data-source="List" :row-selection="rowSelection">
         <div slot="operation" slot-scope="text, record">
           <a-button type="primary" size="small">编辑</a-button>
           <a-popconfirm
@@ -25,7 +25,13 @@
           <svg-icon icon="clear" class="mr8"></svg-icon>
           批量删除
         </a-button>
-        <a-input-search placeholder="输入查询条件" style="width:180px" enter-button @search="onSearch" />
+        <a-input-search
+          placeholder="输入查询条件"
+          style="width:180px"
+          enter-button
+          @search="onSearch"
+          v-model="filterStr"
+        />
       </template>
       <template slot="extra">
         <a-button type="primary" class="mr8" @click="handleExport">
@@ -62,7 +68,7 @@ export default {
       model: null,
       columns: null,
       rowSelection,
-      filterList: null
+      filterStr: null
     };
   },
   computed: {
@@ -82,6 +88,20 @@ export default {
       });
       columns.push({ title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } });
       this.columns = columns;
+    },
+    async filterStr(newVal, oldVal) {
+      if (newVal === '') {
+        let { offset, limit, table } = this;
+        let { username } = this.userInfo;
+        await getDbDetail({ username, table, offset, limit })
+          .then(res => {
+            let { data } = res;
+            this.List = data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   },
   methods: {
@@ -96,8 +116,8 @@ export default {
       } else {
         await getDbDetail({ username, table: name, offset, limit })
           .then(res => {
-            let {data}=res;
-            this.List=data;
+            let { data } = res;
+            this.List = data;
           })
           .catch(err => {
             console.log(err);
@@ -109,8 +129,12 @@ export default {
     },
     onSearch(value) {
       try {
+        if (!value) {
+          this.$message.error('查询条件不能为空');
+          return;
+        }
         let filterArr = value.split(',');
-        this.filterList = this.List.filter(v => {
+        this.List = this.List.filter(v => {
           return filterArr.every(f => {
             let [key, value] = f.split(':');
             return v[key] == value; //数字和字符串不相等
@@ -126,6 +150,10 @@ export default {
     },
     handleExport() {
       try {
+        if (!this.List) {
+          this.$message.error('数据表为空');
+          return;
+        }
         import('@/vendor/Export2Excel').then(excel => {
           const header = this.columns.map(v => v.title);
           header.pop();
@@ -145,8 +173,9 @@ export default {
     if (to.fullPath != from.fullPath) {
       next();
       this.List = null;
-      this.model=null;
-      this.columns=null;
+      this.model = null;
+      this.columns = null;
+      this.filterStr = null;
       this.initData();
     }
   },

@@ -37,13 +37,16 @@ export const baseRoute = [
       name:'dashboard',
       params:{
         name:'system'
+      },
+      query:{
+        id:0
       }
     },
     hidden: true,
     children: [
       {
         name: 'dashboard',
-        path: '/dashboard/:id',
+        path: '/dashboard',
         component: () => import('@/views/index/index'),
         meta: {
           title: '仪表盘',

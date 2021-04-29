@@ -3,12 +3,6 @@
     <side-bar class="aside-container" :collapsed="open" v-if="!horizontal" />
     <div class="main-container" :class="{ hasTag: tagShow }">
       <div :class="{ 'fixed-header': fixHeader }">
-        <!--<nav-bar :collapsed="open" v-if="!horizontal" />
-        <div v-else class="horizontal-nav flex">
-          <horizontal-side />
-          <nav-bar :horizontal="horizontal" class="nav-user"></nav-bar>
-        </div>
-        -->
         <tag-view v-if="tagShow" />
       </div>
       <div class="app-main">
@@ -20,12 +14,12 @@
 </template>
 
 <script>
-import { sideBar, navBar, tagView, setting, horizontalSide } from './components';
+import { sideBar,tagView, setting, horizontalSide } from './components';
 import backTop from '@/components/backTop/index';
 import { mapState } from 'vuex';
 export default {
   name: 'layout',
-  components: { sideBar, navBar, tagView, setting, backTop, horizontalSide },
+  components: { sideBar,tagView, setting, backTop, horizontalSide },
   data() {
     return {};
   },

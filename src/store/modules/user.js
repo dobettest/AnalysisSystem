@@ -11,7 +11,7 @@ const defaultDB = [
     name: 'dashboard',
     alia: '仪表盘'
   }, {
-    name: 'db',
+    name: 'dbList',
     alia: '数据库'
   }]
 const state = {

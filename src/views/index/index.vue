@@ -43,7 +43,7 @@ export default {
         this.$set(this, 'dashList', defaultList);
         return;
       } else {
-        await getDashDetail({ username, table: name, offset, limit })
+        await getDashDetail({ username, group: name, offset, limit })
           .then(res => {
             console.log(res);
           })

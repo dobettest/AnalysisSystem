@@ -14,7 +14,7 @@
         <a-sub-menu key="dashboard">
           <span slot="title"><svg-icon icon="dashboard" /><span style="margin-left:16px">仪表盘</span></span>
           <a-menu-item v-for="(item, index) in dashList" :key="'dashboard' + item.name">
-            <router-link :to="{ name: 'dashboard', params: { name: item.name },query:{id:index} }">
+            <router-link :to="{ name: 'dashboard', params: { name: item.name}, query: { id: index } }">
               <span style="margin-left:16px" class="menu-title">{{ item.alia || item.name }}</span>
             </router-link>
           </a-menu-item>
@@ -62,7 +62,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['baseRoute']),
     ...mapGetters(['dbList']),
     ...mapGetters(['dashList'])
   },
@@ -74,7 +73,6 @@ export default {
         str += params[key];
       });
       this.current = str;
-      console.log(str);
     }
   },
   async mounted() {
@@ -90,13 +88,7 @@ export default {
   methods: {
     changeOpen(keys) {
       const currentOpenKey = keys.find(key => this.openKeys.indexOf(key) === -1);
-      const children = this.baseRoute.filter(item => item.children);
-
-      if (children[0].children.findIndex(item => item.path == currentOpenKey) === -1) {
-        this.openKeys = keys;
-      } else {
-        this.openKeys = currentOpenKey ? [currentOpenKey] : [];
-      }
+      this.openKeys = currentOpenKey ? [currentOpenKey] : [];
     },
     handleClick(e) {
       this.current = e.key;

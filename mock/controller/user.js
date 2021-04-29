@@ -160,20 +160,20 @@ module.exports = [
     url: '/user/dashDetail',
     type: 'post',
     response: config => {
-      let { username, table, offset, limit } = config.body;
+      let { username, group, offset, limit } = config.body;
       offset = offset ? offset : 0
       limit = limit ? limit : 15
-      if (!username || !table) {
+      if (!username || !group) {
         return {
           code: 200,
           message: '缺少必要参数'
         }
       } else {
-        let dashList = load_table(username, table);
-        dashList = dashList.slice(offset, offset + limit);
+        let dashList = load_table(username, "dashboard");
+        dashList = dashList.slice(offset, offset + limit).filter(v => v.group === group)
         return {
           code: 200,
-          data: dbList,
+          data: dashList,
           message: '仪表盘获取成功'
         }
       }

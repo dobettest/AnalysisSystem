@@ -82,6 +82,7 @@ export default [
                 {
                     type: 'category',
                     boundaryGap: false,
+                    data: ['6:00', '9:00', '12:00', '15:00', '18:00', '21:00', '24:00'],
                     axisLine: {
                         lineStyle: {
                             color: '#cecece'
@@ -122,7 +123,9 @@ export default [
             ],
             series: [
                 {
+                    name: '运动时长',
                     type: 'line',
+                    data: [60, 75, 55, 40, 100, 140, 160],
                     smooth: true,
                     symbol: 'circle',
                     showSymbol: true,
@@ -136,20 +139,8 @@ export default [
                         borderColor: '#fff'
                     }
                 }
-            ],
-            dataset: {
-                dimensions: ['时间', '气温'],
-                source: [
-                    ['6:00', 60],
-                    ['9:00', 75],
-                    ['12:00', 55],
-                    ['15:00', 40],
-                    ['18:00', 100],
-                    ['21:00', 140],
-                    ['24:00', 160]
-                ]
-            }
-        }
+            ]
+        },
     },
     {
         name: '爱吃食物分类',
