@@ -70,8 +70,8 @@ export function getChartList(data) {
  * @returns {string}
  */
 export function getDbList(data) {
-  const res=request.post('/user/dbList', data);
-  console.log("api",res)
+  const res = request.post('/user/dbList', data);
+  console.log("api", res)
   return res;
 }
 
@@ -98,6 +98,23 @@ export function getDashList(data) {
  * @returns {string}
  */
 export function getDashDetail(data) {
-  
+
   return request.post('/user/dashDetail', data);
+}
+/**
+ * @description 添加数据
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function addTable(data) {
+  return request.post('/table/add', data)
+}
+
+/**
+ * @description 添加数据
+ * @param {string}  username   用户名
+ * @returns {string}
+ */
+export function deleteTable(data) {
+  return request.post('/table/delete', data)
 }

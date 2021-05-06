@@ -1,16 +1,16 @@
 <template>
   <div class="database-container">
     <a-card :hoverable="true" :bordered="false">
-      <a-table :columns="columns" :data-source="List" :row-selection="rowSelection">
+      <a-table :columns="columns" :data-source="List">
         <div slot="operation" slot-scope="text, record">
-          <a-button type="primary" size="small">编辑</a-button>
+          <a-button type="primary" size="small" @click="handleEdit(text)">编辑</a-button>
           <a-popconfirm
             ok-text="是"
             cancel-text="否"
             style="margin-left:8px"
             v-if="List.length"
             title="Sure to delete?"
-            @confirm="() => onDelete(record.id)"
+            @confirm="() => onDelete(record)"
           >
             <a-button type="danger" size="small">删除</a-button>
           </a-popconfirm>
@@ -40,25 +40,28 @@
         </a-button>
       </template>
     </a-card>
+    <data-model
+      :model="model"
+      :visible="showModel"
+      @ok="handleOk"
+      @cancel="showModel = false"
+      v-if="showModel"
+      :table="table"
+    ></data-model>
   </div>
 </template>
 
 <script>
-import { getDbDetail } from '@/api/user';
+import { getDbDetail, deleteTable } from '@/api/user';
 import { getCache } from '@/utils/session';
 import { mapGetters } from 'vuex';
 import defaultList from './default';
 import { formatJson } from '@/utils';
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {},
-  onSelect: (record, selected, selectedRows) => {
-    console.log(selected, selectedRows);
-  },
-  onSelectAll: (selected, selectedRows, changeRows) => {
-    console.log(selected, selectedRows);
-  }
-};
+import dataModel from './components/dataModel';
 export default {
+  components: {
+    dataModel
+  },
   data() {
     return {
       offset: 0,
@@ -67,8 +70,8 @@ export default {
       List: null,
       model: null,
       columns: null,
-      rowSelection,
-      filterStr: null
+      filterStr: null,
+      showModel: false
     };
   },
   computed: {
@@ -77,13 +80,14 @@ export default {
   watch: {
     List(newVal, oldVal) {
       if (newVal == null) return;
-      this.model = newVal[0];
-      let columns = Object.keys(this.model).map(v => {
+      let model = newVal[0];
+      this.model = Object.assign({}, model);
+      let columns = Object.keys(model).map(v => {
         var obj = {
           title: v,
           dataIndex: v
         };
-        if (typeof this.model[v] === 'number') obj['sorter'] = (a, b) => a[v] - b[v];
+        if (typeof model[v] === 'number') obj['sorter'] = (a, b) => a[v] - b[v];
         return obj;
       });
       columns.push({ title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } });
@@ -125,7 +129,10 @@ export default {
       }
     },
     handleAdd() {
-      this.List.push(this.model);
+      Object.keys(this.model).forEach(key => {
+        this.model[key] = '';
+      });
+      this.showModel = true;
     },
     onSearch(value) {
       try {
@@ -144,9 +151,22 @@ export default {
         console.log(err);
       }
     },
-    onDelete(id) {
-      const dataSource = [...this.List];
-      this.List = dataSource.filter(item => item.id !== id);
+    onDelete(record) {
+      //const dataSource = [...this.List];
+      //this.List = dataSource.filter(item => item.id !== id);
+      let { username } = this.userInfo;
+      let { table} = this;
+      deleteTable({ username, table, filter: record }).then(() => {
+        this.$message.success('删除成功');
+        getDbDetail({ username, table })
+          .then(res => {
+            let { data } = res;
+            this.List = data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
     },
     handleExport() {
       try {
@@ -167,15 +187,23 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    handleEdit(model) {
+      this.model = { ...model };
+      this.showModel = true;
+    },
+    handleOk() {
+      this.showModel = false;
+      this.initData();
     }
   },
   beforeRouteUpdate(to, from, next) {
     if (to.fullPath != from.fullPath) {
-      next();
       this.List = null;
       this.model = null;
       this.columns = null;
       this.filterStr = null;
+      next();
       this.initData();
     }
   },

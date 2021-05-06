@@ -1,5 +1,1 @@
-module.exports=[
-    {
-        group:'base'
-    }
-]
+module.exports=[{"group":"base"},{"group":"aaaa"}]

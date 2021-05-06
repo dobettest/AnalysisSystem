@@ -1,8 +1,6 @@
-module.exports=[
+module.exports = [
     {
-        db: 'default',
-        table: 'users',
-        name: '',
+        name: 'base',
         alia: '基本信息概要'
 
     }

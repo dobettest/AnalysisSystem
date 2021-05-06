@@ -1,4 +1,6 @@
 const Mock = require('mockjs');
+const fs = require('fs');
+const path = require('path');
 const { default: dbList } = require('../database/modules/zhangsan/dbList');
 const phoneCode = Mock.mock('@natural(147895,995425)');
 const users = require("../database/users");
@@ -10,6 +12,23 @@ const load_table = (db, table) => {
       errstr: "数据表未找到"
     }
   }
+}
+const add_table = (db, table, item) => {
+  try {
+    var data = require(`../database/modules/${db}/${table}`)
+    data.push(item);
+    fs.writeFileSync(path.resolve(__dirname, `../database/modules/${db}/${table}.js`), "module.exports=" + JSON.stringify(data), { encoding: 'utf-8' });
+    return {
+      code: 200,
+      message: '添加成功'
+    }
+  } catch (error) {
+    return {
+      code: 1101,
+      message: "添加失败"
+    }
+  }
+
 }
 module.exports = [
   {
@@ -177,6 +196,48 @@ module.exports = [
           message: '仪表盘获取成功'
         }
       }
+    }
+  },
+  {
+    url: '/table/add',
+    type: 'post',
+    response: config => {
+      let { username, table, item } = config.body;
+      let res = add_table(username, table, item);
+      return res;
+
+    }
+  },
+  {
+    url: '/table/delete',
+    type: 'post',
+    response: config => {
+      try {
+        let { username, table, filter } = config.body;
+        let keys = Object.keys(filter);
+        let data = load_table(username, table);
+        let index = data.findIndex(v => {
+          return keys.every(key => {
+            return v[key] == filter[key];
+          })
+        })
+        console.log(index, filter, keys)
+        if (index == -1) {
+          throw new Error('不存在此数据');
+        }
+        data.splice(index, 1);
+        fs.writeFileSync(path.resolve(__dirname, `../database/modules/${username}/${table}.js`), "module.exports=" + JSON.stringify(data), { encoding: 'utf-8' });
+        return {
+          code: 200,
+          message: '删除成功'
+        }
+      } catch (err) {
+        return {
+          code: 1001,
+          message: '删除失败'
+        }
+      }
+
     }
   }
 ];
