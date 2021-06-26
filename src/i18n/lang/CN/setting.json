@@ -1,0 +1,13 @@
+{
+    "customSetting": "个性化设置",
+    "theme": "主题",
+    "layout": "布局设置",
+    "lang": "系统语言",
+    "tagView": "开启标签",
+    "fixedHeader": "固定头部",
+    "sky": "天空蓝",
+    "sunset": "落日黄",
+    "grass": "草原绿",
+    "sideNav": "左侧导航",
+    "topNav": "头部导航"
+}
