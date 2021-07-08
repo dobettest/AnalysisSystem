@@ -1,53 +1,5 @@
-var tableData = [
-  {
-    id: parseInt(Math.random() * 1000000000000),
-    username: 'admin',
-    password: '123456',
-    role: 'admin',
-    date: '2020-10-13',
-    text: '系统管理员，拥有所有权限',
-    key: 'admin'
-  },
-  {
-    id: parseInt(Math.random() * 1000000000000),
-    username: 'editor',
-    password: '123456',
-    role: 'editor',
-    date: '2020-10-13',
-    text: 'admin签约金牌作家--马老师',
-    key: 'editor'
-  },
-  {
-    id: parseInt(Math.random() * 1000000000000),
-    username: 'test',
-    password: '123456',
-    role: 'test',
-    date: '2020-10-13',
-    text: '不知名体验者，峡谷最快乐的男人',
-    key: 'test'
-  },
-  {
-    id: parseInt(Math.random() * 1000000000000),
-    username: 'custom',
-    password: '123456',
-    role: 'custom',
-    date: '2020-10-13',
-    text: '早安，打工人(自定义权限，路由权限由管理员分配)',
-    key: 'custom11'
-  },
-  {
-    id: parseInt(Math.random() * 1000000000000),
-    username: '阿福',
-    password: '123456',
-    role: 'custom',
-    date: '2020-10-16',
-    text: '搞错了，我不叫来福',
-    key: 'custom22'
-  },
-];
-
 const moment = require('moment');
-
+const {userInfo:tableData}=require('./user')
 function filterTable(list, key, value) {
   if (key == 'role') {
     return list.filter(item => item[key] == value);

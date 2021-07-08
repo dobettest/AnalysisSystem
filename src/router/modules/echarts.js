@@ -6,7 +6,6 @@ const echartRouter = {
   component: mainLayout,
   redirect: '/echarts/bar',
   meta: {
-    role: ['admin', 'test'],
     title: 'echarts',
     icon: 'echarts'
   },
@@ -34,7 +33,6 @@ const echartRouter = {
       path: '/echarts/other',
       component: () => import('@/views/echarts/other/index'),
       meta: {
-        role: ['admin'],
         title: 'other'
       }
     }

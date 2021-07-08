@@ -12,19 +12,8 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    role() {
-      return this.$store.getters.roles;
-    }
-  },
   methods: {
     returnHome() {
-      if (this.role === 'editor') {
-        this.$router.push({
-          path: '/components/editor'
-        });
-        return;
-      }
       this.$router.push({
         path: '/index'
       });

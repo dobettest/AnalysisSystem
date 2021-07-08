@@ -1,11 +1,8 @@
 <template>
   <div class="scoket-container">
     <div class="chat-container">
-      <div class="status">
-        {{ socketStatus }}
-      </div>
-      <scroll-bar style="width:100%;height:400px;padding:6px 0 15px" ref="scrollBar">
-        <p class="text-center">{{ newsList[newsList.length - 1].date }}</p>
+      <scroll-bar style="width: 100%; height: 400px; padding: 6px 0 15px" ref="scrollBar">
+        <p class="text-center" v-if="newsList.length">{{ newsList[newsList.length - 1].date }}</p>
         <div
           class="list-item"
           v-for="(item, index) in newsList"
@@ -13,127 +10,122 @@
           :class="{ 'text-right': index % 2 === 0 }"
         >
           <div class="message myself" v-if="index % 2 == 0">{{ item.message }}</div>
-          <a-avatar :src="item.imgUrl" :size="35" />
+          <a-avatar :src="require('@/assets/avatar/' + item.imgUrl)" :size="35" />
           <div class="message" v-if="index % 2 != 0" v-html="item.message"></div>
         </div>
       </scroll-bar>
     </div>
-    <a-comment>
-      <a-avatar slot="avatar" :src="imgUrl" alt="Han Solo" />
+    <a-comment class="comment-container">
+      <a-avatar slot="avatar" :src="require('@/assets/avatar/' + userInfo['avatar'])" />
       <div slot="content">
-        <a-form-item>
+        <a-row class="row">
+          <ul class="type-list clearfix">
+            <li class="type-item">
+              <a-icon type="smile" theme="twoTone" @click="showEmoji" class="emoji-btn"></a-icon>
+              <div class="emojiList" ref="emoji" v-show="emoji">
+                <div class="content clearfix" @click="handleEmoji">
+                  <span class="emoji-item" v-for="(item, idx) in emojiList" :key="idx">{{ item.char }}</span>
+                </div>
+              </div>
+            </li>
+            <li class="type-item">
+              <a-icon type="picture" theme="twoTone"></a-icon>
+            </li>
+          </ul>
+        </a-row>
+        <a-row class="row">
           <a-textarea :rows="3" @change="changeText" :value="textValue" />
-        </a-form-item>
-        <a-form-item>
-          <a-button html-type="submit" type="primary" @click="sendNews">
-            发送
-          </a-button>
-        </a-form-item>
+        </a-row>
+        <a-row class="row">
+          <a-button html-type="submit" type="primary" @click="sendNews"> 发送 </a-button>
+        </a-row>
       </div>
     </a-comment>
   </div>
 </template>
 <script>
-const moment = require('moment');
-
+import moment from 'moment';
+import io from 'socket.io-client';
+import { mapState } from 'vuex';
+import emojiList from '@/assets/emoji.json';
+import bs from 'better-scroll';
+import { clickOutSide } from '@/utils/dom';
 export default {
   data() {
     return {
       errorTimes: 0,
       websock: null,
-      imgUrl: require('../../../assets/nav/user.gif'),
-      socketStatus: 'webSocket连接断开',
-      newsList: [
-        {
-          user: 'admin',
-          imgUrl: require('../../../assets/nav/user.gif'),
-          message: 'hello',
-          date: '2020-12-27 15:36:24'
-        },
-        {
-          user: 'robot',
-          imgUrl: require('../../../assets/nav/robot.png'),
-          message: 'hello',
-          date: '2020-12-27 15:36:24'
-        }
-      ],
-      textValue: ''
+      newsList: [],
+      textValue: '',
+      emoji: false,
+      emojiList,
+      outSideEvent: null
     };
+  },
+  computed: {
+    ...mapState({ userInfo: state => state.user.accountInfo })
   },
   created() {
     this.init();
   },
+  mounted() {
+    this.outSideEvent = clickOutSide('emojiList', function () {
+      this.emoji = false;
+    });
+  },
   destroyed() {
-    this.websock.close();
+    this.emoji = false;
+    //console.log("destroyed")
   },
   methods: {
     init() {
-      if (typeof WebSocket === 'undefined') {
-        alert('您的浏览器不支持socket');
-        return;
-      }
-      this.websock = new WebSocket('ws://123.207.136.134:9010/ajaxchattest');
-      this.websock.onmessage = this.websocketonmessage;
-      this.websock.onopen = this.websocketonopen;
-      this.websock.onerror = this.websocketonerror;
-      this.websock.onclose = this.websocketclose;
-    },
-    websocketonopen() {
-      this.errorTimes = 0;
-      this.socketStatus = 'webSocket已连接';
-    },
-    //数据接收
-    websocketonmessage(e) {
-      this.socketStatus = '输入中...';
-
-      setTimeout(() => {
-        this.newsList.push({
-          user: 'robot',
-          imgUrl: require('../../../assets/nav/robot.png'),
-          message: e.data,
-          date: moment().format('YYYY-MM-DD HH:mm:ss')
-        });
-        this.socketStatus = 'webSocket已连接';
-        this.$nextTick(() => {
-          const boxDom = this.$refs['scrollBar'].wrap;
-          boxDom.scrollTop = boxDom.scrollHeight;
-        });
-      }, 350);
-    },
-    //数据发送
-    websocketsend(message) {
-      this.websock.send(message);
-      this.newsList.push({
-        user: 'admin',
-        imgUrl: require('../../../assets/nav/user.gif'),
-        message: message,
-        date: moment().format('YYYY-MM-DD HH:mm:ss')
+      var socket = io('http://localhost:3100');
+      socket.on('receivedMessage', data => {
+        console.log(data);
       });
-      this.textValue = '';
-    },
-    websocketonerror() {
-      if (this.errorTimes == 2) {
-        this.$message.error('连接失败,请稍后重试');
-        this.socketStatus = 'webSocket连接失败';
-        return;
-      }
-      this.errorTimes++;
-      console.log('连接失败,正在重新连接');
-      this.init();
-    },
-    websocketclose(e) {
-      this.socketStatus = 'webSocket连接断开';
-      console.log('断开了连接', e);
+      socket.emit('login', {
+        ...this.userInfo
+      });
+      socket.on('userLeave', data => {
+        console.log('userLeave', data);
+      });
+      this.websock = socket;
     },
     changeText(e) {
       this.textValue = e.target.value;
     },
-    sendNews() {
+    async sendNews() {
       if (!this.textValue) {
         this.$message.warning('输入内容不能为空');
         return;
       }
-      this.websocketsend(this.textValue);
+      await this.websock.emit('sendMessage', { to: 'AI', content: this.textValue });
+      this.textValue = '';
+    },
+    showEmoji() {
+      this.emoji = !this.emoji;
+      if (this.emoji) {
+        this.$nextTick(() => {
+          new bs(this.$refs.emoji);
+        });
+      }
+    },
+    handleEmoji(e) {
+      let el = e.srcElement || e.target;
+      console.log(el, e);
+      if (el.classList.contains('emoji-item')) {
+        this.textValue += el.innerText;
+      }
+      this.emoji = false;
+    }
+  },
+  watch: {
+    emoji(nl, ol) {
+      if (nl === false) {
+        document.removeEventListener('click', this.outSideEvent);
+      } else if (nl === true) {
+        document.addEventListener('click', this.outSideEvent, true);
+      }
     }
   }
 };
@@ -183,6 +175,48 @@ export default {
       position: absolute;
       left: -6px;
       top: 12px;
+    }
+  }
+}
+.comment-container {
+  padding: 8px 0;
+  /deep/ .ant-comment-inner {
+    padding: 0;
+  }
+  .row {
+    margin-bottom: 8px;
+  }
+  .type-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    .type-item {
+      font-size: 24px;
+      padding: 0 8px;
+      float: left;
+      position: relative;
+      cursor: pointer;
+      .emojiList {
+        background-color: #fff;
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        width: 162px;
+        cursor: pointer;
+        height: 100px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        .content {
+          height: auto;
+          width: 100%;
+          .emoji-item {
+            height: 32px;
+            width: 32px;
+            float: left;
+          }
+        }
+      }
     }
   }
 }

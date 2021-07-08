@@ -4,5 +4,11 @@
     "edit":"edit",
     "del":"del",
     "add":"add",
-    "search":"search"
+    "search":"search",
+    "baseInfo":"baseInfo",
+    "article":"article",
+    "notice":"notice",
+    "tag":"tag",
+    "skill":"skill",
+    "dynamic":"dynamic"
 }

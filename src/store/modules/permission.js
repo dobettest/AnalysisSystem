@@ -23,7 +23,6 @@ const actions = {
         const res = await getRoleRoute({ role })
         const { data: permissions } = res;
         accessedRoutes = await filterAsyncRoute(asyncRoutes, permissions);
-        console.log("access", accessedRoutes, accessedRoutes.length)
       }
       commit("SET_ROUTE", accessedRoutes)
       resolve(accessedRoutes)
@@ -31,12 +30,12 @@ const actions = {
 
   },
   async changeRole({ commit, dispatch }, role) {
-    const token = role + '20201013';
+    const token = state.token
     commit('user/SET_TOKEN', token, { root: true });
     setCache('TOKEN', token);
     await dispatch('user/getInfo', token, { root: true });
     resetRouter();
-    const accessedRoutes = await dispatch('getRoute', role);
+    const accessedRoutes = await dispatch('getRoute', {role});
     router.addRoutes(accessedRoutes);
     await dispatch('tagsView/clearTag', null, { root: true });
   }
@@ -52,15 +51,15 @@ export async function filterAsyncRoute(asyncRoutes, accessRoutes) {
     }
     flag && arr.push(temp)
   }))
-  return Promise.resolve(arr)
+  return arr
 }
 export async function isAccess(route, accessRoutes) {
   if (route?.children) {
     let arr = route.children.map(v => isAccess(v, accessRoutes))
     let res = await Promise.all(arr);
-    return Promise.resolve(res.indexOf(true) !== -1)
+    return res.indexOf(true) !== -1
   }
-  return Promise.resolve(accessRoutes.some((v) => v === route.path));
+  return accessRoutes.some((v) =>route.path===v||route.path==='*');
 }
 
 export default {

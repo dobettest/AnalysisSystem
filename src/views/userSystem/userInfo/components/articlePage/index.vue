@@ -52,34 +52,6 @@ export default {
           time: '2019-10-28',
           description:
             '使用keep-alive的时候，有时候会遇到切换了账号后还是上一个的页面的keep-alive，由于vue没有对应的方法去清除keep-alive，所以我们可以强制删除vnode里面的keepAlive属性，达到想要的效果。'
-        },
-        {
-          title: '二. Echarts+Amap实现点击下钻功能',
-          url: 'https://juejin.im/post/6844903982377205768',
-          tagList: [
-            {
-              title: 'Vue',
-              color: '#1890FF'
-            },
-            {
-              title: 'Echarts',
-              color: '#1890FF'
-            },
-            {
-              title: '点击下钻',
-              color: '#1890FF'
-            },
-            {
-              title: 'AMap',
-              color: '#52C41A'
-            }
-          ],
-          star: 28,
-          like: 125,
-          message: 96,
-          time: '2019-10-28',
-          description:
-            '为了不用在本地下载市县的geoJson,所以使用AMap的api方法获取行政区的geoJson，然后再通过Echarts渲染，达到点击下钻的效果。'
         }
       ],
       loadingMore: false

@@ -66,7 +66,7 @@ export default {
     },
 
     changeTime(data, dataString) {
-      console.log(dataString);
+ 
     },
 
     sendValue() {

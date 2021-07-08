@@ -14,7 +14,7 @@ const componentsRouter = {
       name: 'vr',
       path: '/components/vr',
       component: () => import('@/views/components/vr/index'),
-      meta: { title: 'vr', role: ['admin', 'test'] }
+      meta: { title: 'vr' }
     },
     {
       name: 'Markdown',
@@ -26,37 +26,31 @@ const componentsRouter = {
       name: 'lottery',
       path: '/components/lottery',
       component: () => import('@/views/components/lottery/index'),
-      meta: { title: 'lottery', role: ['admin', 'test'] }
+      meta: { title: 'lottery'}
     },
     {
       name: 'table',
       path: '/components/table',
       component: () => import('@/views/components/table/index'),
-      meta: { title: 'table', role: ['admin', 'test'] }
+      meta: { title: 'table'}
     },
     {
       name: 'form',
       path: '/components/form',
       component: () => import('@/views/components/form/index'),
-      meta: { title: 'form', role: ['admin', 'test'] }
+      meta: { title: 'form'}
     },
     {
       name: 'loading',
       path: '/components/loading',
       component: () => import('@/views/components/loading/index'),
-      meta: { title: 'loading', role: ['admin', 'test'] }
+      meta: { title: 'loading'}
     },
     {
       name: 'webSocket',
       path: '/components/webSocket',
       component: () => import('@/views/components/webSocket/index'),
-      meta: { title: 'webSocket', role: ['admin', 'test'] }
-    },
-    {
-      name: 'screenshot',
-      path: '/components/screenshot',
-      component: () => import('@/views/components/screenshot/index'),
-      meta: { title: 'screenshot', role: ['admin', 'test'] }
+      meta: { title: 'webSocket'}
     }
   ]
 };

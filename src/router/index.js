@@ -45,7 +45,6 @@ export const asyncRoutes = [
         path: '/index',
         component: () => import('@/views/index/index'),
         meta: {
-          role: ['admin', 'test','editor'],
           title: 'index',
           icon: 'dashboard'
         }
@@ -56,7 +55,6 @@ export const asyncRoutes = [
         path: '/icon',
         component: () => import('@/views/icon/index'),
         meta: {
-          role: ['admin', 'test','editor'],
           title: 'icon',
           icon: 'icon'
         }

@@ -1,8 +1,10 @@
 <template>
   <a-breadcrumb class="flex-sub bread-wrapper" separator="/">
     <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.path">
-      <router-link v-if="index == 0 && breadList.length > 1" :to="item.path">{{$t("route."+item.meta.title) }}</router-link>
-      <span v-else>{{ $t("route."+item.meta.title)}}</span>
+      <router-link v-if="index == 0 && breadList.length > 1" :to="item.path">{{
+        $t('route.' + item.meta.title)
+      }}</router-link>
+      <span v-else>{{ $t('route.' + item.meta.title) }}</span>
     </a-breadcrumb-item>
   </a-breadcrumb>
 </template>
@@ -22,7 +24,6 @@ export default {
   methods: {
     getBreadCrumb() {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
-      console.log("matched",matched)
       let home = {
         path: '/index',
         meta: {

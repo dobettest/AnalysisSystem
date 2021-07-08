@@ -1,5 +1,10 @@
 const state = {
-  tagList: []
+  tagList: [{
+    path:'/index',
+    meta:{
+      title:'index'
+    }
+  }]
 };
 
 const mutations = {

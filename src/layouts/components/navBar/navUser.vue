@@ -1,7 +1,7 @@
 <template>
   <a-dropdown class="navUser-wrppaer">
     <div>
-      <img src="../../../assets/nav/user.gif" class="userImg" alt="" />
+      <img :src="require('@/assets/avatar/'+imgUrl)" class="userImg" alt="" />
       <span class="userTitle">{{ accountInfo.username }}</span>
       <a-icon type="caret-down" style="margin-left:5px" />
     </div>
@@ -26,12 +26,16 @@ import { mapState } from 'vuex';
 export default {
   name: 'navUser',
   data() {
-    return {};
+    return {
+    };
   },
   computed: {
     ...mapState({
       accountInfo: state => state.user.accountInfo
-    })
+    }),
+    imgUrl(){
+      return this.accountInfo['avatar']||'one.jpg';
+    }
   },
   methods: {
     async logout() {

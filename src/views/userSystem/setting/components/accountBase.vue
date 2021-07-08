@@ -9,12 +9,12 @@
     hideRequiredMark
   >
     <a-form-model-item prop="imgUrl" label="头像">
-      <a-avatar :src="accountFrom.imgUrl" :size="108" />
+      <a-avatar :src="require('@/assets/avatar/'+accountInfo['avatar'])" :size="108" />
     </a-form-model-item>
     <a-form-model-item prop="username" label="用户名" hasFeedback>
       <a-input v-model="accountFrom.username" placeholder="请输入用户名" allow-clear />
     </a-form-model-item>
-    <a-form-model-item label="权限">
+    <a-form-model-item label="角色">
       <a-input v-model="accountFrom.role" disabled />
     </a-form-model-item>
     <a-form-model-item prop="position" label="职位" hasFeedback>
@@ -25,20 +25,6 @@
     </a-form-model-item>
     <a-form-model-item prop="label" label="个人介绍">
       <a-textarea v-model="accountFrom.label" placeholder="请输入个人介绍..." :autoSize="{ minRows: 4, maxRows: 7 }" />
-    </a-form-model-item>
-    <a-form-model-item prop="skill" label="技能">
-      <a-select
-        mode="tags"
-        placeholder="请输入个人技能"
-        :maxTagCount="3"
-        allowClear
-        :default-value="accountFrom.skill"
-        @change="changeSkill"
-      >
-        <a-select-option v-for="item in skillList" :key="item">
-          {{ item }}
-        </a-select-option>
-      </a-select>
     </a-form-model-item>
     <a-form-item class="text-center">
       <a-button type="primary" @click="updateValue" :loading="loading">
@@ -60,29 +46,14 @@ export default {
     return {
       loading: false,
       accountFrom: {
-        skill: '闪电五连鞭',
-        imgUrl: ''
       },
       accountRule: {
         imgUrl: [{ required: true, trigger: 'blur' }],
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空！' }],
         position: [{ required: true, trigger: 'blur', message: '职位不能为空！' }],
         location: [{ required: true, trigger: 'blur', message: '请选择所在城市！' }],
-        label: [{ required: true, trigger: 'blur', message: '个人介绍不能为空！' }],
-        skill: [{ required: true, trigger: 'blur', message: '请至少勾选一项技能' }]
-      },
-      skillList: [
-        '闪电五连鞭',
-        '偷袭',
-        '耗子尾汁',
-        '乌鸦坐飞机',
-        '龙卷风摧毁停车场',
-        '奥利给',
-        '好嗨哟',
-        '是个狼人',
-        '雨女无瓜',
-        '996'
-      ]
+        label: [{ required: true, trigger: 'blur', message: '个人介绍不能为空！' }]
+      }
     };
   },
   computed: {
@@ -92,7 +63,6 @@ export default {
   },
   mounted() {
     this.accountFrom = this.accountInfo;
-    this.accountFrom.imgUrl = require('../../../../assets/nav/user.gif');
   },
   methods: {
     changeSkill(key) {

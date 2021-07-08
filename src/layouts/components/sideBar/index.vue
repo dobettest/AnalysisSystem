@@ -49,7 +49,6 @@ export default {
     ...mapGetters(['baseRoute'])
   },
   mounted() {
-    console.log("baseRoute",this.baseRoute)
     let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
     if (matched.length > 1) {
       this.openKeys = matched.map(item => item.path);

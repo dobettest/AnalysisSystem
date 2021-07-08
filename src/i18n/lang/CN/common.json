@@ -4,5 +4,11 @@
     "edit":"编辑",
     "del":"删除",
     "add":"添加",
-    "search":"查找"
+    "search":"查找",
+    "baseInfo":"基本信息",
+    "article":"文章",
+    "notice":"通知",
+    "tag":"标签",
+    "skill":"技能",
+    "dynamic":"动态"
 }

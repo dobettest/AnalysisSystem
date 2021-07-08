@@ -2,8 +2,8 @@ const permissions = [{
   role: 'admin',
   routes: []
 }, {
-  role: 'editor',
-  routes: ['/index', '/icon','/userSystem/setting'],
+  role: 'custom',
+  routes: ['/index', '/icon','/userSystem/setting','/userSystem/userInfo','/components/webSocket'],
 }]
 module.exports = [{
   url: '/route/getRoleRoute',

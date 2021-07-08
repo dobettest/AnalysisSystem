@@ -10,7 +10,6 @@ import '@/styles/index.scss'; // global css
 
 import './icons'; //icon
 import './permission'; // 路由导航守卫
-import 'mapvgl';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 Vue.use(Antd);

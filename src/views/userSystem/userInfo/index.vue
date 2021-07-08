@@ -4,15 +4,18 @@
       <a-col :span="7">
         <a-card :hoverable="true" :bordered="false">
           <div class="accountInfo">
-            <img src="../../../assets/nav/user.gif" alt="" class="accountImg" />
+            <img :src="require('@/assets/avatar/' + accountInfo['avatar'])" alt="" class="accountImg" />
             <div class="username">{{ accountInfo.username }}</div>
-            <div class="userRole">{{ accountInfo.role }}</div>
           </div>
           <a-divider />
           <div class="accountMajor">
-            <p>基本信息</p>
+            <p>{{ $t('common.baseInfo') }}</p>
             <template v-for="(v, k) in accountInfo">
-              <div class="major-wrapper" :key="k" v-if="k != 'username' && k != 'role'">
+              <div
+                class="major-wrapper"
+                :key="k"
+                v-if="['username', 'role', 'date', 'text', 'id', 'avatar', 'key'].indexOf(k) === -1"
+              >
                 <svg-icon :icon="k" class="vertical-bottom" />
                 <span class="major-name">{{ v }}</span>
               </div>
@@ -20,27 +23,7 @@
           </div>
           <a-divider />
           <div class="tabList">
-            <p>荣誉证书</p>
-            <template v-for="item in tagList">
-              <a-tag :key="item.title" style="margin-bottom: 6px" closable :color="item.color">
-                {{ item.title }}
-              </a-tag>
-            </template>
-            <a-input
-              v-if="addInputShow"
-              ref="input"
-              type="text"
-              size="small"
-              :style="{ width: '78px' }"
-              v-model="tagValue"
-              @blur="inputConfirm"
-              @keyup.enter="inputConfirm"
-            />
-            <a-tag v-else style="cursor: pointer" @click="writeInput"> <a-icon type="plus" /> New Tag </a-tag>
-          </div>
-          <a-divider />
-          <div class="tabList">
-            <p>标签</p>
+            <p>{{ $t('common.tag') }}</p>
             <template v-for="item in tagList">
               <a-tag :key="item.title" style="margin-bottom: 6px" closable :color="item.color">
                 {{ item.title }}
@@ -60,7 +43,7 @@
           </div>
           <a-divider />
           <div class="skillList">
-            <p>技能</p>
+            <p>{{ $t('common.skill') }}</p>
             <div class="skill-wrapper" v-for="item in skillList" :key="item.title">
               {{ item.title }}
               <a-progress :percent="item.value" :status="item.status" />
@@ -69,9 +52,13 @@
         </a-card>
       </a-col>
       <a-col :span="17">
-        <a-card :bordered="false" :tab-list="tabList" :active-tab-key="currentKey" @tabChange="changeTab">
-          <component :is="currentKey" />
-        </a-card>
+        <a-tabs v-model="currentTab" class="tab-container">
+          <a-tab-pane v-for="(item) in tabList" :key="item.key" :tab="$t('common.' + item.tab)">
+            <keep-alive>
+              <component :is="item.key"></component>
+            </keep-alive>
+          </a-tab-pane>
+        </a-tabs>
       </a-col>
     </a-row>
   </div>
@@ -89,18 +76,17 @@ export default {
       tabList: [
         {
           key: 'dynamicPage',
-          tab: '动态'
+          tab: 'dynamic'
         },
         {
           key: 'articlePage',
-          tab: '文章'
+          tab: 'article'
         },
         {
           key: 'noticePage',
-          tab: '通知'
+          tab: 'notice'
         }
       ],
-      currentKey: 'dynamicPage',
       skillList: [
         {
           title: 'Vue',
@@ -139,19 +125,16 @@ export default {
         },
         {
           title: '减肥',
-          color: '#52C41A'
+          color: '#F5222D'
         },
         {
           title: '赚钱',
           color: '#1890FF'
-        },
-        {
-          title: '进大厂',
-          color: '#F5222D'
         }
       ],
       addInputShow: false,
-      tagValue: ''
+      tagValue: '',
+      currentTab: 'dynamicPage'
     };
   },
   computed: {
@@ -159,14 +142,7 @@ export default {
       accountInfo: state => state.user.accountInfo
     })
   },
-  created() {
-    this.currentKey = this.$route.params.key || 'dynamicPage';
-  },
   methods: {
-    changeTab(key) {
-      this.currentKey = key;
-    },
-
     inputConfirm() {
       const value = this.tagValue.trim();
       let tagList = this.tagList;
@@ -184,6 +160,18 @@ export default {
       this.$nextTick(() => {
         this.$refs.input.focus();
       });
+    }
+  },
+  mounted(){
+    //console.log(this.currentTab,this.$route)
+  },
+  watch:{
+    $route:{
+      handler(nl,ol){
+          nl.params?.key&&(this.currentTab=nl.params?.key)
+      },
+      deep:true,
+      immediate:true
     }
   }
 };
@@ -217,5 +205,9 @@ export default {
 }
 .skill-wrapper {
   margin-bottom: 10px;
+}
+.tab-container{
+  background-color: #fff;
+  padding: 0 10px;
 }
 </style>

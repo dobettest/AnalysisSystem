@@ -6,7 +6,7 @@
           <p slot="title">
             {{ item.user }}
           </p>
-          <a-avatar slot="avatar" :src="item.imgUrl" />
+          <a-avatar slot="avatar" :src="require('@/assets/avatar/'+item.imgUrl)" />
           <div slot="description">
             {{ item.description }}
             <div style="margin-top:8px">{{ item.time }}</div>
@@ -26,25 +26,25 @@ export default {
         {
           user: '系统管理员',
           description: '您的页面存在风险，请尽快解决。',
-          imgUrl: require('../../../../../assets/nav/system.png'),
+          imgUrl: 'system.png',
           time: '2020-11-16 09:25:45'
         },
         {
           user: '系统管理员',
           description: '您的页面存在样式问题，请优先解决。',
-          imgUrl: require('../../../../../assets/nav/system.png'),
+          imgUrl: 'system.png',
           time: '2020-11-12  15:32:15'
         },
         {
           user: '不知名用户',
           description: '加油，赶紧写完,相信自己。',
-          imgUrl: require('../../../../../assets/nav/user.gif'),
+          imgUrl: 'user.gif',
           time: '2020-11-11  11:11:11'
         },
         {
           user: '系统管理员',
           description: '您还有很多页面要写，请注意进度。',
-          imgUrl: require('../../../../../assets/nav/system.png'),
+          imgUrl: 'system.png',
           time: '2020-11-10  12:18:16'
         }
       ]

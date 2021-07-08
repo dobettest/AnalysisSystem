@@ -1,40 +1,34 @@
-const tokens = {
-  admin: {
-    token: 'admin20201013'
-  },
-  test: {
-    token: 'test20201013'
-  },
-  editor: {
-    token: 'editor20201013'
-  }
-};
-
-const userInfo = {
-  admin20201013: {
+const userInfo = [
+  {
+    id: parseInt(Math.random() * 1000000000000),
     username: 'admin',
+    password: '123456',
+    role: 'admin',
+    date: '2020-10-13',
+    phone: '17770831435',
+    text: '系统管理员，拥有所有权限',
     location: 'Wuhan',
-    position: '混元太极门掌门人',
-    role: '超级管理员',
-    label: '年轻人不讲武德',
-  },
-  test20201013: {
-    username: 'test',
-    location: 'Wuhan',
-    position: '四皇',
-    role: '普通用户',
-    label: '给我一个面子',
-    skill: '面子果实'
-  },
-  editor20201013: {
-    username: 'editor',
-    location: 'Wuhan',
-    position: '金牌作者',
-    role: '作家',
+    job: '前端工程师',
     label: '暂无',
-    skill: '暂无'
+    skill: '暂无',
+    avatar:'one.jpg'
+  },
+  {
+    id: parseInt(Math.random() * 1000000000000),
+    username: 'custom',
+    password: '123456',
+    role: 'custom',
+    date: '2020-10-13',
+    text: '测试工程师',
+    location: 'Wuhan',
+    job: '测试工程师',
+    label: '暂无',
+    skill: '暂无',
+    avatar:'two.jpg'
   }
-};
+];
+exports.userInfo = userInfo
+const tokens = [];
 
 const Mock = require('mockjs');
 
@@ -46,15 +40,17 @@ module.exports = [
     type: 'post',
     response: config => {
       const { username, password } = config.body;
-      const token = tokens[username];
-      if (!token) {
+      const user = userInfo.find(v => v.username === username && v.password === password);
+      if (!user) {
         return {
           code: 403,
           message: '账号不存在！'
         };
       }
+      let token = username + Date.now().valueOf()
+      tokens.push(token)
       return {
-        data: token,
+        data: { token },
         code: 200,
         message: '登录成功'
       };
@@ -64,6 +60,8 @@ module.exports = [
     url: '/user/logout',
     type: 'post',
     response: config => {
+      let { token } = config.body;
+      tokens.splice(tokens.indexOf(token), 1);
       return {
         code: 200,
         message: '退出成功！'
@@ -105,9 +103,9 @@ module.exports = [
     type: 'post',
     response: config => {
       const { token } = config.body;
-
-      const info = userInfo[token];
-
+      const [input,username, time] = token.match(/([a-zA-Z]+)(\d+)/);
+      const info = {...userInfo.find((v) => v.username === username)};//深拷贝
+      delete info['password'];
       if (!token || !info) {
         return {
           code: 403,

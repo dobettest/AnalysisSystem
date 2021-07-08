@@ -6,16 +6,6 @@ const roleData = [
   },
   {
     id: parseInt(Math.random() * 1000000000000),
-    role: 'test',
-    text: '普通用户，拥有大部分权限'
-  },
-  {
-    id: parseInt(Math.random() * 1000000000000),
-    role: 'editor',
-    text: '文档管理人员，只能看富文本页面'
-  },
-  {
-    id: parseInt(Math.random() * 1000000000000),
     role: 'custom',
     text: '自定义权限，权限由管理员去定义'
   }

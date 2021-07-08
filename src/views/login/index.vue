@@ -14,7 +14,7 @@
             <a-form-model-item prop="username" v-if="currentTab === 'user'">
               <a-input
                 v-model="loginForm.username"
-                placeholder="请输入账号 (admin or test or editor)"
+                placeholder="请输入账号"
                 size="large"
                 allow-clear
                 @pressEnter="focusPassword"
@@ -25,7 +25,7 @@
             <a-form-model-item prop="password" v-if="currentTab === 'user'">
               <a-input-password
                 v-model="loginForm.password"
-                placeholder="请输入密码 (任意输入6位数)"
+                placeholder="请输入密码"
                 size="large"
                 allow-clear
                 @pressEnter="toLogin"
@@ -55,29 +55,27 @@
                 placeholder="请输入验证码"
                 size="large"
                 :maxLength="6"
-                style="width:58%;"
+                style="width: 58%"
                 ref="code"
                 @pressEnter="toLogin"
               >
               </a-input>
-              <a-button size="large" @click="getCode" :disabled="codeStatus" style="width:35%;margin-left:7%">{{
+              <a-button size="large" @click="getCode" :disabled="codeStatus" style="width: 35%; margin-left: 7%">{{
                 phoneCode
               }}</a-button>
             </a-form-model-item>
           </a-tab-pane>
         </a-tabs>
 
-        <a-form-item style="margin-top:-7px">
-          <a-button type="primary" block size="large" :loading="loading" @click="toLogin">
-            登录
-          </a-button>
+        <a-form-item style="margin-top: -7px">
+          <a-button type="primary" block size="large" :loading="loading" @click="toLogin"> 登录 </a-button>
         </a-form-item>
-        <a-form-item style="margin-top:-7px">
+        <a-form-item style="margin-top: -7px">
           <a-checkbox v-model="loginForm.remember" v-if="currentTab === 'user'">记住密码</a-checkbox>
           <span class="forge-password pointer">忘记密码</span>
         </a-form-item>
-        <a-form-item style="margin-top:-20px">
-          <span style="margin-right:15px">其他登录方式</span>
+        <a-form-item style="margin-top: -20px">
+          <span style="margin-right: 15px">其他登录方式</span>
           <svg-icon icon="qq" :size="25" class="pointer verticalMiddle"></svg-icon>
           <span class="forge-password pointer">注册账户</span>
         </a-form-item>
@@ -197,11 +195,10 @@ export default {
             const { username, password } = this.loginForm;
             this.$store
               .dispatch('user/login', { username, password })
-              .then((res) => {
+              .then(() => {
                 if (this.loginForm.remember) {
                   setCache('LOGIN_INFO', { username, password });
                   let path = '/index';
-                  console.log("res",res)
                   this.$router.push({
                     path: path
                   });
@@ -244,15 +241,16 @@ export default {
 .login-container {
   background-image: url('~@/assets/login/background.jpg');
   .layout {
-    width: 55%;
-    min-width: 900px;
-    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     .form-container {
       width: 400px;
-      height: 550px;
-      margin: 0 auto;
-      margin-right: 0;
-      padding-top: calc(50vh - 249.5px);
+      position: absolute;
+      top: 50%;
+      right: 20%;
+      transform: translateY(-50%);
       .title {
         font-weight: 700;
         font-size: 1.8rem;

@@ -47,7 +47,6 @@ export default {
           this.$message.error('加载资源失败');
         }
       } catch (error) {
-        console.log(error);
         this.$message.error(error);
       }
     },
