@@ -4,7 +4,7 @@
 
 <script>
 import resize from '@/mixins/resize';
-import echarts from 'echarts';
+import echarts from 'echart';
 export default {
   name: 'otherLine',
   mixins: [resize],

@@ -1,29 +1,27 @@
-const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
 const path = require('path')
 const Mock = require('mockjs')
-const mockDir = path.join(process.cwd(), 'mock')
-const websocket=require("./controller/websocket")
+const websocket = require("./controller/websocket")
+const app = require('express')();
+var multipart = require('connect-multiparty');
+var uploadDir = path.resolve(__dirname, "./assets");
+var multipartMiddleware = multipart({ uploadDir });
+var cors = require('my-cors')
+var oss = require('tencent-oss')
+var fs = require('fs')
 /**
  *
  * @param app
  * @returns {{mockStartIndex: number, mockRoutesLength: number}}
  */
 const registerRoutes = (app) => {
-  let mockLastIndex
   const { mocks } = require('./index.js')
   const mocksForServer = mocks.map((route) => {
     return responseFake(route.url, route.type, route.response)
   })
   for (const mock of mocksForServer) {
     app[mock.type](mock.url, mock.response)
-    mockLastIndex = app._router.stack.length
-  }
-  const mockRoutesLength = Object.keys(mocksForServer).length
-  return {
-    mockRoutesLength: mockRoutesLength,
-    mockStartIndex: mockLastIndex - mockRoutesLength,
   }
 }
 
@@ -36,7 +34,7 @@ const registerRoutes = (app) => {
  */
 const responseFake = (url, type, respond) => {
   return {
-    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    url: new RegExp(`/mock${url}`),
     type: type || 'get',
     response(req, res) {
       res.status(200)
@@ -56,38 +54,66 @@ const responseFake = (url, type, respond) => {
  *
  * @param app
  */
-module.exports = (app) => {
+const Server = (app) => {
   app.use(bodyParser.json())
   app.use(
     bodyParser.urlencoded({
       extended: true,
     })
   )
-  websocket(app);
-  const mockRoutes = registerRoutes(app)
-  let mockRoutesLength = mockRoutes.mockRoutesLength
-  let mockStartIndex = mockRoutes.mockStartIndex
-  chokidar
-    .watch(mockDir, {
-      ignored: /mock-server/,
-      ignoreInitial: true,
-    })
-    .on('all', (event) => {
-      if (event === 'change' || event === 'add') {
-        try {
-          app._router.stack.splice(mockStartIndex, mockRoutesLength)
-
-          Object.keys(require.cache).forEach((item) => {
-            if (item.includes(mockDir)) {
-              delete require.cache[require.resolve(item)]
-            }
-          })
-          const mockRoutes = registerRoutes(app)
-          mockRoutesLength = mockRoutes.mockRoutesLength
-          mockStartIndex = mockRoutes.mockStartIndex
-        } catch (error) {
-          console.log(chalk.red(error))
-        }
+  app.use(multipartMiddleware)
+  app.all("*", cors());
+  app.get("/test", (req, res) => {
+    res.send("test")
+  })
+  app.post("/api/v1/upload", new oss({
+    cos1: {
+      credential: {
+        SecretId: 'AKIDd4FBsKHgeP1PcaEkxyjETSCgusd8NxJQ',
+        SecretKey: '1nKhogIeldGdp69xXsypQ1Tm1YFk02qP'
       }
-    })
+    }
+  }), async function (req, res, next) {
+    let file = req.files.file;
+    const name = 'goods/' + path.basename(file.name);
+    //console.log(req.tencentOSS.get("cos1"),req.tencentOSS,await req.tencentOSS.get("cos1"))
+    //res.send("upload");
+    //return ;
+    const options = {
+      Region: 'ap-guangzhou',
+      Bucket: 'egg-1257758405'
+    };
+    let result;
+    try {
+      let data = fs.createReadStream(file.path)
+      let client = await req.tencentOSS.get("cos1");
+      result = await client.putObject({
+        Bucket: options.Bucket, // 必须
+        Region: options.Region,    // 必须
+        Key: name,        // 必须
+        StorageClass: 'STANDARD',
+        Body: data, // 上传文件对象
+        onProgress: function (progressData) {
+          console.log(JSON.stringify(progressData))
+        }
+      })
+    } finally {
+      // remove tmp files and don't block the request's response
+      // cleanupRequestFiles won't throw error even remove file io error happen
+      let { Location } = result;
+      res.send({
+        code: 200,
+        message: '上传成功',
+        data: Location
+      })
+    }
+  })
+  websocket(app);
+  registerRoutes(app);
 }
+/*const startServer = (app) => {
+  app.listen(3100, function () {
+    console.log("server running on 3100");
+  })
+};*/
+module.exports = Server;

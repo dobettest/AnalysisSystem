@@ -6,7 +6,7 @@
           <p slot="title">
             {{ item.user }}
           </p>
-          <a-avatar slot="avatar" :src="require('@/assets/avatar/'+item.imgUrl)" />
+          <a-avatar slot="avatar" :src="require('@/assets/avatar/' + item.imgUrl)" />
           <div slot="description">
             {{ item.description }}
             <div style="margin-top:8px">{{ item.time }}</div>

@@ -9,6 +9,7 @@ module.exports = [{
   url: '/route/getRoleRoute',
   type: 'get',
   response: config => {
+    console.log(config.query,config.body)
     let { role } = config.query;
     const accessedRoutes = permissions.find(v => v.role === role)['routes']
     return {

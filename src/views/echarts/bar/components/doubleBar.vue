@@ -4,7 +4,7 @@
 
 <script>
 import resize from '@/mixins/resize';
-import echarts from 'echarts';
+import echarts from 'echart';
 const xData = ['小于10岁', '10-18岁', '19-28岁', '29-39岁', '40-50岁', '50岁-60岁', '大于60岁'];
 export default {
   name: 'doubleBar',

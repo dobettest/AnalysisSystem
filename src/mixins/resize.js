@@ -23,7 +23,9 @@ export default {
   methods: {
     //监听resize
     initResizeEvent() {
-      window.addEventListener('resize', this.resizeHandler);
+      window.addEventListener('resize', this.resizeHandler,{
+        passive:true
+      });
     },
     //移除resize
     destroyResizeEvent() {

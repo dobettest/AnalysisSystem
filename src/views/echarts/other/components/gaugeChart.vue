@@ -4,7 +4,7 @@
 
 <script>
 import resize from '@/mixins/resize';
-import echarts from 'echarts';
+import echarts from 'echart';
 export default {
   name: 'gaugeChart',
   mixins: [resize],

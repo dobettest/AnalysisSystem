@@ -162,9 +162,6 @@ export default {
       });
     }
   },
-  mounted(){
-    //console.log(this.currentTab,this.$route)
-  },
   watch:{
     $route:{
       handler(nl,ol){

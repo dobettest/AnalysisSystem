@@ -4,8 +4,7 @@
 
 <script>
 import resize from '@/mixins/resize';
-import echarts from 'echarts';
-
+import echarts from 'echart';
 const colorLost = ['#4FD8FF', '#C15FFF', '#FF5F55', '#FFC935', '#767BFB', 'rgb(248,70,102)'];
 export default {
   name: 'hollowPie',

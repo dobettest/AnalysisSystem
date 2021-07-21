@@ -1,30 +1,39 @@
 const path = require('path');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
-
 const isProd = process.env.NODE_ENV === 'production';
 
-const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN ,i18n} = require('./src/plugins/cdn');
+const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n } = require('./src/plugins/cdn');
 
 const cdn = {
   css: [],
-  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN,i18n],
+  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n],
   externals: {
     vue: 'Vue',
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
-    axios: 'axios'
+    axios: 'axios',
+    "vue-i18n": "VueI18n"
   }
 };
 
 module.exports = {
   productionSourceMap: false,
-  outputDir: 'dist',
-  publicPath: './',
+  outputDir: 'miscro-cloud-station',
+  publicPath: isProd ? 'https://cdn.dobettest.cn' : './',
   lintOnSave: !isProd,
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "~@/styles/variables.scss";`
+      },
+      less: {
+        javascriptEnabled: true,//允许链式调用的换行
+      }
+    }
+  },
   devServer: {
     port: 8999,
     open: true,
@@ -34,20 +43,19 @@ module.exports = {
     },
     before: !isProd ? require('./mock/mock-server.js') : ''
   },
-  css: {
-    loaderOptions: {
-      sass: {
-        prependData: `@import "~@/styles/variables.scss";`
-      }
-    }
-  },
 
   configureWebpack: {
-    name: process.env.VUE_APP_BASE_NAME,
     resolve: {
       alias: {
-        '@': resolve('src')
+        '@': resolve('src'),
+        'echart': resolve('src/lib/echarts.js'),
+        "vue$": "vue/dist/vue.esm.js"
       }
+    },
+    plugins: [
+    ],
+    watchOptions: {
+      ignored: /node_modules/
     },
     externals: isProd ? cdn.externals : {}
   },
@@ -75,6 +83,7 @@ module.exports = {
     config.when(!isProd, config => config.devtool('cheap-source-map'));
     //生产环境
     config.when(isProd, config => {
+      config.performance.maxEntrypointSize(10000000).maxAssetSize(30000000);
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {
@@ -93,9 +102,8 @@ module.exports = {
           }
         }
       });
-
       config.plugin('html').tap(args => {
-        args[0].cdn = cdn;
+        //args[0].cdn = cdn;
         return args;
       });
 
@@ -112,7 +120,7 @@ module.exports = {
       //g-zip开启
       config.plugin('CompressionWebpackPlugin').use(CompressionWebpackPlugin, [
         {
-          filename: '[path].gz[query]',
+          filename: '[path][base].gz',
           algorithm: 'gzip',
           test: /\.js$|\.css/, //匹配文件名
           threshold: 10240, //对超过10k的数据压缩

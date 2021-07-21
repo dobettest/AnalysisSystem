@@ -21,8 +21,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then(res => {
-          const { data } = res;
-          if (data) {
+          const { data, code } = res;
+          if (code === 200) {
             commit('SET_TOKEN', data.token);
             setCache('TOKEN', data.token);
           }
@@ -39,8 +39,8 @@ const actions = {
         .then(res => {
           const { data } = res;
           if (data) {
-            commit('SET_TOKEN', data.token);
-            setCache('TOKEN', data.token);
+            commit('SET_TOKEN', data);
+            setCache('TOKEN', data);
           }
           resolve();
         })

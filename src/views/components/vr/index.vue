@@ -65,6 +65,8 @@ export default {
           let panorama = ele.parentNode.getAttribute('panorama');
           this.psv.setPanorama(panorama);
         }
+      },{
+        passive:true
       });
       for (let item of scene) {
         let div = document.createElement('div');

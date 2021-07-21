@@ -11,7 +11,7 @@ const userInfo = [
     job: '前端工程师',
     label: '暂无',
     skill: '暂无',
-    avatar:'one.jpg'
+    avatar: 'one.jpg'
   },
   {
     id: parseInt(Math.random() * 1000000000000),
@@ -24,7 +24,7 @@ const userInfo = [
     job: '测试工程师',
     label: '暂无',
     skill: '暂无',
-    avatar:'two.jpg'
+    avatar: 'two.jpg'
   }
 ];
 exports.userInfo = userInfo
@@ -73,9 +73,12 @@ module.exports = [
     type: 'post',
     response: config => {
       const { phone, code } = config.body;
+      let user = userInfo.find((v => v.phone === phone));
+      let token = user['username'] + Date.now().valueOf()
+      tokens.push(token)
       if (phoneCode == code) {
         return {
-          data: tokens['admin'],
+          data: token,
           code: 200,
           message: '验证码输入正确'
         };
@@ -103,8 +106,8 @@ module.exports = [
     type: 'post',
     response: config => {
       const { token } = config.body;
-      const [input,username, time] = token.match(/([a-zA-Z]+)(\d+)/);
-      const info = {...userInfo.find((v) => v.username === username)};//深拷贝
+      const [input, username, time] = token.match(/([a-zA-Z]+)(\d+)/);
+      const info = { ...userInfo.find((v) => v.username === username) };//深拷贝
       delete info['password'];
       if (!token || !info) {
         return {
@@ -116,6 +119,16 @@ module.exports = [
         data: info,
         code: 200,
         message: '获取用户信息成功！'
+      };
+    }
+  },
+  {
+    url: '/user/uploadAvatar',
+    type: 'post',
+    response: config => {
+      return {
+        code: 200,
+        message: '上传头像成功'
       };
     }
   }

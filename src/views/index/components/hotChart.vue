@@ -4,7 +4,7 @@
 
 <script>
 import resize from '@/mixins/resize';
-import echarts from 'echarts';
+import echarts from 'echart';
 require('echarts-wordcloud');
 const colorList = ['#4FD8FF', '#C15FFF', '#FF5F55', '#FFC935', '#767BFB'];
 export default {

@@ -21,8 +21,8 @@ router.beforeEach(async (to, from, next) => {
         next();
       } else {
         try {
-          const { username } = await store.dispatch('user/getInfo');
-          const accountRoute = await store.dispatch('permission/getRoute', username);
+          const { role } = await store.dispatch('user/getInfo');
+          const accountRoute = await store.dispatch('permission/getRoute', role);
 
           router.addRoutes(accountRoute);
           next({ ...to, replace: true });

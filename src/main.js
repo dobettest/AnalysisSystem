@@ -10,9 +10,11 @@ import '@/styles/index.scss'; // global css
 
 import './icons'; //icon
 import './permission'; // 路由导航守卫
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
-Vue.use(Antd);
+import './lib/ant-design-vue';
+import './lib/echarts';
+//import Antd from 'ant-design-vue';
+//import 'ant-design-vue/dist/antd.css';
+//Vue.use(Antd);
 
 import scrollBar from '@/components/scrollBar';
 import '@/components/scrollBar/index.scss';

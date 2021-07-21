@@ -121,10 +121,12 @@ export default {
   },
   watch: {
     emoji(nl, ol) {
-      if (nl === false) {
-        document.removeEventListener('click', this.outSideEvent);
-      } else if (nl === true) {
-        document.addEventListener('click', this.outSideEvent, true);
+      if (nl === true) {
+        document.addEventListener('click', this.outSideEvent, {
+          passive: true,
+          once: true,
+          capture: true
+        });
       }
     }
   }
