@@ -3,13 +3,13 @@ const permissions = [{
   routes: []
 }, {
   role: 'custom',
-  routes: ['/index', '/icon','/userSystem/setting','/userSystem/userInfo','/components/webSocket'],
+  routes: ['/index', '/icon', '/userSystem/setting', '/userSystem/userInfo', '/components/webSocket'],
 }]
 module.exports = [{
   url: '/route/getRoleRoute',
   type: 'get',
   response: config => {
-    console.log(config.query,config.body)
+    console.log(config.query, config.body)
     let { role } = config.query;
     const accessedRoutes = permissions.find(v => v.role === role)['routes']
     return {

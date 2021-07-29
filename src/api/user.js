@@ -25,7 +25,7 @@ export function logout(data) {
  * @returns {number} code
  */
 export function getPhoneCode(data) {
-  return request.post('/user/code', data);
+  return request.post('/user/sendCode', data);
 }
 
 /**
@@ -35,7 +35,7 @@ export function getPhoneCode(data) {
  * @returns {string}
  */
 export function getCodeTest(data) {
-  return request.post('/user/testCode', data);
+  return request.post('/user/verifyCode', data);
 }
 
 /**

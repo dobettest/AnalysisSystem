@@ -1,9 +1,9 @@
 <template>
   <a-dropdown class="navUser-wrppaer">
     <div>
-      <img :src="require('@/assets/avatar/'+imgUrl)" class="userImg" alt="" />
+      <img v-lazy="imgUrl" class="userImg" alt="" />
       <span class="userTitle">{{ accountInfo.username }}</span>
-      <a-icon type="caret-down" style="margin-left:5px" />
+      <a-icon type="caret-down" style="margin-left: 5px" />
     </div>
 
     <a-menu slot="overlay">
@@ -26,15 +26,15 @@ import { mapState } from 'vuex';
 export default {
   name: 'navUser',
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     ...mapState({
       accountInfo: state => state.user.accountInfo
     }),
-    imgUrl(){
-      return this.accountInfo['avatar']||'one.jpg';
+    imgUrl() {
+      let imgSrc = this.accountInfo['avatar'] || 'one.jpg';
+      return require('@/assets/avatar/' + imgSrc);
     }
   },
   methods: {

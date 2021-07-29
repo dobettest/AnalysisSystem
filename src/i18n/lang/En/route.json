@@ -25,5 +25,6 @@
     "userSetting": "userSetting",
     "system": "system",
     "userManage": "userManage",
-    "roleManage": "roleManage"
+    "roleManage": "roleManage",
+    "im":"chatRoom"
 }

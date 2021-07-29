@@ -12,7 +12,7 @@ import request from '@/utils/request';
  */
 
 export function getUserTable(data) {
-  return request.post('/userManage/userTable', data);
+  return request.post('/user/userList', data);
 }
 
 /**
@@ -22,7 +22,7 @@ export function getUserTable(data) {
  */
 
 export function deleteTable(data) {
-  return request.post('/userManage/deleteTable', data);
+  return request.post('/user/userDel', data);
 }
 
 /**
@@ -46,7 +46,7 @@ export function batchDeleteTable(data) {
  */
 
 export function editTable(data) {
-  return request.post('/userManage/editTable', data);
+  return request.post('/user/userUpdate', data);
 }
 
 /**
@@ -59,5 +59,5 @@ export function editTable(data) {
  */
 
 export function addTable(data) {
-  return request.post('/userManage/addTable', data);
+  return request.post('/user/userAdd', data);
 }

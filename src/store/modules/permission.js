@@ -1,7 +1,6 @@
-import { baseRoute, asyncRoutes } from '@/router';
+import router, { baseRoute, asyncRoutes,resetRouter } from '@/router';
 import { setCache } from '@/utils/session';
-import router, { resetRouter } from '@/router';
-import { getRoleRoute } from '@/api/route';
+import { getRoleRoute } from '@/api/roleManage';
 const state = {
   routes: []
 };
@@ -21,6 +20,7 @@ const actions = {
       }
       else {
         const res = await getRoleRoute({ role })
+        console.log("getRoute",res)
         const { data: permissions } = res;
         accessedRoutes = await filterAsyncRoute(asyncRoutes, permissions);
       }
@@ -28,16 +28,6 @@ const actions = {
       resolve(accessedRoutes)
     })
 
-  },
-  async changeRole({ commit, dispatch }, role) {
-    const token = state.token
-    commit('user/SET_TOKEN', token, { root: true });
-    setCache('TOKEN', token);
-    await dispatch('user/getInfo', token, { root: true });
-    resetRouter();
-    const accessedRoutes = await dispatch('getRoute', {role});
-    router.addRoutes(accessedRoutes);
-    await dispatch('tagsView/clearTag', null, { root: true });
   }
 };
 

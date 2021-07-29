@@ -1,6 +1,7 @@
 const userInfo = [
   {
     id: parseInt(Math.random() * 1000000000000),
+    userID: '1364525216',
     username: 'admin',
     password: '123456',
     role: 'admin',
@@ -15,6 +16,7 @@ const userInfo = [
   },
   {
     id: parseInt(Math.random() * 1000000000000),
+    userID: '1974793690',
     username: 'custom',
     password: '123456',
     role: 'custom',
@@ -27,10 +29,18 @@ const userInfo = [
     avatar: 'two.jpg'
   }
 ];
+const resetUserInfo = function () {
+  let u = [...userInfo];
+  return function () {
+    userInfo = u;
+  }
+}
+exports.resetUserInfo = resetUserInfo;
 exports.userInfo = userInfo
 const tokens = [];
 
 const Mock = require('mockjs');
+const TLSSigAPIv2 = require('tls-sig-api-v2');
 
 const phoneCode = Mock.mock('@natural(147895,995425)');
 
@@ -39,16 +49,16 @@ module.exports = [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { username, password } = config.body;
-      const user = userInfo.find(v => v.username === username && v.password === password);
+      const { userID, password } = config.body;
+      const user = userInfo.find(v => v.userID === userID && v.password === password);
       if (!user) {
         return {
           code: 403,
           message: '账号不存在！'
         };
       }
-      let token = username + Date.now().valueOf()
-      tokens.push(token)
+      let token = user.username + Date.now().valueOf()
+      tokens.push(token);
       return {
         data: { token },
         code: 200,
@@ -106,17 +116,19 @@ module.exports = [
     type: 'post',
     response: config => {
       const { token } = config.body;
-      const [input, username, time] = token.match(/([a-zA-Z]+)(\d+)/);
+      const username = token.replace(/([a-zA-Z]+)(\d+)/, '$1');
       const info = { ...userInfo.find((v) => v.username === username) };//深拷贝
-      delete info['password'];
+      delete info['password'];//删除密码
       if (!token || !info) {
         return {
           code: 403,
           message: '用户信息不存在！'
         };
       }
+      var api = new TLSSigAPIv2.Api(1400337794, "8b598f808b9794681326670c700704de52db8117d7cf3f0401dcbfe19440a0b0");
+      var userSig = api.genSig(info.userID, 86400 * 180);
       return {
-        data: info,
+        data: { info, userSig },
         code: 200,
         message: '获取用户信息成功！'
       };

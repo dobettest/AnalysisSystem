@@ -2,38 +2,31 @@
   <div class="userManage-wrapper">
     <a-card :hoverable="true" :bordered="false">
       <div slot="title" class="flex flex-wrap">
-        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd">
-          新增用户
-        </a-button>
+        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd"> 新增用户 </a-button>
         <a-button
           type="danger"
           icon="delete"
-          style="margin:0 16px 10px"
+          style="margin: 0 16px 10px"
           :loading="deleteLoading"
           @click="handleBatchDelete"
         >
           批量删除
         </a-button>
-        <a-select placeholder="用户权限" class="select-width" allowClear @change="changeRole">
-          <a-select-option v-for="item in roleOption" :key="item.key" :value="item.key">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
         <a-input
-          placeholder="用户名"
+          placeholder="过滤器"
           class="select-width"
           @pressEnter="handleSearch"
           allowClear
-          v-model="tableQuery.username"
+          v-model="tableQuery.custom"
         />
         <a-range-picker
           class="select-width"
-          style="width:210px"
+          style="width: 210px"
           :placeholder="['开始日期', '结束日期']"
           allowClear
           @change="changeTime"
         />
-        <a-button type="primary" icon="search" class="select-bottom" style="margin-right:16px" @click="handleSearch">
+        <a-button type="primary" icon="search" class="select-bottom" style="margin-right: 16px" @click="handleSearch">
           查询
         </a-button>
         <a-button type="primary" icon="export" class="select-bottom" @click="handleExport" :loading="exportLoading">
@@ -50,14 +43,17 @@
         <div slot="index" slot-scope="{ index }">
           {{ index + 1 }}
         </div>
+        <div slot="avatar" slot-scope="{ text }">
+          <a-avatar :src="require('@/assets/avatar/' + text)" shape="square" :size="60"></a-avatar>
+        </div>
         <div slot="role" slot-scope="{ text }">
           <a-tag :color="text | statusFilter">
             {{ text }}
           </a-tag>
         </div>
         <div slot="action" slot-scope="{ text }">
-          <a-button type="primary" size="small" @click="handleEdit(text)">
-            {{$t("common.edit")}}
+          <a-button type="primary" size="small" @click="handleEdit(text)" :disabled="text.role && text.role == 'admin'">
+            {{ $t('common.edit') }}
           </a-button>
           <a-popconfirm
             title="你确定要删除当前列吗?"
@@ -66,15 +62,14 @@
             :disabled="text.role && text.role == 'admin'"
             @confirm="handleDelete(text)"
           >
-            <a-button type="danger" size="small" style="margin-left:8px" :disabled="text.role && text.role == 'admin'">
-              {{$t("common.del")}}
+            <a-button type="danger" size="small" style="margin-left: 8px" :disabled="text.role && text.role == 'admin'">
+              {{ $t('common.del') }}
             </a-button>
           </a-popconfirm>
         </div>
       </standard-table>
     </a-card>
     <user-model
-      :roleOption="roleOption"
       :currentRow="currentRow"
       :dialogVisible="dialogVisible"
       @cancel="dialogVisible = false"
@@ -101,9 +96,10 @@ const tableHead = [
     width: 60
   },
   {
-    title: 'id',
-    dataIndex: 'id',
-    ellipsis: true
+    title: '头像',
+    dataIndex: 'avatar',
+    scopedSlots: { customRender: 'avatar' },
+    width: 80
   },
   {
     title: '用户名',
@@ -142,37 +138,18 @@ export default {
   filters: {
     statusFilter(status) {
       const statusList = {
-        admin: '#f50',
-        test: '#2db7f5',
-        editor: '#87d068',
-        custom: ''
+        admin: '#2db7f5',
+        test: '#f50',
+        custom: '#87d068'
       };
       return statusList[status];
     }
   },
   data() {
     return {
-      roleOption: [
-        {
-          key: 'admin',
-          label: '超级管理员'
-        },
-        {
-          key: 'test',
-          label: '普通用户'
-        },
-        {
-          key: 'editor',
-          label: '作家'
-        },
-        {
-          key: 'custom',
-          label: '自定义'
-        }
-      ],
       tableQuery: {
         role: null,
-        username: '',
+        custom: '',
         startTime: '',
         endTime: '',
         page: 1,
@@ -193,9 +170,6 @@ export default {
     this.getTableList();
   },
   methods: {
-    changeRole(val) {
-      this.tableQuery.role = val;
-    },
     changeTime(str, time) {
       Object.assign(this.tableQuery, {
         startTime: time[0],

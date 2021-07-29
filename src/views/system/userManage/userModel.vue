@@ -32,16 +32,13 @@
       </a-form-model-item>
       <a-form-model-item prop="role" label="权限">
         <a-radio-group v-model="userFrom.role">
-          <a-radio v-for="item in roleOption" :key="item.key" :value="item.key">
-            {{ item.label }}
+          <a-radio v-for="(item, idx) in roleOption" :key="idx" :value="item">
+            {{ item }}
           </a-radio>
         </a-radio-group>
       </a-form-model-item>
       <a-form-model-item prop="text" label="描述">
         <a-textarea v-model="userFrom.text" placeholder="描述..." :autoSize="{ minRows: 3, maxRows: 5 }" />
-      </a-form-model-item>
-      <a-form-model-item prop="menu" label="菜单">
-        <standard-tree :role="userFrom.role" />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -49,13 +46,13 @@
 
 <script>
 import { editTable, addTable } from '@/api/userManage';
+import { getRoleTable } from '@/api/roleManage';
 import standardTree from '@/components/standardTree/index';
 export default {
   name: 'userModel',
   props: {
     currentRow: [Object, null],
-    dialogVisible: Boolean,
-    roleOption: Array
+    dialogVisible: Boolean
   },
   components: { standardTree },
   data() {
@@ -63,14 +60,20 @@ export default {
       userRule: {
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空！' }],
         password: [{ required: true, trigger: 'blur', min: 6, message: '密码不能少于6位！' }],
-        role: [{ required: true, trigger: 'blur', message: '请选择用户权限！' }],
         text: [{ required: true, trigger: 'blur', min: 5, message: '请至少输入五个字符描述！' }]
       },
       userFrom: {
         role: ''
       },
+      roleOption: [],
       loading: false
     };
+  },
+  async created() {
+    let { data: roleOption } = await getRoleTable();
+    this.roleOption = roleOption.map(r => {
+      return r.role;
+    });
   },
 
   mounted() {

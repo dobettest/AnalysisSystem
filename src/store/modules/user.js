@@ -1,10 +1,11 @@
 import { getCache, setCache, removeCache } from '@/utils/session';
 import { login, logout, getCodeTest, getInfo } from '@/api/user';
 import { resetRouter } from '@/router';
-
+import tim from '@/lib/tim';
 const state = {
   accountInfo: null,
-  token: getCache('TOKEN') || ''
+  token: getCache('TOKEN') || '',
+  userSign: getCache('SIGN') || ''
 };
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   SET_USERINFO(state, userInfo) {
     state.accountInfo = userInfo;
+  },
+  SET_USERSIGN(state, userSign) {
+    state.userSign = userSign;
   }
 };
 
@@ -37,10 +41,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       getCodeTest(userInfo)
         .then(res => {
-          const { data } = res;
-          if (data) {
-            commit('SET_TOKEN', data);
-            setCache('TOKEN', data);
+          const { data: { token } } = res;
+          //console.log("codeTest",res,token)
+          if (token) {
+           // console.log("codeTest")
+            commit('SET_TOKEN', token);
+            setCache('TOKEN', token);
           }
           resolve();
         })
@@ -66,20 +72,27 @@ const actions = {
     });
   },
 
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo({ token: state.token })
-        .then(res => {
-          const { data } = res;
-          if (data) {
-            commit('SET_USERINFO', data);
-          }
-          resolve(data);
+  async getInfo({ commit, state }) {
+    try {
+      var res = await getInfo({ token: state.token });
+      const { data: { info, userSig }, message } = res;
+      if (info && userSig) {
+        commit('SET_USERINFO', info);
+        commit('SET_USERSIGN', userSig);
+        await tim.login({
+          userID: info.userID,
+          userSig
+        }).then((res) => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
         })
-        .catch(err => {
-          reject(err);
-        });
-    });
+        return Promise.resolve(info);
+      }
+      return Promise.reject(message);
+    } catch (error) {
+      return Promise.reject(error);
+    }
   },
 
   updateInfo({ commit }, userInfo) {

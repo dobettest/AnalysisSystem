@@ -32,7 +32,9 @@ import {
   Dropdown,
   Select,
   Badge,
-  DatePicker
+  DatePicker,
+  Modal,
+  Tree
 } from 'ant-design-vue';
 [
   BackTop,
@@ -67,7 +69,10 @@ import {
   Dropdown,
   Select,
   Badge,
-  DatePicker
+  DatePicker,
+  Modal,
+  Tree
 ].forEach(v => {
   Vue.use(v);
 });
+Vue.prototype.$message = message;

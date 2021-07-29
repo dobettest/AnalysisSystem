@@ -6,7 +6,7 @@ import request from '@/utils/request';
  */
 
 export function getRoleTable(data) {
-  return request.post('/roleManage/roleTableData', data);
+  return request.post('/role/roleList', data);
 }
 
 /**
@@ -16,7 +16,7 @@ export function getRoleTable(data) {
  */
 
 export function deleteRoleTable(data) {
-  return request.post('/roleManage/deleteRole', data);
+  return request.post('/role/roleDel', data);
 }
 
 /**
@@ -28,7 +28,7 @@ export function deleteRoleTable(data) {
  */
 
 export function editRole(data) {
-  return request.post('/roleManage/editRole', data);
+  return request.post('/role/roleUpdate', data);
 }
 
 /**
@@ -39,5 +39,9 @@ export function editRole(data) {
  */
 
 export function addRole(data) {
-  return request.post('/roleManage/addRole', data);
+  return request.post('/role/roleAdd', data);
+}
+
+export function getRoleRoute(data) {
+  return request.get('/role/roleAccess',data);
 }

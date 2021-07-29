@@ -10,6 +10,12 @@ const roleData = [
     text: '自定义权限，权限由管理员去定义'
   }
 ];
+const resetroleData = function () {
+  let roles = [...roleData];
+  return function () {
+    roleData = roles
+  }
+}
 
 module.exports = [
   {
@@ -73,6 +79,16 @@ module.exports = [
         code: 200,
         message: '添加成功！'
       };
+    }
+  }, {
+    url: '/roleManage/reset',
+    type: 'get',
+    response: config => {
+      resetroleData();
+      return {
+        code: 200,
+        message: "重置角色成功"
+      }
     }
   }
 ];

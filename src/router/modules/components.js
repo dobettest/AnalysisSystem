@@ -29,12 +29,6 @@ const componentsRouter = {
       meta: { title: 'lottery'}
     },
     {
-      name: 'table',
-      path: '/components/table',
-      component: () => import('@/views/components/table/index'),
-      meta: { title: 'table'}
-    },
-    {
       name: 'form',
       path: '/components/form',
       component: () => import('@/views/components/form/index'),
@@ -45,12 +39,6 @@ const componentsRouter = {
       path: '/components/loading',
       component: () => import('@/views/components/loading/index'),
       meta: { title: 'loading'}
-    },
-    {
-      name: 'webSocket',
-      path: '/components/webSocket',
-      component: () => import('@/views/components/webSocket/index'),
-      meta: { title: 'webSocket'}
     }
   ]
 };

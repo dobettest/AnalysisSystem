@@ -14,24 +14,25 @@
     "
   >
     <a-form-model
-      :model="roleFrom"
+      :model="roleForm"
       :rules="roleRule"
       :label-col="{ span: 4 }"
       :wrapper-col="{ span: 16 }"
-      ref="roleFrom"
+      ref="roleForm"
       hideRequiredMark
     >
       <a-form-model-item prop="id" label="id" v-show="currentRow">
-        <a-input v-model="roleFrom.id" disabled />
+        <a-input v-model="roleForm.id" disabled />
       </a-form-model-item>
       <a-form-model-item prop="role" label="角色名称" hasFeedback>
-        <a-input v-model="roleFrom.role" />
+        <a-select :options="roleList" :value="roleForm.role" @change="changeRole" v-if="currentRow"></a-select>
+        <a-input v-model="roleForm.role" v-else />
       </a-form-model-item>
       <a-form-model-item prop="text" label="描述">
-        <a-textarea v-model="roleFrom.text" placeholder="描述..." :autoSize="{ minRows: 3, maxRows: 5 }" />
+        <a-textarea v-model="roleForm.text" placeholder="描述..." :autoSize="{ minRows: 3, maxRows: 5 }" />
       </a-form-model-item>
       <a-form-model-item prop="menu" label="菜单">
-        <standard-tree :role="roleFrom.role" />
+        <standard-tree :role="roleForm.role" @change="change" />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -67,7 +68,7 @@ export default {
         role: [{ required: true, trigger: 'blur', validator: validateRole }],
         text: [{ required: true, trigger: 'blur', min: 5, message: '请至少输入五个字符描述！' }]
       },
-      roleFrom: {
+      roleForm: {
         role: ''
       },
       loading: false
@@ -75,30 +76,42 @@ export default {
   },
   computed: {
     roleList() {
-      return this.tableData.map(item => item.role);
+      return this.tableData.map(item => {
+        return {
+          key: item.role,
+          label: item.role
+        };
+      });
     }
   },
 
   mounted() {
-    this.roleFrom = { ...this.currentRow } || {
+    this.roleForm = { ...this.currentRow } || {
       role: ''
     };
   },
   methods: {
+    change(routes) {
+      this.roleForm.routes = routes;
+    },
+    changeRole(role) {
+      this.roleForm.role = role;
+    },
     handleSure() {
-      this.$refs.roleFrom.validate(valid => {
+      this.$refs.roleForm.validate(valid => {
         this.loading = true;
         if (valid) {
           if (this.currentRow) {
             //编辑
-            editRole(this.roleFrom).then(() => {
+            console.log(this.roleForm);
+            editRole(this.roleForm).then(() => {
               this.$message.success('修改成功!');
               this.loading = false;
               this.$emit('ok');
             });
           } else {
             //新增
-            addRole(this.roleFrom).then(() => {
+            addRole(this.roleForm).then(() => {
               this.$message.success('添加成功!');
               this.loading = false;
               this.$emit('ok');

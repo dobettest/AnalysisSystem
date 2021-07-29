@@ -11,6 +11,8 @@ const Antd = 'https://cdn.dobettest.cn/ant-design-vue/antd.min.js'
 const echarts = 'https://lib.baomitu.com/echarts/4.8.0/echarts.min.js'
 const moment = 'https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js'
 const normalize='//lib.baomitu.com/normalize/8.0.1/normalize.min.css';
+const jquery='https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.js'
+const echart='https://cdn.dobettest.cn/assets/echarts.min.js'
 module.exports = {
   AMapCDN,
   AMapUiCDN,
@@ -24,5 +26,7 @@ module.exports = {
   Antd,
   echarts, 
   moment,
-  normalize
+  normalize,
+  jquery,
+  echart
 };

@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 const isProd = process.env.NODE_ENV === 'production';
 
-const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n } = require('./src/plugins/cdn');
+const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n} = require('./src/plugins/cdn');
 
 const cdn = {
   css: [],
@@ -15,7 +15,8 @@ const cdn = {
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
-    "vue-i18n": "VueI18n"
+    "vue-i18n": "VueI18n",
+    //'echart': 'echarts'
   }
 };
 
@@ -34,15 +35,15 @@ module.exports = {
       }
     }
   },
-  devServer: {
+  /*devServer: {
     port: 8999,
     open: true,
     overlay: {
       warnings: false,
       errors: true
     },
-    before: !isProd ? require('./mock/mock-server.js') : ''
-  },
+    before: !isProd ? require('./mock/index.js') : ''
+  }*/
 
   configureWebpack: {
     resolve: {
@@ -53,6 +54,7 @@ module.exports = {
       }
     },
     plugins: [
+
     ],
     watchOptions: {
       ignored: /node_modules/
@@ -103,7 +105,7 @@ module.exports = {
         }
       });
       config.plugin('html').tap(args => {
-        //args[0].cdn = cdn;
+        args[0].cdn = cdn;
         return args;
       });
 

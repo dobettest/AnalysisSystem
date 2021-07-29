@@ -7,9 +7,6 @@
       <a-card title="安全设置" :bordered="false">
         <security-setting />
       </a-card>
-      <a-card title="个性化" :bordered="false">
-        <custom-setting />
-      </a-card>
     </a-card>
   </div>
 </template>
@@ -17,10 +14,9 @@
 <script>
 import accountBase from './components/accountBase';
 import securitySetting from './components/securitySetting';
-import customSetting from './components/customSetting';
 export default {
   name: 'setting',
-  components: { accountBase, securitySetting, customSetting },
+  components: { accountBase, securitySetting },
   data() {
     return {};
   }

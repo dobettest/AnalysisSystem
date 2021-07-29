@@ -11,9 +11,9 @@
         <div class="title">miscro-cloud-station</div>
         <a-tabs v-model="currentTab" class="tabs" :tabBarGutter="35">
           <a-tab-pane key="user" tab="账号密码登录">
-            <a-form-model-item prop="username" v-if="currentTab === 'user'">
+            <a-form-model-item prop="userID" v-if="currentTab === 'user'">
               <a-input
-                v-model="loginForm.username"
+                v-model="loginForm.userID"
                 placeholder="请输入账号"
                 size="large"
                 allow-clear
@@ -91,7 +91,7 @@ import { getPhoneCode } from '@/api/user';
 export default {
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
+    const validateuserID = (rule, value, callback) => {
       if (value.trim().length === 0) {
         callback(new Error('用户名不能为空'));
       } else {
@@ -123,14 +123,14 @@ export default {
     return {
       currentTab: 'user',
       loginForm: {
-        username: '',
+        userID: '',
         password: '',
         phone: '',
         code: '',
         remember: true
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        userID: [{ required: true, trigger: 'blur', validator: validateuserID }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
         phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
         code: [{ required: true, trigger: 'blur', validator: validateCode }]
@@ -144,7 +144,7 @@ export default {
   mounted() {
     const cache = getCache('LOGIN_INFO');
     if (cache) {
-      this.loginForm.username = cache.username;
+      this.loginForm.userID = cache.userID;
       this.loginForm.password = cache.password;
     }
   },
@@ -170,18 +170,7 @@ export default {
         }, 1000);
 
         this.$refs.code.focus();
-        getPhoneCode().then(res => {
-          this.currentCode = res.data;
-          setTimeout(() => {
-            this.$notification.success(
-              {
-                message: '提示',
-                description: '验证码获取成功，您的验证码为：' + res.data
-              },
-              12
-            );
-          }, 1000);
-        });
+        getPhoneCode({phone:this.loginForm.phone})
       } else {
         this.$message.error('请正确输入手机号');
       }
@@ -192,12 +181,12 @@ export default {
         if (valid) {
           this.loading = true;
           if (this.currentTab === 'user') {
-            const { username, password } = this.loginForm;
+            const { userID, password } = this.loginForm;
             this.$store
-              .dispatch('user/login', { username, password })
+              .dispatch('user/login', { userID, password })
               .then(() => {
                 if (this.loginForm.remember) {
-                  setCache('LOGIN_INFO', { username, password });
+                  setCache('LOGIN_INFO', { userID, password });
                   let path = '/index';
                   this.$router.push({
                     path: path

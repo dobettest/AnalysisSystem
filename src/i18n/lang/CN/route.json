@@ -26,5 +26,6 @@
     "system": "系统设置",
     "userManage": "用户管理",
     "roleManage": "角色管理",
-    "userTable":"用户表"
+    "userTable":"用户表",
+    "im":"聊天"
 }

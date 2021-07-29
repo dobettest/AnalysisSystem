@@ -5,43 +5,34 @@
 <script>
 import { mapGetters } from 'vuex';
 import { asyncRoutes } from '@/router';
-import { getRoleRoute } from '@/api/route';
+import { getRoleRoute } from '@/api/roleManage';
 export default {
   name: 'standardTree',
   props: {
     role: String,
-    default:'admin'
+    default: 'admin'
   },
   data() {
     return {
       treeData: [],
-      checkKeyList: []
+      checkKeyList: [],
+      asyncRoutes
     };
   },
   computed: {
-    ...mapGetters(['baseRoute']),
-    asyncRoutes() {
-      return asyncRoutes;
-    }
+    ...mapGetters(['baseRoute'])
   },
   created() {
-    const data = this.filtrRoute(this.asyncRoutes);
+    const data = this.asyncRoutes[0].children;
     this.treeData = this.generateRoutes(data);
     this.getRoleRoute();
   },
   methods: {
-    getRoleRoute() {
-      getRoleRoute({role:this.role}).then(res => {
-        const data = res.data || [];
-        const selectRoute = this.filtrRoute(data);
-        this.checkKeyList = this.getSelectRoute(selectRoute);
-      });
-    },
-    filtrRoute(routes) {
-      if (routes.length == 0) {
-        return [];
+    async getRoleRoute() {
+      if (this.role) {
+        const { data: checkKeyList } = await getRoleRoute({ role: this.role });
+        this.checkKeyList = checkKeyList;
       }
-      return routes.filter(item => item.children)[0].children;
     },
     generateRoutes(routes) {
       const res = [];
@@ -57,26 +48,10 @@ export default {
       });
       return res;
     },
-    getSelectRoute(routes) {
-      var res = [];
-      routes.forEach(item => {
-        if (item.children) {
-          res = res.concat(this.getSelectRoute(item.children));
-        } else {
-          res.push(item.path);
-        }
-      });
-
-      return res;
-    },
 
     handleSelect(selectedKeys) {
       this.checkKeyList = selectedKeys;
-    }
-  },
-  watch: {
-    role(nl, ol) {
-      this.gerRoleRoute();
+      this.$emit('change', selectedKeys);
     }
   }
 };

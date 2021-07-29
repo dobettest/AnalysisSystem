@@ -1,54 +1,63 @@
-const Mock = require('mockjs');
-const { param2Obj } = require('./utils');
-const qs = require('qs');
-
-const user = require('./controller/user');
-const dashboard = require('./controller/dashboard');
-const system = require('./controller/system');
-const role = require('./controller/role');
-const lottery = require('./controller/lottery');
-const table = require('./controller/table');
-const route=require("./controller/route")
-
-const mocks = [...user, ...dashboard, ...system, ...role, ...lottery, ...table,...route];
-
-function mockXHR() {
-  Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send;
-
-  Mock.XHR.prototype.send = function() {
-    if (this.custom.xhr) {
-      this.custom.xhr.withCredentials = this.withCredentials || false;
-
-      if (this.responseType) {
-        this.custom.xhr.responseType = this.responseType;
+const bodyParser = require('body-parser')
+const path = require('path')
+const express = require('express');
+const app = express();
+var multipart = require('connect-multiparty');
+var uploadDir = path.resolve(__dirname, "./assets");
+var multipartMiddleware = multipart({ uploadDir });
+var cors = require('my-cors')
+var oss = require('tencent-oss')
+var sms = require('tencent-sms')
+var userRouter = require("./routes/user")
+var roleRouter = require("./routes/role")
+var lotteryRouter = require("./routes/lottery")
+var dashboardRouter = require("./routes/dashboard")
+const initMiddleware = (app) => {
+  app.all("*", cors());
+  app.use(bodyParser.json())
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  )
+  app.use(multipartMiddleware);
+  app.use(new sms({
+    s1: {
+      credential: {
+        secretId: 'AKIDd4FBsKHgeP1PcaEkxyjETSCgusd8NxJQ',
+        secretKey: '1nKhogIeldGdp69xXsypQ1Tm1YFk02qP'
+      },
+      region: "ap-guangzhou",
+      profile: {
+        httpProfile: {
+          endpoint: "sms.tencentcloudapi.com",
+        }
       }
     }
-    this.proxy_send(...arguments);
-  };
-
-  function XHR2ExpressReqWrap(respond) {
-    return function(options) {
-      let result = null;
-      if (respond instanceof Function) {
-        const { body, type, url } = options;
-        result = respond({
-          method: type,
-          body: qs.parse(body),
-          query: param2Obj(url)
-        });
-      } else {
-        result = respond;
+  }))
+  app.use(new oss({
+    cos1: {
+      credential: {
+        SecretId: 'AKIDd4FBsKHgeP1PcaEkxyjETSCgusd8NxJQ',
+        SecretKey: '1nKhogIeldGdp69xXsypQ1Tm1YFk02qP'
       }
-      return Mock.mock(result);
-    };
-  }
-
-  for (const i of mocks) {
-    Mock.mock(new RegExp(i.url), i.type || 'get', XHR2ExpressReqWrap(i.response));
+    }
+  }))
+}
+const initRoutes = (app) => {
+  app.use("/mock/user", userRouter)
+  app.use("/mock/role", roleRouter)
+  app.use("/mock/lottery", lotteryRouter)
+  app.use("/mock/dashboard", dashboardRouter);
+}
+const startServer = (app) => {
+  try {
+    initMiddleware(app);
+    initRoutes(app);
+    app.listen(3100);
+  } catch (error) {
+    console.log(error)
   }
 }
-
-module.exports = {
-  mocks,
-  mockXHR
-};
+startServer(app);
+module.exports = startServer

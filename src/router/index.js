@@ -49,6 +49,15 @@ export const asyncRoutes = [
           icon: 'dashboard'
         }
       },
+      {
+        name: 'im',
+        path: '/im',
+        component: () => import('@/views/chatRoom/index'),
+        meta: {
+          title: 'im',
+          icon: 'im'
+        }
+      },
 
       {
         name: 'icon',

@@ -12,7 +12,7 @@
         </div>
 
         <div slot="action" slot-scope="{ text }">
-          <a-button type="primary" size="small" @click="handleEdit(text)">
+          <a-button type="primary" size="small" @click="handleEdit(text)" :disabled="text.role && text.role == 'admin'">
             {{$t("common.edit")}}
           </a-button>
           <a-popconfirm

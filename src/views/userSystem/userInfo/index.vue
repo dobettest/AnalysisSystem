@@ -66,10 +66,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import { articlePage, dynamicPage, noticePage } from './components';
+import { articlePage, dynamicPage} from './components';
 export default {
   name: 'userInfo',
-  components: { dynamicPage, articlePage, noticePage },
+  components: { dynamicPage, articlePage},
 
   data() {
     return {
@@ -81,10 +81,6 @@ export default {
         {
           key: 'articlePage',
           tab: 'article'
-        },
-        {
-          key: 'noticePage',
-          tab: 'notice'
         }
       ],
       skillList: [
@@ -160,15 +156,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.input.focus();
       });
-    }
-  },
-  watch:{
-    $route:{
-      handler(nl,ol){
-          nl.params?.key&&(this.currentTab=nl.params?.key)
-      },
-      deep:true,
-      immediate:true
     }
   }
 };

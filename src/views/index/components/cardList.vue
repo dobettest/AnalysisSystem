@@ -12,7 +12,7 @@
           </div>
           <div class="card-info relative">
             <div class="abs-bottom">
-              <div style="margin-right:20px" class="inline-block">
+              <div style="margin-right: 20px" class="inline-block">
                 日销售额：
                 <a-space :size="8">
                   <span class="bold">¥ 28万</span>
@@ -41,7 +41,7 @@
           </div>
           <div class="card-info relative">
             <div class="abs-bottom">
-              <div style="margin-right:20px" class="inline-block">
+              <div style="margin-right: 20px" class="inline-block">
                 日访问量：
                 <a-space :size="8">
                   <span class="bold">11万次</span>
@@ -63,7 +63,7 @@
           </div>
           <div class="card-info relative">
             <div class="abs-bottom">
-              <div style="margin-right:20px" class="inline-block">
+              <div style="margin-right: 20px" class="inline-block">
                 日加购数：
                 <a-space :size="8">
                   <span class="bold">1575</span>
@@ -85,7 +85,7 @@
           </div>
           <div class="card-info relative">
             <div class="abs-bottom">
-              <div style="margin-right:20px" class="inline-block">
+              <div style="margin-right: 20px" class="inline-block">
                 日支付数：
                 <a-space :size="8">
                   <span class="bold">1950</span>
@@ -134,6 +134,8 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     margin-bottom: 25px;
+    overflow: hidden;
+    display: block;
     &.card-item-one {
       @include cardBg(#5171fd, #c97afd);
     }
@@ -156,11 +158,14 @@ export default {
       font-size: 1rem;
     }
     .all-count {
+      overflow: hidden;
       color: #fff;
       font-size: 1.9rem;
       font-weight: bold;
       margin-top: 12px;
       padding-left: 25px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       .suffix {
         font-size: 0.75rem;
       }
