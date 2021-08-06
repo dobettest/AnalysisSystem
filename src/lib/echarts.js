@@ -16,5 +16,6 @@ import 'echarts/lib/chart/gauge';
 import 'echarts/lib/chart/radar';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/chart/treemap';
-import 'echarts/lib/chart/word/wordCloud';
+//import 'echarts/lib/chart/word/wordCloud';
+import 'echarts-wordcloud';
 export default echarts;
