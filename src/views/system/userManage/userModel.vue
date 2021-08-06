@@ -14,31 +14,31 @@
     "
   >
     <a-form-model
-      :model="userFrom"
+      :model="userForm"
       :rules="userRule"
       :label-col="{ span: 4 }"
       :wrapper-col="{ span: 16 }"
-      ref="userFrom"
+      ref="userForm"
       hideRequiredMark
     >
       <a-form-model-item prop="id" label="id" v-show="currentRow">
-        <a-input v-model="userFrom.id" disabled />
+        <a-input v-model="userForm.id" disabled />
       </a-form-model-item>
       <a-form-model-item prop="username" label="用户名" hasFeedback>
-        <a-input v-model="userFrom.username" />
+        <a-input v-model="userForm.username" />
       </a-form-model-item>
       <a-form-model-item prop="password" label="密码" hasFeedback>
-        <a-input v-model="userFrom.password" />
+        <a-input v-model="userForm.password" />
       </a-form-model-item>
       <a-form-model-item prop="role" label="权限">
-        <a-radio-group v-model="userFrom.role">
+        <a-radio-group v-model="userForm.role">
           <a-radio v-for="(item, idx) in roleOption" :key="idx" :value="item">
             {{ item }}
           </a-radio>
         </a-radio-group>
       </a-form-model-item>
       <a-form-model-item prop="text" label="描述">
-        <a-textarea v-model="userFrom.text" placeholder="描述..." :autoSize="{ minRows: 3, maxRows: 5 }" />
+        <a-textarea v-model="userForm.text" placeholder="描述..." :autoSize="{ minRows: 3, maxRows: 5 }" />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -47,14 +47,12 @@
 <script>
 import { editTable, addTable } from '@/api/userManage';
 import { getRoleTable } from '@/api/roleManage';
-import standardTree from '@/components/standardTree/index';
 export default {
   name: 'userModel',
   props: {
     currentRow: [Object, null],
     dialogVisible: Boolean
   },
-  components: { standardTree },
   data() {
     return {
       userRule: {
@@ -62,7 +60,7 @@ export default {
         password: [{ required: true, trigger: 'blur', min: 6, message: '密码不能少于6位！' }],
         text: [{ required: true, trigger: 'blur', min: 5, message: '请至少输入五个字符描述！' }]
       },
-      userFrom: {
+      userForm: {
         role: ''
       },
       roleOption: [],
@@ -77,25 +75,23 @@ export default {
   },
 
   mounted() {
-    this.userFrom = { ...this.currentRow } || {
-      role: ''
-    };
+    this.userForm = { ...this.currentRow };
   },
   methods: {
     handleSure() {
-      this.$refs.userFrom.validate(valid => {
+      this.$refs.userForm.validate(valid => {
         this.loading = true;
         if (valid) {
           if (this.currentRow) {
             //编辑
-            editTable(this.userFrom).then(() => {
+            editTable(this.userForm).then(() => {
               this.$message.success('修改成功!');
               this.loading = false;
               this.$emit('ok');
             });
           } else {
             //新增
-            addTable(this.userFrom).then(() => {
+            addTable(this.userForm).then(() => {
               this.$message.success('添加成功!');
               this.loading = false;
               this.$emit('ok');

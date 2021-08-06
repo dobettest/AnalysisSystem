@@ -5,14 +5,14 @@ import store from './store';
 import { i18n } from './i18n';
 
 Vue.config.productionTip = false;
-import 'normalize.css/normalize.css'; //css resets
 import '@/styles/index.scss'; // global css
 
 import './icons'; //icon
 import './permission'; // 路由导航守卫
 import './lib/ant-design-vue';
-import './lib/tim';//引入及时通讯
-import './lib/trtc';//引入实时音视频
+import './lib/tim'; //引入及时通讯
+import './lib/trtc'; //引入实时音视频
+import '@/assets/font/iconfont.css';
 
 import scrollBar from '@/components/scrollBar';
 import '@/components/scrollBar/index.scss';
@@ -25,13 +25,13 @@ if (process.env.NODE_ENV === 'production') {
 
 import loading from '@/components/loading/loading'; // 引入loading
 
-import VueLazyLoad from 'vue-lazyload'
+import VueLazyLoad from 'vue-lazyload';
 Vue.use(VueLazyLoad, {
   preLoad: 1,
   error: require('./assets/img/v-error.png'),
   loading: require('./assets/img/v-loading.gif'),
   attempt: 2
-})
+});
 Vue.use(loading); // 全局使用loading
 new Vue({
   router,

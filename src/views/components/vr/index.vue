@@ -20,7 +20,7 @@ export default {
           src: require('../../../assets/vr/room.jpeg'),
           title: '卧室'
         },
-                {
+        {
           src: require('../../../assets/vr/child.jpeg'),
           title: '儿童房'
         },
@@ -59,15 +59,19 @@ export default {
       let fragment = document.createDocumentFragment();
       let el = document.createElement('div');
       el.className = 'scene-list';
-      el.addEventListener('click', e => {
-        let ele = e.target || e.srcElement;
-        if (ele.parentNode.classList.contains('scene-item')) {
-          let panorama = ele.parentNode.getAttribute('panorama');
-          this.psv.setPanorama(panorama);
+      el.addEventListener(
+        'click',
+        e => {
+          let ele = e.target || e.srcElement;
+          if (ele.parentNode.classList.contains('scene-item')) {
+            let panorama = ele.parentNode.getAttribute('panorama');
+            this.psv.setPanorama(panorama);
+          }
+        },
+        {
+          passive: true
         }
-      },{
-        passive:true
-      });
+      );
       for (let item of scene) {
         let div = document.createElement('div');
         div.className = 'scene-item';

@@ -10,12 +10,7 @@
     <a-form-model-item prop="password" label="登录密码">
       <a-row :gutter="24">
         <a-col :span="16">
-          <a-input-password
-            disabled
-            ref="password"
-            v-model="securityFrom.password"
-            placeholder="请输入登录密码"
-          />
+          <a-input-password disabled ref="password" v-model="securityFrom.password" placeholder="请输入登录密码" />
         </a-col>
         <a-col :span="8">
           <a-button type="link" @click="changePassword('save')" v-if="passwordStatus == 'change'">
@@ -35,8 +30,7 @@
     <a-form-model-item prop="phone" label="绑定手机">
       <a-row :gutter="24">
         <a-col :span="16">
-          <a-input placeholder="请输入手机号" disabled v-model="securityFrom.phone">
-          </a-input>
+          <a-input placeholder="请输入手机号" disabled v-model="securityFrom.phone"> </a-input>
         </a-col>
         <a-col :span="8">
           <a-button type="link">

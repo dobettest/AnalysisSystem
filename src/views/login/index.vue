@@ -14,7 +14,7 @@
             <a-form-model-item prop="userID" v-if="currentTab === 'user'">
               <a-input
                 v-model="loginForm.userID"
-                placeholder="请输入账号"
+                placeholder="请输入账号(手机号/ID)"
                 size="large"
                 allow-clear
                 @pressEnter="focusPassword"
@@ -72,12 +72,10 @@
         </a-form-item>
         <a-form-item style="margin-top: -7px">
           <a-checkbox v-model="loginForm.remember" v-if="currentTab === 'user'">记住密码</a-checkbox>
-          <span class="forge-password pointer">忘记密码</span>
-        </a-form-item>
-        <a-form-item style="margin-top: -20px">
-          <span style="margin-right: 15px">其他登录方式</span>
-          <svg-icon icon="qq" :size="25" class="pointer verticalMiddle"></svg-icon>
-          <span class="forge-password pointer">注册账户</span>
+          <div style="float: right">
+            <span style="margin-right: 15px">其他登录方式</span>
+            <svg-icon icon="qq" :size="25" class="pointer verticalMiddle"></svg-icon>
+          </div>
         </a-form-item>
       </a-form-model>
     </div>
@@ -170,7 +168,7 @@ export default {
         }, 1000);
 
         this.$refs.code.focus();
-        getPhoneCode({phone:this.loginForm.phone})
+        getPhoneCode({ phone: this.loginForm.phone });
       } else {
         this.$message.error('请正确输入手机号');
       }
@@ -233,7 +231,7 @@ export default {
     position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     .form-container {
       width: 400px;
       position: absolute;

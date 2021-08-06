@@ -10,7 +10,7 @@
       <p>{{ $t('setting.theme') }}</p>
       <a-radio-group button-style="solid" :value="theme" @change="changeTheme">
         <a-radio-button :value="item.key" v-for="item in customList" :key="item.key">
-          {{$t('setting.'+item.label)}}
+          {{ $t('setting.' + item.label) }}
         </a-radio-button>
       </a-radio-group>
     </div>
@@ -18,7 +18,7 @@
       <p>{{ $t('setting.layout') }}</p>
       <a-radio-group :value="layout" button-style="solid" @change="changeLayout">
         <a-radio-button :value="item.key" v-for="item in layoutList" :key="item.key">
-          {{$t('setting.'+item.label)}}
+          {{ $t('setting.' + item.label) }}
         </a-radio-button>
       </a-radio-group>
     </div>
@@ -102,7 +102,7 @@ export default {
           value: val,
           cache: 'THEME'
         });
-        document.getElementsByTagName('body')[0].className = `miscro-cloud-station-${val}Theme`;
+        document.getElementsByTagName('body')[0].className = `${val}Theme`;
       }
     },
     settingVisible: {

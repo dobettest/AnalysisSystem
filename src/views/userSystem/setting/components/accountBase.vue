@@ -9,7 +9,7 @@
     hideRequiredMark
   >
     <a-form-model-item prop="imgUrl" label="头像">
-      <a-avatar :src="require('@/assets/avatar/'+accountInfo['avatar'])" :size="108" />
+      <a-avatar :src="require('@/assets/avatar/' + accountInfo['avatar'])" :size="108" />
     </a-form-model-item>
     <a-form-model-item prop="username" label="用户名" hasFeedback>
       <a-input v-model="accountFrom.username" placeholder="请输入用户名" allow-clear />
@@ -45,8 +45,7 @@ export default {
   data() {
     return {
       loading: false,
-      accountFrom: {
-      },
+      accountFrom: {},
       accountRule: {
         imgUrl: [{ required: true, trigger: 'blur' }],
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空！' }],

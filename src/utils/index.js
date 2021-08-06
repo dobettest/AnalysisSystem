@@ -10,12 +10,12 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-    decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"')
-      .replace(/\+/g, ' ') +
-    '"}'
+      decodeURIComponent(search)
+        .replace(/"/g, '\\"')
+        .replace(/&/g, '","')
+        .replace(/=/g, '":"')
+        .replace(/\+/g, ' ') +
+      '"}'
   );
 }
 
@@ -51,4 +51,3 @@ export function debounce(func, delay, immediate = false) {
 export function formatJson(arr, filterVal) {
   return arr.map(v => filterVal.map(j => v[j].toString()));
 }
-

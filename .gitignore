@@ -2,8 +2,10 @@
 node_modules
 /dist
 .history
+/dlls
 /tests/e2e/videos/
 /tests/e2e/screenshots/
+/miscro-cloud-station
 # local env files
 .env.local
 .env.*.local

@@ -41,10 +41,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       getCodeTest(userInfo)
         .then(res => {
-          const { data: { token } } = res;
+          const {
+            data: { token }
+          } = res;
           //console.log("codeTest",res,token)
           if (token) {
-           // console.log("codeTest")
+            // console.log("codeTest")
             commit('SET_TOKEN', token);
             setCache('TOKEN', token);
           }
@@ -75,18 +77,24 @@ const actions = {
   async getInfo({ commit, state }) {
     try {
       var res = await getInfo({ token: state.token });
-      const { data: { info, userSig }, message } = res;
+      const {
+        data: { info, userSig },
+        message
+      } = res;
       if (info && userSig) {
         commit('SET_USERINFO', info);
         commit('SET_USERSIGN', userSig);
-        await tim.login({
-          userID: info.userID,
-          userSig
-        }).then((res) => {
-          console.log(res)
-        }).catch(err => {
-          console.log(err)
-        })
+        await tim
+          .login({
+            userID: info.userID,
+            userSig
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
         return Promise.resolve(info);
       }
       return Promise.reject(message);

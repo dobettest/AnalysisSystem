@@ -64,7 +64,7 @@ router.post("/userUpdate", (req, res, next) => {
     const { body: nl } = req;
     userInfo.forEach(item => {
         if (item.id == nl['id']) {
-            Object.assign(item,nl);
+            Object.assign(item, nl);
         }
     });
     res.json({
@@ -95,9 +95,9 @@ router.post("/query", (req, res, next) => {
     }
 })
 router.post("/login", (req, res, next) => {
-    let { body: { userID: phone, password } } = req;
+    let { body: { userID: account, password } } = req;
     let u = userInfo.find((v) => {
-        return v.phone == phone && v.password == password
+        return [v.userID, v.phone].some(data => data == account) && v.password == password
     })
     if (u) {
         let token = u["userID"] + Math.random().toString().slice(-8);
@@ -206,24 +206,11 @@ router.post("/verifyCode", (req, res, next) => {
             v.phone == phone
         })
         if (!user) {
-            let now = new Date();
-            let date = [now.getFullYear(), now.getMonth(), now.getDay()].join("-")
-            user = {
-                id: parseInt(Math.random() * 1000000000000),
-                userID: 'mym' + phone,
-                username: 'mym' + phone,
-                password: '123456',
-                role: 'custom',
-                date,
-                phone: ''.concat(phone),
-                text: '系统管理员，拥有所有权限',
-                location: 'Wuhan',
-                job: '前端工程师',
-                label: '暂无',
-                skill: '暂无',
-                avatar: 'one.jpg'
-            }
-            userInfo.push(user)
+            res.json({
+                code: 404,
+                data: null,
+                message: "手机号未绑定"
+            })
         }
         let token = user["userID"] + Math.random().toString().slice(-8);
         tokens.set(token, {

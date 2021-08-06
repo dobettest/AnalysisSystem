@@ -53,7 +53,7 @@
       </a-col>
       <a-col :span="17">
         <a-tabs v-model="currentTab" class="tab-container">
-          <a-tab-pane v-for="(item) in tabList" :key="item.key" :tab="$t('common.' + item.tab)">
+          <a-tab-pane v-for="item in tabList" :key="item.key" :tab="$t('common.' + item.tab)">
             <keep-alive>
               <component :is="item.key"></component>
             </keep-alive>
@@ -66,10 +66,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import { articlePage, dynamicPage} from './components';
+import { articlePage, dynamicPage } from './components';
 export default {
   name: 'userInfo',
-  components: { dynamicPage, articlePage},
+  components: { dynamicPage, articlePage },
 
   data() {
     return {
@@ -190,7 +190,7 @@ export default {
 .skill-wrapper {
   margin-bottom: 10px;
 }
-.tab-container{
+.tab-container {
   background-color: #fff;
   padding: 0 10px;
 }

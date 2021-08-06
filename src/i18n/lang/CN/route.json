@@ -27,5 +27,9 @@
     "userManage": "用户管理",
     "roleManage": "角色管理",
     "userTable":"用户表",
-    "im":"聊天"
+    "im":"聊天",
+    "conversation":"会话",
+    "addressBook":"通讯录",
+    "friendList":"好友列表",
+    "groupList":"我的群组"
 }

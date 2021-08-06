@@ -1,11 +1,12 @@
 const path = require('path');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
+//const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
 const isProd = process.env.NODE_ENV === 'production';
 
-const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n} = require('./src/plugins/cdn');
+const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n } = require('./src/plugins/cdn');
 
 const cdn = {
   css: [],
@@ -15,7 +16,7 @@ const cdn = {
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
-    "vue-i18n": "VueI18n",
+    'vue-i18n': 'VueI18n'
     //'echart': 'echarts'
   }
 };
@@ -31,7 +32,7 @@ module.exports = {
         prependData: `@import "~@/styles/variables.scss";`
       },
       less: {
-        javascriptEnabled: true,//允许链式调用的换行
+        javascriptEnabled: true //允许链式调用的换行
       }
     }
   },
@@ -49,12 +50,11 @@ module.exports = {
     resolve: {
       alias: {
         '@': resolve('src'),
-        'echart': resolve('src/lib/echarts.js'),
-        "vue$": "vue/dist/vue.esm.js"
+        echart: resolve('src/lib/echarts.js'),
+        vue$: 'vue/dist/vue.esm.js'
       }
     },
-    plugins: [
-
+    plugins: [//new HardSourceWebpackPlugin()
     ],
     watchOptions: {
       ignored: /node_modules/

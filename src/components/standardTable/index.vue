@@ -38,7 +38,8 @@ export default {
       default: false
     },
     pagination: {
-      type: Boolean | Object
+      type: [Boolean, Object],
+      default: false
     },
     rowSelection: {
       type: Object

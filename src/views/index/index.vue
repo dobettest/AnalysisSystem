@@ -35,13 +35,12 @@
 </template>
 
 <script>
-import { cardList, saleTitle, lineChart, shopRank, pieChart, hotChart, moreChart } from './components';
+import { cardList, saleTitle, shopRank, pieChart, hotChart, moreChart } from './components';
 import { getLineChartData, getRankShopData, getPieTypeData, getHotSearchData, getMoreData } from '@/api/dashboard';
 export default {
   name: 'index',
   components: {
     cardList,
-    lineChart,
     saleTitle,
     shopRank,
     pieChart,

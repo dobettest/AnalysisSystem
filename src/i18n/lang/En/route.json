@@ -26,5 +26,9 @@
     "system": "system",
     "userManage": "userManage",
     "roleManage": "roleManage",
-    "im":"chatRoom"
+    "im":"chatRoom",
+    "conversation":"conversation",
+    "addressBook":"addressBook",
+    "friendList":"friendList",
+    "groupList":"groupList"
 }

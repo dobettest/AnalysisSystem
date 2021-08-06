@@ -65,9 +65,7 @@ export default {
       this.sendValue();
     },
 
-    changeTime(data, dataString) {
- 
-    },
+    changeTime(data, dataString) {},
 
     sendValue() {
       this.$emit('sendCurrent', this.currentType, this.currentTime);

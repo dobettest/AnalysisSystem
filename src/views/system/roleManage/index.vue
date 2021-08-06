@@ -13,7 +13,7 @@
 
         <div slot="action" slot-scope="{ text }">
           <a-button type="primary" size="small" @click="handleEdit(text)" :disabled="text.role && text.role == 'admin'">
-            {{$t("common.edit")}}
+            {{ $t('common.edit') }}
           </a-button>
           <a-popconfirm
             title="你确定要删除当前列吗?"
@@ -23,7 +23,7 @@
             @confirm="handleDelete(text)"
           >
             <a-button type="danger" size="small" style="margin-left:8px" :disabled="text.role && text.role == 'admin'">
-              {{$t("common.del")}}
+              {{ $t('common.del') }}
             </a-button>
           </a-popconfirm>
         </div>

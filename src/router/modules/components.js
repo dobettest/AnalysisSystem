@@ -7,7 +7,7 @@ const componentsRouter = {
   redirect: '/components/vr',
   meta: {
     title: 'component',
-    icon: 'component',
+    icon: 'component'
   },
   children: [
     {
@@ -26,19 +26,19 @@ const componentsRouter = {
       name: 'lottery',
       path: '/components/lottery',
       component: () => import('@/views/components/lottery/index'),
-      meta: { title: 'lottery'}
+      meta: { title: 'lottery' }
     },
     {
       name: 'form',
       path: '/components/form',
       component: () => import('@/views/components/form/index'),
-      meta: { title: 'form'}
+      meta: { title: 'form' }
     },
     {
       name: 'loading',
       path: '/components/loading',
       component: () => import('@/views/components/loading/index'),
-      meta: { title: 'loading'}
+      meta: { title: 'loading' }
     }
   ]
 };

@@ -43,5 +43,5 @@ export function addRole(data) {
 }
 
 export function getRoleRoute(data) {
-  return request.get('/role/roleAccess',data);
+  return request.get('/role/roleAccess', data);
 }

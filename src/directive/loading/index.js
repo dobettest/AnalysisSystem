@@ -1,5 +1,5 @@
 import loading from './loading';
-
+import Vue from 'vue';
 const install = function(Vue) {
   Vue.directive('loading', loading);
 };

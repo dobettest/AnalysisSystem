@@ -7,7 +7,7 @@ const state = {
   settingVisible: false,
   layout: getCache('LAYOUT') || 'inline',
   theme: getCache('THEME') || 'blue',
-  locale: getCache("Lang") || 'CN'
+  locale: getCache('Lang') || 'CN'
 };
 
 const mutations = {
@@ -26,7 +26,7 @@ const mutations = {
   },
   CHANGE_LOCALE(state, locale) {
     state.locale = locale;
-    setCache("Lang", locale);
+    setCache('Lang', locale);
   }
 };
 

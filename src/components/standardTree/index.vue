@@ -9,8 +9,10 @@ import { getRoleRoute } from '@/api/roleManage';
 export default {
   name: 'standardTree',
   props: {
-    role: String,
-    default: 'admin'
+    role: {
+      type: String,
+      default: 'admin'
+    }
   },
   data() {
     return {

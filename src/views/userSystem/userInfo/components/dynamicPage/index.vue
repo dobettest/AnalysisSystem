@@ -1,13 +1,12 @@
 <template>
-    <div class="timeline-wrapper">
-      <div class="dynamic-title">近期动态</div>
-      <a-timeline class="padding24" mode="left" style="margin-top:35px">
-        <a-timeline-item v-for="(item, index) in timelineList" :key="index" :color="item.color">
-          <p>{{ item.time }}</p>
-          {{ item.title }}
-        </a-timeline-item>
-      </a-timeline>
-    </div>
+  <div class="timeline-wrapper">
+    <div class="dynamic-title">近期动态</div>
+    <a-timeline class="padding24" mode="left" style="margin-top:35px">
+      <a-timeline-item v-for="(item, index) in timelineList" :key="index" :color="item.color">
+        <p>{{ item.time }}</p>
+        {{ item.title }}
+      </a-timeline-item>
+    </a-timeline>
   </div>
 </template>
 
