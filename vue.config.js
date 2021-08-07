@@ -5,7 +5,6 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 const isProd = process.env.NODE_ENV === 'production';
-
 const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n } = require('./src/plugins/cdn');
 
 const cdn = {
@@ -23,7 +22,6 @@ const cdn = {
 
 module.exports = {
   productionSourceMap: false,
-  outputDir: 'miscro-cloud-station',
   publicPath: isProd ? 'https://cdn.dobettest.cn' : './',
   lintOnSave: !isProd,
   css: {
@@ -36,15 +34,6 @@ module.exports = {
       }
     }
   },
-  /*devServer: {
-    port: 8999,
-    open: true,
-    overlay: {
-      warnings: false,
-      errors: true
-    },
-    before: !isProd ? require('./mock/index.js') : ''
-  }*/
 
   configureWebpack: {
     resolve: {
