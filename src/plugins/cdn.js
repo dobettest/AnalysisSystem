@@ -1,3 +1,5 @@
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 const AMapCDN = 'https://webapi.amap.com/maps?v=1.3&key=73cddabc2173e0166a622f4483d3592a&plugin=AMap.DistrictSearch';
 const AMapUiCDN = 'https://webapi.amap.com/ui/1.0/main.js';
 const VueCDN = 'https://lib.baomitu.com/vue/2.6.11/vue.runtime.min.js';
@@ -13,7 +15,9 @@ const moment = 'https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js
 const normalize = '//lib.baomitu.com/normalize/8.0.1/normalize.min.css';
 const jquery = 'https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.js';
 const echart = 'https://cdn.dobettest.cn/assets/echarts.min.js';
-module.exports = {
+const tuiEditor = 'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.js';
+const xlsx='https://cdn.bootcdn.net/ajax/libs/xlsx/0.16.9/xlsx.min.js';
+const cdn = {
   AMapCDN,
   AMapUiCDN,
   VueCDN,
@@ -28,5 +32,9 @@ module.exports = {
   moment,
   normalize,
   jquery,
-  echart
+  echart,
+  tuiEditor,
+  xlsx
 };
+exports.default = cdn;
+module.exports = cdn;

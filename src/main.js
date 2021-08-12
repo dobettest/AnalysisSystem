@@ -18,11 +18,6 @@ import scrollBar from '@/components/scrollBar';
 import '@/components/scrollBar/index.scss';
 Vue.component('scroll-bar', scrollBar);
 
-/*import { mockXHR } from '../mock';
-if (process.env.NODE_ENV === 'production') {
-  mockXHR();
-}*/
-
 import loading from '@/components/loading/loading'; // 引入loading
 
 import VueLazyLoad from 'vue-lazyload';

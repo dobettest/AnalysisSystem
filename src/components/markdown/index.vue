@@ -3,11 +3,14 @@
 </template>
 
 <script>
-import Editor from 'tui-editor';
-import 'codemirror/lib/codemirror.css'; // codemirror
-import 'tui-editor/dist/tui-editor.css'; // editor ui
-import 'tui-editor/dist/tui-editor-contents.css'; // editor content
-
+import remoteLoad from '@/utils/remoteLoad';
+import { tuiEditor } from '@/plugins/cdn.js';
+const styles = [
+  'https://uicdn.toast.com/tui-editor/latest/tui-editor.css',
+  'https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css'
+];
 export default {
   name: 'markdownEditor',
   props: {
@@ -26,15 +29,35 @@ export default {
       editor: null
     };
   },
-  mounted() {
-    this.initEditor();
+  async mounted() {
+    await this.initScript()
+      .then(() => {
+        this.initEditor();
+      })
+      .catch(err => {
+        console.log(err);
+        this.$message.error('tuiEditor加载失败');
+      });
   },
   destroyed() {
     this.destroyEditor();
   },
   methods: {
+    async initScript() {
+      if (!window.tui) {
+        await remoteLoad(tuiEditor);
+        const fragment = document.createDocumentFragment();
+        styles.forEach(styl => {
+          let el = document.createElement('link');
+          el.href = styl;
+          el.rel = 'stylesheet';
+          fragment.appendChild(el);
+        });
+        document.getElementsByTagName('head').item(0).appendChild(fragment);
+      }
+    },
     initEditor() {
-      this.editor = new Editor({
+      this.editor = new window.tui.Editor({
         el: document.getElementById(this.id),
         minHeight: '200px',
         height: this.height + 'px',

@@ -1,0 +1,24 @@
+.yellowTheme .rightPanl {
+  background: #faad14 !important; }
+
+.yellowTheme .tagView-wrapper .scroll-outer .scroll-body .activeTag {
+  background: #faad14 !important; }
+
+.yellowTheme .sale-title .sale-time .time-item.activeTime {
+  background: #faad14 !important; }
+  .yellowTheme .sale-title .sale-time .time-item.activeTime:hover {
+    background: #faad14 !important; }
+
+.yellowTheme .backTop .ant-back-top {
+  background: #faad14 !important; }
+
+.yellowTheme .ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background: #faad14 !important; }
+
+.yellowTheme .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background: #faad14 !important;
+  border-color: #faad14 !important;
+  box-shadow: -1px 0 0 0 #faad14 !important; }
+
+.yellowTheme .ant-switch-checked {
+  background: #faad14 !important; }

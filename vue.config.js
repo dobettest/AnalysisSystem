@@ -1,22 +1,22 @@
 const path = require('path');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 //const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
 const isProd = process.env.NODE_ENV === 'production';
-const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n } = require('./src/plugins/cdn');
-
+const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, xlsx } = require('./src/plugins/cdn');
 const cdn = {
   css: [],
-  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n],
+  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, xlsx],
   externals: {
     vue: 'Vue',
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
-    'vue-i18n': 'VueI18n'
-    //'echart': 'echarts'
+    'vue-i18n': 'VueI18n',
+    'xlsx': 'XLSX'
   }
 };
 
@@ -40,10 +40,12 @@ module.exports = {
       alias: {
         '@': resolve('src'),
         echart: resolve('src/lib/echarts.js'),
-        vue$: 'vue/dist/vue.esm.js'
+        vue$: 'vue/dist/vue.esm.js',
+        '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js')
       }
     },
-    plugins: [//new HardSourceWebpackPlugin()
+    plugins: [
+      //new HardSourceWebpackPlugin()
     ],
     watchOptions: {
       ignored: /node_modules/
@@ -74,6 +76,8 @@ module.exports = {
     config.when(!isProd, config => config.devtool('cheap-source-map'));
     //生产环境
     config.when(isProd, config => {
+      //优化momentjs
+      config.plugin('ignore').use(IgnorePlugin, [/\.\/locale/, /moment/]);
       config.performance.maxEntrypointSize(10000000).maxAssetSize(30000000);
       config.optimization.splitChunks({
         chunks: 'all',

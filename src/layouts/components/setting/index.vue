@@ -96,13 +96,33 @@ export default {
       get() {
         return this.$store.state.setting.theme;
       },
-      set(val) {
+      set(color) {
+        if (color === this.theme) {
+          return;
+        }
         this.$store.dispatch('setting/changeSetting', {
           key: 'theme',
-          value: val,
+          value: color,
           cache: 'THEME'
         });
-        document.getElementsByTagName('body')[0].className = `${val}Theme`;
+        const theme = document.getElementById('theme-style');
+        const style = theme || document.createElement('link');
+
+        style.href = `theme/${color}Theme.css`;
+
+        if (!theme) {
+          style.type = 'text/css';
+          style.rel = 'stylesheet';
+          style.id = 'theme-style';
+
+          document
+            .getElementsByTagName('head')
+            .item(0)
+            .appendChild(style);
+        }
+        document.getElementsByTagName('body')[0].className = `${color}Theme`;
+        // 设置 css 变量
+        document.getElementsByTagName('body')[0].style.setProperty('--color-primary', color);
       }
     },
     settingVisible: {
@@ -150,11 +170,6 @@ export default {
       }
     },
     ...mapState({ lang: state => state.setting.locale })
-  },
-  created() {
-    if (this.theme) {
-      document.getElementsByTagName('body')[0].className = `miscro-cloud-station-${this.theme}Theme`;
-    }
   },
   methods: {
     changeLocale(value) {

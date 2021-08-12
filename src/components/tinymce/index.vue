@@ -9,7 +9,7 @@ import toolbar from './toolbar';
 import plugins from './plugins';
 import styles from './style';
 import remoteLoad from '@/utils/remoteLoad';
-const { TinymceCDN } = require('@/plugins/cdn');
+import { TinymceCDN } from '@/plugins/cdn';
 export default {
   name: 'tinymce',
   props: {

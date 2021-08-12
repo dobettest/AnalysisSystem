@@ -84,9 +84,6 @@ import { getUserTable, deleteTable, batchDeleteTable } from '@/api/userManage';
 import { formatJson } from '@/utils';
 import userModel from './userModel';
 import standardTable from '@/components/standardTable/index';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
-moment.locale('zh-cn');
 
 const tableHead = [
   {

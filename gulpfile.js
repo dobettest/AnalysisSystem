@@ -3,6 +3,11 @@ var uglify = require('gulp-uglify');
 var babel = require('gulp-babel');
 var puppeteer = require('puppeteer');
 var fs = require('fs');
+var sass = require('gulp-sass')(require('node-sass'));
+const path = require('path');
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 gulp.task('uglify', function() {
   gulp
     .src('./src/lib/echarts.js')
@@ -13,10 +18,6 @@ gulp.task('uglify', function() {
     )
     .pipe(uglify())
     .pipe(gulp.dest('./build'));
-});
-gulp.task('test', async function name(params) {
-  const a = await 2;
-  console.log(a);
 });
 gulp.task('firstPaint', async function() {
   const browser = await puppeteer.launch();
@@ -40,4 +41,10 @@ gulp.task('firstPaint', async function() {
   await page.close();
   await browser.close();
   fs.writeFileSync('dist/data.txt', JSON.stringify(data));
+});
+gulp.task('theme', async () => {
+  gulp
+    .src(resolve('src/styles/theme/*.scss'))
+    .pipe(sass())
+    .pipe(gulp.dest(resolve('public/theme')));
 });

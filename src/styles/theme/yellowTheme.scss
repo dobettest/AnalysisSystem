@@ -1,32 +1,32 @@
-$baseYellowThemeColor: #faad14;
+$color-primary: #faad14;
 
-body.miscro-cloud-station-yellowTheme {
+.yellowTheme {
   .rightPanl {
-    background: $baseYellowThemeColor !important;
+    background: $color-primary !important;
   }
   .tagView-wrapper .scroll-outer .scroll-body .activeTag {
-    background: $baseYellowThemeColor !important;
+    background: $color-primary !important;
   }
   .sale-title .sale-time .time-item.activeTime {
-    background: $baseYellowThemeColor !important;
+    background: $color-primary !important;
     &:hover {
-      background: $baseYellowThemeColor !important;
+      background: $color-primary !important;
     }
   }
 
   .backTop .ant-back-top {
-    background: $baseYellowThemeColor !important;
+    background: $color-primary !important;
   }
 
   .ant-menu.ant-menu-dark .ant-menu-item-selected {
-    background: $baseYellowThemeColor !important;
+    background: $color-primary !important;
   }
   .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-    background: $baseYellowThemeColor !important;
-    border-color: $baseYellowThemeColor !important;
-    box-shadow: -1px 0 0 0 $baseYellowThemeColor !important;
+    background: $color-primary !important;
+    border-color: $color-primary !important;
+    box-shadow: -1px 0 0 0 $color-primary !important;
   }
   .ant-switch-checked {
-    background: $baseYellowThemeColor !important;
+    background: $color-primary !important;
   }
 }

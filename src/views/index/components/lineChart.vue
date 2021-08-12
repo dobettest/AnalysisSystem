@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-wrapper" ref="lineChart"></div>
+  <div style="width: 100%; height: 100%" ref="lineChart"></div>
 </template>
 
 <script>

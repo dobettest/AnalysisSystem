@@ -1,14 +1,8 @@
 <template>
-  <div class="tagView-wrapper relative white">
-    <a-icon
-      type="left"
-      class="absolute pointer tag_btn"
-      style="left: 0"
-      @click="handleScroll(240)"
-      v-show="hanldeBtn"
-    />
+  <div class="tagView-wrapper">
+    <a-icon type="left" class="pointer tag_btn" style="left: 0" @click="handleScroll(240)" v-show="hanldeBtn" />
     <div class="scroll-outer" ref="scrollOuter" :style="outerWidth">
-      <div class="scroll-body absolute" ref="scrollBody" :style="{ left: tagBodyLeft + 'px' }">
+      <div class="scroll-body" ref="scrollBody" :style="{ left: tagBodyLeft + 'px' }">
         <router-link
           class="tag-item pointer inline-block"
           :to="item.path"
@@ -29,13 +23,7 @@
       </div>
     </div>
 
-    <a-icon
-      type="right"
-      class="absolute pointer tag_btn"
-      style="right: 0"
-      @click="handleScroll(-240)"
-      v-show="hanldeBtn"
-    />
+    <a-icon type="right" class="pointer tag_btn" style="right: 0" @click="handleScroll(-240)" v-show="hanldeBtn" />
   </div>
 </template>
 
@@ -146,11 +134,14 @@ $height: 46px;
   -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   padding: 0 25px;
+  position: relative;
+  background-color: #fff;
   .tag_btn {
     width: 26px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 99;
+    position: absolute;
   }
   .scroll-outer {
     position: absolute;
@@ -164,6 +155,7 @@ $height: 46px;
       white-space: nowrap;
       height: 100%;
       line-height: $height;
+      position: absolute;
       .tag-item {
         height: 32px;
         line-height: 26px;

@@ -167,6 +167,10 @@ export default {
         height: 65px;
         margin: 15px auto 5px;
       }
+      .chart-wrapper {
+        width: 100%;
+        height: 100%;
+      }
     }
     .active {
       background: url('~@/assets/lottery/baseBg2.png') no-repeat;

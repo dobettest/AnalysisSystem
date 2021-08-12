@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     handleAdd() {
-      this.currentRow =null;
+      this.currentRow = null;
       this.visible = true;
     }
   }

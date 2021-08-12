@@ -23,16 +23,17 @@
               </a-input>
             </a-form-model-item>
             <a-form-model-item prop="password" v-if="currentTab === 'user'">
-              <a-input-password
+              <a-input
                 v-model="loginForm.password"
                 placeholder="请输入密码"
                 size="large"
+                type="password"
                 allow-clear
                 @pressEnter="toLogin"
                 ref="password"
               >
                 <svg-icon icon="password" :size="14" slot="prefix"> </svg-icon>
-              </a-input-password>
+              </a-input>
             </a-form-model-item>
           </a-tab-pane>
           <a-tab-pane key="phone" tab="手机号登录">

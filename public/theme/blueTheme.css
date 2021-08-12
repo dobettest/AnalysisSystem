@@ -1,0 +1,26 @@
+.blueTheme .rightPanl {
+  background: #1890ff !important; }
+  .blueTheme .rightPanl .settingIcon {
+    color: #fff; }
+
+.blueTheme .tagView-wrapper .scroll-outer .scroll-body .activeTag {
+  background: #1890ff !important; }
+
+.blueTheme .sale-title .sale-time .time-item.activeTime {
+  background: #1890ff !important; }
+  .blueTheme .sale-title .sale-time .time-item.activeTime:hover {
+    background: #1890ff !important; }
+
+.blueTheme .backTop .ant-back-top {
+  background: #1890ff !important; }
+
+.blueTheme .ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background: #1890ff !important; }
+
+.blueTheme .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+  box-shadow: -1px 0 0 0 #1890ff !important; }
+
+.blueTheme .ant-switch-checked {
+  background: #1890ff !important; }

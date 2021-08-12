@@ -12,24 +12,23 @@
 </template>
 
 <script>
-import { getUserTable} from '@/api/userManage';
+import { getUserTable } from '@/api/userManage';
 export default {
   name: 'conversationList',
-  async created(){
-    const res=await getUserTable();
-    console.log("res",res)
+  async created() {
+    const res = await getUserTable();
+    console.log('res', res);
   }
 };
 </script>
 
 <style lang="scss">
-  .messageList{
-    height: 100%;
-    .conversationList{
-      
-    }
-    .currentCoversation{
-      background-color: #fff;
-    }
+.messageList {
+  height: 100%;
+  .conversationList {
   }
+  .currentCoversation {
+    background-color: #fff;
+  }
+}
 </style>

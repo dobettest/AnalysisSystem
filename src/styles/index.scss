@@ -1,10 +1,5 @@
 @import './antd.scss';
-@import './sideBar.scss';
-@import './common.scss';
-@import './theme/blueTheme.scss';
-@import './theme/yellowTheme.scss';
-@import './theme/greenTheme.scss';
-
+@import './variables.scss';
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
@@ -51,9 +46,6 @@ div:focus {
 .fr {
   float: right;
 }
-.fl {
-  float: left;
-}
 .clearfix {
   &:after {
     visibility: hidden;
@@ -64,12 +56,7 @@ div:focus {
     height: 0;
   }
 }
-.inline {
-  display: inline;
-}
-.block {
-  display: block;
-}
+
 .inline-block {
   display: inline-block;
   text-overflow: ellipsis;

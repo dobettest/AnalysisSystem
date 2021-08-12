@@ -1,5 +1,5 @@
 <template>
-  <div class="index-container  border-box">
+  <div class="index-container border-box">
     <card-list @sendTitle="getTitle" />
 
     <div class="sale-card">
@@ -7,14 +7,14 @@
         <template slot="title"> {{ currentName }} 统计图 </template>
       </sale-title>
       <a-row class="sale-container" :gutter="16">
-        <a-col :span="24" style="height:100%">
+        <a-col :span="24" style="height: 100%">
           <div class="shop-title">门店{{ currentName }}排行榜 Top10</div>
-          <shop-rank style="height:calc(100% - 50px)" :rankData="rankData" />
+          <shop-rank style="height: calc(100% - 50px)" :rankData="rankData" />
         </a-col>
       </a-row>
     </div>
 
-    <a-row :gutter="24" class="sale-list ">
+    <a-row :gutter="24" class="sale-list">
       <a-col :span="8">
         <a-card title="消费种类占比" :hoverable="true" :bordered="false">
           <pie-chart :chartData="pieData" />
@@ -36,7 +36,7 @@
 
 <script>
 import { cardList, saleTitle, shopRank, pieChart, hotChart, moreChart } from './components';
-import { getLineChartData, getRankShopData, getPieTypeData, getHotSearchData, getMoreData } from '@/api/dashboard';
+import { getRankShopData, getPieTypeData, getHotSearchData, getMoreData } from '@/api/dashboard';
 export default {
   name: 'index',
   components: {
@@ -52,7 +52,6 @@ export default {
       currentName: '销售额',
       currentKey: 'sale',
       currentType: 'day',
-      lineData: {},
       rankData: [],
       pieData: [],
       hotData: [],
@@ -69,7 +68,6 @@ export default {
       }
       this.currentName = title;
       this.currentKey = key;
-      this.getLineData();
       this.getRankData();
     },
 
@@ -79,19 +77,11 @@ export default {
     },
 
     getData() {
-      this.getLineData();
       this.getRankData();
       this.getPieData();
       this.getHotData();
       this.getMoreData();
     },
-
-    async getLineData() {
-      const { currentType: type, currentKey } = this;
-      const { data } = await getLineChartData({ type, currentKey });
-      this.lineData = data || [];
-    },
-
     async getRankData() {
       const { currentType: type, currentKey } = this;
       const { data } = await getRankShopData({ type, currentKey });
