@@ -84,6 +84,8 @@ import { getUserTable, deleteTable, batchDeleteTable } from '@/api/userManage';
 import { formatJson } from '@/utils';
 import userModel from './userModel';
 import standardTable from '@/components/standardTable/index';
+import remoteLoad from '@/utils/remoteLoad';
+import { xlsx } from '@/plugins/cdn';
 
 const tableHead = [
   {
@@ -225,8 +227,9 @@ export default {
       this.getTableList();
     },
     //导出
-    handleExport() {
+    async handleExport() {
       this.exportLoading = true;
+      await remoteLoad(xlsx);
       import('@/vendor/Export2Excel').then(excel => {
         const header = [],
           filterVal = [];

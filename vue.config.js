@@ -2,27 +2,29 @@ const path = require('path');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 //const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-function resolve(dir) {
+const resolve=(dir)=>{
   return path.join(__dirname, dir);
 }
 const isProd = process.env.NODE_ENV === 'production';
-const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, xlsx } = require('./src/plugins/cdn');
+const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n} = require('./src/plugins/cdn');
 const cdn = {
   css: [],
-  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, xlsx],
+  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n],
   externals: {
     vue: 'Vue',
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
     'vue-i18n': 'VueI18n',
-    'xlsx': 'XLSX'
+    'xlsx': 'XLSX',
+    'three':'THREE'
   }
 };
 
 module.exports = {
   productionSourceMap: false,
-  publicPath: isProd ? 'https://cdn.dobettest.cn' : './',
+  //publicPath: isProd ? 'https://cdn.dobettest.cn' : './',
+  publicPath:"./",
   lintOnSave: !isProd,
   css: {
     loaderOptions: {
@@ -105,13 +107,13 @@ module.exports = {
       config.optimization.runtimeChunk('single');
 
       //去除生产环境debugger 和console
-      config.optimization.minimizer('terser').tap(args => {
+      /*config.optimization.minimizer('terser').tap(args => {
         args[0].terserOptions.compress.warnings = false;
         args[0].terserOptions.compress.drop_console = true;
         args[0].terserOptions.compress.drop_debugger = true;
         args[0].terserOptions.compress.pure_funcs = ['console.*'];
         return args;
-      });
+      });*/
       //g-zip开启
       config.plugin('CompressionWebpackPlugin').use(CompressionWebpackPlugin, [
         {

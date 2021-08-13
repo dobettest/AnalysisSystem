@@ -17,6 +17,7 @@ const jquery = 'https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.js';
 const echart = 'https://cdn.dobettest.cn/assets/echarts.min.js';
 const tuiEditor = 'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.js';
 const xlsx='https://cdn.bootcdn.net/ajax/libs/xlsx/0.16.9/xlsx.min.js';
+const threeJs='https://cdn.bootcdn.net/ajax/libs/three.js/r126/three.min.js'
 const cdn = {
   AMapCDN,
   AMapUiCDN,
@@ -34,7 +35,8 @@ const cdn = {
   jquery,
   echart,
   tuiEditor,
-  xlsx
+  xlsx,
+  threeJs
 };
 exports.default = cdn;
 module.exports = cdn;

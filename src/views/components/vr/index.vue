@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import { Viewer } from 'photo-sphere-viewer';
+import remoteLoad from '@/utils/remoteLoad';
+import { threeJs } from '@/plugins/cdn.js';
 import 'photo-sphere-viewer/dist/photo-sphere-viewer.css';
 export default {
   name: 'vr',
@@ -35,25 +36,22 @@ export default {
       ]
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.init();
-      this.initScene();
+  async mounted() {
+    await remoteLoad(threeJs);
+    const { Viewer } = await import('@/lib/common.js');
+    this.psv = new Viewer({
+      panorama: this.img, //图片
+      container: this.$refs.psvdbg, //id
+      size: {
+        width: '100%',
+        height: this.$refs.psvdbg.offsetHeight
+      },
+      navbar: ['autorotate', 'zoom', 'caption'],
+      plugins: []
     });
+    this.initScene();
   },
   methods: {
-    init() {
-      this.psv = new Viewer({
-        panorama: this.img, //图片
-        container: this.$refs.psvdbg, //id
-        size: {
-          width: '100%',
-          height: this.$refs.psvdbg.offsetHeight
-        },
-        navbar: ['autorotate', 'zoom', 'caption'],
-        plugins: []
-      });
-    },
     initScene() {
       let { scene } = this;
       let fragment = document.createDocumentFragment();
