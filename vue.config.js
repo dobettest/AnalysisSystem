@@ -10,10 +10,8 @@ const isProd = process.env.NODE_ENV === 'production';
 const rawArgv = process.argv.slice(3);
 //minimist是nodejs的命令行参数解析工具，因其简单好用，轻量等特性，所以用户使用较多。
 const args = minimist(rawArgv);
-const publicPath = process.env.publicPath || './';
-console.log(args, publicPath, rawArgv);
+//const publicPath = process.env.publicPath || './';
 const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk } = require('./src/plugins/cdn');
-console.log(VuexCDN)
 const cdn = {
   css: [],
   js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk],
@@ -31,7 +29,7 @@ const cdn = {
 
 module.exports = {
   productionSourceMap: false,
-  publicPath,
+  publicPath:isProd?'https://cdn.dobettest.cn':'./',
   lintOnSave: !isProd,
   css: {
     loaderOptions: {
