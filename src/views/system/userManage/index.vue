@@ -44,7 +44,7 @@
           {{ index + 1 }}
         </div>
         <div slot="avatar" slot-scope="{ text }">
-          <a-avatar :src="require('@/assets/avatar/' + text)" shape="square" :size="60"></a-avatar>
+          <a-avatar :src="text" shape="square" :size="60"></a-avatar>
         </div>
         <div slot="role" slot-scope="{ text }">
           <a-tag :color="text | statusFilter">
@@ -227,27 +227,32 @@ export default {
       this.getTableList();
     },
     //导出
-    async handleExport() {
+    handleExport() {
       this.exportLoading = true;
-      await remoteLoad(xlsx);
-      import('@/vendor/Export2Excel').then(excel => {
-        const header = [],
-          filterVal = [];
-        this.tableHead.forEach(item => {
-          if (item.title != '操作' && item.title != '序号') {
-            header.push(item.title);
-            filterVal.push(item.dataIndex);
-          }
-        });
-        const data = formatJson(this.tableData, filterVal);
+      remoteLoad(xlsx)
+        .then(() => {
+          import('@/vendor/Export2Excel').then(excel => {
+            const header = [],
+              filterVal = [];
+            this.tableHead.forEach(item => {
+              if (item.title != '操作' && item.title != '序号') {
+                header.push(item.title);
+                filterVal.push(item.dataIndex);
+              }
+            });
+            const data = formatJson(this.tableData, filterVal);
 
-        excel.export_json_to_excel({
-          header,
-          data,
-          filename: '用户列表'
+            excel.export_json_to_excel({
+              header,
+              data,
+              filename: '用户列表'
+            });
+            this.exportLoading = false;
+          });
+        })
+        .catch(() => {
+          this.exportLoading = false;
         });
-        this.exportLoading = false;
-      });
     },
     //获取table数据
     getTableList() {

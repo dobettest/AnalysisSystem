@@ -4,7 +4,7 @@
       <a-col :span="7">
         <a-card :hoverable="true" :bordered="false">
           <div class="accountInfo">
-            <img :src="require('@/assets/avatar/' + accountInfo['avatar'])" alt="" class="accountImg" />
+            <img :src="accountInfo['avatar']" alt="" class="accountImg" />
             <div class="username">{{ accountInfo.username }}</div>
           </div>
           <a-divider />

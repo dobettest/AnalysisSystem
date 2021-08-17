@@ -8,9 +8,12 @@
     ref="accountForm"
     hideRequiredMark
   >
-    <a-form-model-item prop="imgUrl" label="头像">
-      <!--<a-avatar :src="require('@/assets/avatar/' + accountInfo['avatar'])" :size="108" />-->
-      <avatar-upload :avatarUrl="require('@/assets/avatar/' + accountInfo['avatar'])"></avatar-upload>
+    <a-form-model-item prop="avatarUrl" label="头像">
+      <avatar-upload
+        :avatarUrl="accountForm.avatar"
+        @change="updateAvatar"
+        v-model="accountForm.avatar"
+      ></avatar-upload>
     </a-form-model-item>
     <a-form-model-item prop="username" label="用户名" hasFeedback>
       <a-input v-model="accountForm.username" placeholder="请输入用户名" allow-clear />
@@ -37,6 +40,7 @@
 <script>
 import { mapState } from 'vuex';
 import avatarUpload from './avatar-upload';
+import { editTable } from '@/api/userManage';
 export default {
   name: 'accountBase',
   components: { avatarUpload },
@@ -45,36 +49,41 @@ export default {
       loading: false,
       accountForm: {},
       accountRule: {
-        imgUrl: [{ required: true, trigger: 'blur' }],
+        avatar: [{ required: true, trigger: 'blur' }],
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空！' }],
         position: [{ required: true, trigger: 'blur', message: '职位不能为空！' }],
         location: [{ required: true, trigger: 'blur', message: '请选择所在城市！' }],
         label: [{ required: true, trigger: 'blur', message: '个人介绍不能为空！' }]
-      },
-      imgUrl: ''
+      }
     };
   },
   computed: {
     ...mapState({
-      accountInfo: state => state.user.accountInfo
+      accountInfo: state => {
+        return { ...state.user.accountInfo };
+      }
     })
   },
   mounted() {
     this.accountForm = this.accountInfo;
   },
   methods: {
+    updateAvatar(avatarUrl) {
+      this.accountForm.avatar = avatarUrl;
+      console.log(this.accountForm.avatar);
+    },
     changeSkill(key) {
       this.accountForm.skill = key.join(',');
     },
     updateValue() {
-      this.$refs.accountForm.validate(valid => {
+      this.$refs.accountForm.validate(async valid => {
         if (valid) {
           this.loading = true;
-          const { username, position, location, label, skill, role } = this.accountForm;
-          this.$store.dispatch('user/updateInfo', { username, position, location, label, skill, role }).then(() => {
-            this.$message.success('修改成功！');
-            this.loading = false;
-          });
+          const { username, position, location, label, skill, role, avatar } = this.accountForm;
+          await editTable(this.accountForm);
+          await this.$store.dispatch('user/updateInfo', { username, position, location, label, skill, role, avatar });
+          this.$message.success('修改成功！');
+          this.loading = false;
         }
       });
     },

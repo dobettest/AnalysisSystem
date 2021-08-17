@@ -12,3 +12,4 @@ export { default as MenuUnfoldOutline } from '@ant-design/icons/lib/outline/Menu
 export { default as CaretDownOutline } from '@ant-design/icons/lib/outline/CaretDownOutline';
 export { default as CaretUpOutline } from '@ant-design/icons/lib/outline/CaretUpOutline';
 export { default as UserOutline } from '@ant-design/icons/lib/outline/UserOutline';
+export { default as SearchOutline } from '@ant-design/icons/lib/outline/SearchOutline';

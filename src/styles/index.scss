@@ -1,17 +1,5 @@
 @import './antd.scss';
 @import './variables.scss';
-body {
-  height: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Microsoft YaHei, Arial, sans-serif;
-}
-html {
-  height: 100%;
-  box-sizing: border-box;
-}
-
 #app {
   height: 100%;
 }
@@ -45,16 +33,6 @@ div:focus {
 
 .fr {
   float: right;
-}
-.clearfix {
-  &:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: ' ';
-    clear: both;
-    height: 0;
-  }
 }
 
 .inline-block {

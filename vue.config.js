@@ -2,29 +2,36 @@ const path = require('path');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 //const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-const resolve=(dir)=>{
+const minimist = require('minimist');
+const resolve = dir => {
   return path.join(__dirname, dir);
-}
+};
 const isProd = process.env.NODE_ENV === 'production';
-const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n} = require('./src/plugins/cdn');
+const rawArgv = process.argv.slice(3);
+//minimist是nodejs的命令行参数解析工具，因其简单好用，轻量等特性，所以用户使用较多。
+const args = minimist(rawArgv);
+const publicPath = process.env.publicPath || './';
+console.log(args, publicPath, rawArgv);
+const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk } = require('./src/plugins/cdn');
+console.log(VuexCDN)
 const cdn = {
   css: [],
-  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n],
+  js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk],
   externals: {
     vue: 'Vue',
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
     'vue-i18n': 'VueI18n',
-    'xlsx': 'XLSX',
-    'three':'THREE'
+    xlsx: 'XLSX',
+    three: 'THREE',
+    'tim-js-sdk': 'TIM'
   }
 };
 
 module.exports = {
   productionSourceMap: false,
-  //publicPath: isProd ? 'https://cdn.dobettest.cn' : './',
-  publicPath:"./",
+  publicPath,
   lintOnSave: !isProd,
   css: {
     loaderOptions: {
@@ -107,13 +114,13 @@ module.exports = {
       config.optimization.runtimeChunk('single');
 
       //去除生产环境debugger 和console
-      /*config.optimization.minimizer('terser').tap(args => {
+      config.optimization.minimizer('terser').tap(args => {
         args[0].terserOptions.compress.warnings = false;
         args[0].terserOptions.compress.drop_console = true;
         args[0].terserOptions.compress.drop_debugger = true;
         args[0].terserOptions.compress.pure_funcs = ['console.*'];
         return args;
-      });*/
+      });
       //g-zip开启
       config.plugin('CompressionWebpackPlugin').use(CompressionWebpackPlugin, [
         {
@@ -124,10 +131,6 @@ module.exports = {
           minRatio: 0.8
         }
       ]);
-      //打包大小分析
-      if (process.env.npm_config_report) {
-        config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin);
-      }
     });
   }
 };

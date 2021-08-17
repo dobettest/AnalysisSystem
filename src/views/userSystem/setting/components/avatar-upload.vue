@@ -1,52 +1,60 @@
 <template>
-  <a-upload
-    action="http://localhost:3100/mock/user/uploadAvatar"
-    list-type="picture-card"
-    class="avatar-upload-cover"
-    accept="image/*"
-    :style="_style"
-  >
-    <!-- 默认上传 -->
-    <template>
-      <template v-if="imgUrl">
-        <div class="cl-upload__cover">
-          <!-- 图片 -->
-          <img v-lazy="imgUrl" />
-        </div>
+  <div class="clearfix">
+    <a-upload
+      action="http://localhost:3100/mock/user/uploadAvatar"
+      list-type="picture-card"
+      :showUploadList="false"
+      class="avatar-upload-cover"
+      :before-upload="beforeUpload"
+      @change="handleChange"
+      accept="image/*"
+      :style="_style"
+    >
+      <!-- 默认上传 -->
+      <template>
+        <template v-if="avatarUrl">
+          <div class="cl-upload__cover">
+            <!-- 图片 -->
+            <img v-lazy="avatarUrl" />
+          </div>
 
-        <!-- 功能按钮 -->
-        <div class="cl-upload__actions">
-          <span class="cl-upload__actions-preview" @click.stop="_onPreview()">
-            <a-icon type="zoom-in"></a-icon>
-          </span>
+          <!-- 功能按钮 -->
+          <div class="cl-upload__actions">
+            <span class="cl-upload__actions-preview" @click.stop="handlePreview(avatarUrl)">
+              <a-icon type="zoom-in"></a-icon>
+            </span>
 
-          <span
-            class="cl-upload__actions-delete"
-            @click.stop="
-              () => {
-                imgUrl = '';
-              }
-            "
-          >
-            <a-icon type="delete"></a-icon>
-          </span>
-        </div>
+            <span class="cl-upload__actions-delete" @click.stop="handleAvatar('')">
+              <a-icon type="delete"></a-icon>
+            </span>
+          </div>
+        </template>
+
+        <!-- 空态 -->
+        <template v-else>
+          <a-icon type="plus"></a-icon>
+        </template>
       </template>
-
-      <!-- 空态 -->
-      <template v-else>
-        <a-icon type="plus"></a-icon>
-      </template>
-    </template>
-  </a-upload>
+    </a-upload>
+    <a-modal :visible="previewVisible" :footer="null" @cancel="previewVisible = false">
+      <img alt="example" style="width: 100%" :src="previewImage" />
+    </a-modal>
+  </div>
 </template>
 
 <script>
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 export default {
   name: 'avatar-upload',
   data() {
     return {
-      imgUrl: ''
+      loading: false,
+      previewVisible: false,
+      previewImage: ''
     };
   },
   props: {
@@ -58,9 +66,6 @@ export default {
       type: [Number, String],
       default: 96
     }
-  },
-  mounted() {
-    this.imgUrl = this.avatarUrl;
   },
   computed: {
     _style() {
@@ -80,6 +85,27 @@ export default {
     }
   },
   methods: {
+    handleAvatar(imageUrl) {
+      this.$emit('change', imageUrl);
+    },
+    async handlePreview() {
+      //var isImage=/\.(png|jpeg|jpg)$/;
+      this.previewImage = this.avatarUrl;
+      this.previewVisible = true;
+    },
+    handleChange(info) {
+      if (info.file.status === 'uploading') {
+        this.loading = true;
+        return;
+      }
+      if (info.file.status === 'done') {
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, imageUrl => {
+          this.loading = false;
+          this.handleAvatar(imageUrl);
+        });
+      }
+    },
     beforeUpload(file) {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {

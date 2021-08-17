@@ -1,14 +1,15 @@
 {
-    "open":"open",
-    "close":"close",
-    "edit":"edit",
-    "del":"del",
-    "add":"add",
-    "search":"search",
-    "baseInfo":"baseInfo",
-    "article":"article",
-    "notice":"notice",
-    "tag":"tag",
-    "skill":"skill",
-    "dynamic":"dynamic"
+    "open": "open",
+    "close": "close",
+    "edit": "edit",
+    "del": "del",
+    "add": "add",
+    "search": "search",
+    "baseInfo": "baseInfo",
+    "article": "article",
+    "notice": "notice",
+    "tag": "tag",
+    "skill": "skill",
+    "dynamic": "dynamic",
+    "miscro-cloud-station": "miscro-cloud-station"
 }

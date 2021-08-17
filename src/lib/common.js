@@ -1,1 +1,1 @@
-export { Viewer } from "photo-sphere-viewer";
+export { Viewer } from 'photo-sphere-viewer';

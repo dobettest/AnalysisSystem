@@ -53,7 +53,10 @@ export default {
           el.rel = 'stylesheet';
           fragment.appendChild(el);
         });
-        document.getElementsByTagName('head').item(0).appendChild(fragment);
+        document
+          .getElementsByTagName('head')
+          .item(0)
+          .appendChild(fragment);
       }
     },
     initEditor() {

@@ -1,7 +1,7 @@
 <template>
   <a-dropdown class="navUser-wrppaer">
     <div>
-      <img v-lazy="imgUrl" class="userImg" alt="" />
+      <img v-lazy="accountInfo['avatar']" class="userImg" alt="" />
       <span class="userTitle">{{ accountInfo.username }}</span>
       <a-icon type="caret-down" style="margin-left: 5px" />
     </div>
@@ -31,11 +31,7 @@ export default {
   computed: {
     ...mapState({
       accountInfo: state => state.user.accountInfo
-    }),
-    imgUrl() {
-      let imgSrc = this.accountInfo['avatar'] || 'one.jpg';
-      return require('@/assets/avatar/' + imgSrc);
-    }
+    })
   },
   methods: {
     async logout() {

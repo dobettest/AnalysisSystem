@@ -2,15 +2,17 @@
   <div class="roleManage-wrapper">
     <a-card :hoverable="true" :bordered="false">
       <div slot="title" class="flex flex-wrap">
-        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd">
-          新增角色
-        </a-button>
+        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd"> 新增角色 </a-button>
       </div>
       <standard-table :tableData="tableData" :tableHead="tableHead" :loading="loading" :pagination="false">
         <div slot="index" slot-scope="{ index }">
           {{ index + 1 }}
         </div>
-
+        <div slot="role" slot-scope="{ text }">
+          <a-tag :color="text | statusFilter">
+            {{ text }}
+          </a-tag>
+        </div>
         <div slot="action" slot-scope="{ text }">
           <a-button type="primary" size="small" @click="handleEdit(text)" :disabled="text.role && text.role == 'admin'">
             {{ $t('common.edit') }}
@@ -22,7 +24,7 @@
             :disabled="text.role && text.role == 'admin'"
             @confirm="handleDelete(text)"
           >
-            <a-button type="danger" size="small" style="margin-left:8px" :disabled="text.role && text.role == 'admin'">
+            <a-button type="danger" size="small" style="margin-left: 8px" :disabled="text.role && text.role == 'admin'">
               {{ $t('common.del') }}
             </a-button>
           </a-popconfirm>
@@ -56,7 +58,7 @@ const tableHead = [
   {
     title: '角色',
     dataIndex: 'role',
-    ellipsis: true
+    scopedSlots: { customRender: 'role' }
   },
   {
     title: '描述',
@@ -75,6 +77,16 @@ import roleModel from './roleModel';
 export default {
   name: 'roleManage',
   components: { standardTable, roleModel },
+  filters: {
+    statusFilter(status) {
+      const statusList = {
+        admin: '#2db7f5',
+        test: '#f50',
+        custom: '#87d068'
+      };
+      return statusList[status];
+    }
+  },
   data() {
     return {
       loading: false,
