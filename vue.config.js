@@ -45,9 +45,7 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        '@': resolve('src'),
         echart: resolve('src/lib/echarts.js'),
-        vue$: 'vue/dist/vue.esm.js',
         '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js')
       }
     },
