@@ -8,7 +8,7 @@
     "graph": "graph",
     "map": "map",
     "other": "other",
-    "component":"component",
+    "component": "component",
     "vr": "vr",
     "editor": "editor",
     "markdown": "markdown",
@@ -26,9 +26,10 @@
     "system": "system",
     "userManage": "userManage",
     "roleManage": "roleManage",
-    "im":"chatRoom",
-    "conversation":"conversation",
-    "addressBook":"addressBook",
-    "friendList":"friendList",
-    "groupList":"groupList"
+    "im": "chatRoom",
+    "conversation": "conversation",
+    "addressBook": "addressBook",
+    "friendList": "friendList",
+    "groupList": "groupList",
+    "meeting": "meeting"
 }

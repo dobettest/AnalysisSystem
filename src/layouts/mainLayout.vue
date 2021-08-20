@@ -1,5 +1,5 @@
 <template>
-  <div class="paddingBox-container  border-box">
+  <div class="paddingBox-container">
     <router-view />
   </div>
 </template>
@@ -14,6 +14,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .paddingBox-container {
+  height: 100%;
+  overflow: scroll;
   padding: 24px;
   background: #f0f2f5;
 }

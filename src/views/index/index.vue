@@ -1,5 +1,5 @@
 <template>
-  <div class="index-container border-box">
+  <div class="index-container">
     <card-list @sendTitle="getTitle" />
 
     <div class="sale-card">

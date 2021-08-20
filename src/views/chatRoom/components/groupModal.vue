@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import tim from '@/lib/tim';
 export default {
   props: {
     currentRow: [Object, null],
@@ -103,7 +104,7 @@ export default {
       return options;
     },
     async handleOk() {
-      const res = await this.$tim.createGroup(this.getOptions());
+      const res = await tim.createGroup(this.getOptions());
       console.log('res', res);
     },
     selectType(type) {

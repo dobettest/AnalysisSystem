@@ -29,12 +29,6 @@ const componentsRouter = {
       meta: { title: 'lottery' }
     },
     {
-      name: 'form',
-      path: '/components/form',
-      component: () => import('@/views/components/form/index'),
-      meta: { title: 'form' }
-    },
-    {
       name: 'loading',
       path: '/components/loading',
       component: () => import('@/views/components/loading/index'),

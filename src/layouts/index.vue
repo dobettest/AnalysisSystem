@@ -1,5 +1,5 @@
 <template>
-  <div class="all-container flex" :class="{ closeSide: !open, horizontal: horizontal }">
+  <div class="all-container" :class="{ closeSide: !open, horizontal: horizontal }">
     <side-bar class="aside-container" :collapsed="open" v-if="!horizontal" />
     <div class="main-container" :class="{ hasTag: tagShow }">
       <div :class="{ 'fixed-header': fixHeader }">
@@ -51,6 +51,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.all-container {
+  height: 100%;
+  position: relative;
+}
 .aside-container {
   background: rgb(41, 51, 72);
   transition: width 0.28s;
@@ -61,10 +65,27 @@ export default {
   z-index: 996;
   height: 100%;
 }
+.rightPanl {
+  right: 1px;
+  top: 300px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  background: #1890ff;
+  border-radius: 6px 0 0 6px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 24px;
+  z-index: 999;
+}
+.app-main {
+  height: 100%;
+}
 
 .main-container {
   height: 100%;
-  width: calc(100% - 256px);
+  flex-grow: 1;
   margin-left: 256px;
   .fixed-header {
     position: fixed;
@@ -75,22 +96,15 @@ export default {
     width: calc(100% - 256px);
     & ~ .app-main {
       padding-top: 54px;
-      min-height: 100vh;
     }
-  }
-  .paddingBox-container {
-    min-height: calc(100vh - 54px);
   }
 }
 .hasTag {
   .fixed-header {
     & ~ .app-main {
       padding-top: 100px !important;
-      min-height: 100vh;
+      height: 100%;
     }
-  }
-  .paddingBox-container {
-    min-height: calc(100vh - 100px);
   }
 }
 
@@ -107,29 +121,8 @@ export default {
   }
 }
 
-.rightPanl {
-  right: 1px;
-  top: 300px;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  color: #fff;
-  background: #1890ff;
-  border-radius: 6px 0 0 6px;
-  text-align: center;
-  line-height: 50px;
-  font-size: 24px;
-  z-index: 999;
-}
-.app-main {
-  min-height: calc(100vh - 100px);
-}
-
 //水平布局
 .horizontal {
-  .aside-container {
-    width: 0;
-  }
   .horizontal-nav {
     background: #293348;
     color: #f1f1f1;
@@ -137,7 +130,6 @@ export default {
     line-height: 54px;
   }
   .main-container {
-    width: 100%;
     margin-left: 0;
   }
   .fixed-header {
@@ -147,9 +139,6 @@ export default {
     background: #293348;
   }
   .app-main {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 6%;
     background: #f0f2f5;
   }
 }

@@ -7,7 +7,6 @@ import Vue from 'vue';
 const tim = TIM.create({
   SDKAppID: 1400337794
 });
-Vue.prototype.$tim = tim;
 Vue.prototype.TIM = TIM;
 
 // 无日志级别

@@ -105,13 +105,9 @@ const tableHead = [
     dataIndex: 'username'
   },
   {
-    title: '密码',
-    dataIndex: 'password'
-  },
-  {
-    title: '权限',
-    dataIndex: 'role',
-    scopedSlots: { customRender: 'role' }
+    title: '职位',
+    dataIndex: 'job',
+    scopedSlots: { customRender: 'job' }
   },
   {
     title: '创建日期',

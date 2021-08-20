@@ -7,5 +7,10 @@
     "hour": "hour",
     "day": "day",
     "minute": "minute",
-    "second": "secnond"
+    "second": "secnond",
+    "week": "week",
+    "range": "range",
+    "this-week": "week",
+    "this-month": "month",
+    "this-year": "year"
 }

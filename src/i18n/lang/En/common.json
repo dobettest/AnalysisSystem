@@ -11,5 +11,15 @@
     "tag": "tag",
     "skill": "skill",
     "dynamic": "dynamic",
-    "miscro-cloud-station": "miscro-cloud-station"
+    "miscro-cloud-station": "miscro-cloud-station",
+    "secureSetting": "secureSetting",
+    "avatar": "avatar",
+    "role": "role",
+    "city": "city",
+    "job": "job",
+    "signature": "signature",
+    "submit": "submit",
+    "cancel": "cancel",
+    "none": "none",
+    "username": "username"
 }

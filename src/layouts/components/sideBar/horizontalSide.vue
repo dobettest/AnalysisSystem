@@ -33,10 +33,11 @@ export default {
 .horizontalSide-logo {
   height: 54px;
   line-height: 54px;
-  width: 240px;
+  width: 260px;
+  box-sizing: border-box;
 }
 .side-main {
-  width: calc(100% - 240px);
+  width: calc(100% - 260px);
   height: 54px;
   line-height: 54px;
   background: #293348;

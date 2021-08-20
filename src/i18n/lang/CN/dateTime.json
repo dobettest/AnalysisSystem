@@ -7,5 +7,10 @@
     "hour": "时",
     "day": "天",
     "minute": "分",
-    "second": "秒"
+    "second": "秒",
+    "week": "星期",
+    "range": "时间段",
+    "this-week": "本周",
+    "this-month": "本月",
+    "this-year": "今年"
 }

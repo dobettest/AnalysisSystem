@@ -3,6 +3,9 @@
     <a-row :gutter="24" class="bar-list">
       <a-col :span="12">
         <a-card title="游戏时长统计图" :hoverable="true" :bordered="false">
+          <div slot="extra">
+            <a-tag>全屏</a-tag>
+          </div>
           <gradients-bar class="chart-bar" />
         </a-card>
       </a-col>
@@ -41,7 +44,8 @@ export default {
   components: { gradientsBar, moreBar, doubleBar, groupBar, pieBar },
   data() {
     return {};
-  }
+  },
+  methods: {}
 };
 </script>
 <style lang="scss" scoped>

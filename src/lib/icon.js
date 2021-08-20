@@ -13,3 +13,10 @@ export { default as CaretDownOutline } from '@ant-design/icons/lib/outline/Caret
 export { default as CaretUpOutline } from '@ant-design/icons/lib/outline/CaretUpOutline';
 export { default as UserOutline } from '@ant-design/icons/lib/outline/UserOutline';
 export { default as SearchOutline } from '@ant-design/icons/lib/outline/SearchOutline';
+export { default as CheckCircleOutline } from '@ant-design/icons/lib/outline/CheckCircleOutline';
+export { default as LoadingOutline } from '@ant-design/icons/lib/outline/LoadingOutline';
+export { default as ExclamationCircleOutline } from '@ant-design/icons/lib/outline/ExclamationCircleOutline';
+export { default as CloseCircleOutline } from '@ant-design/icons/lib/outline/CloseCircleOutline';
+export { default as CheckCircleFill } from '@ant-design/icons/lib/fill/CheckCircleFill';
+export { default as ExclamationCircleFill } from '@ant-design/icons/lib/fill/ExclamationCircleFill';
+export { default as CloseCircleFill } from '@ant-design/icons/lib/fill/CloseCircleFill';

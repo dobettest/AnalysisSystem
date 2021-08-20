@@ -9,12 +9,12 @@
         :class="{ activeTime: currentType === item.key }"
         @click="changeType(item.key)"
       >
-        {{ item.label }}
+        {{ $t('dateTime.' + item.key) }}
       </span>
       <a-range-picker
         v-if="currentType === 'range'"
         @change="changeTime"
-        style="width:250px;margin-left:10px"
+        style="width: 250px; margin-left: 10px"
         :placeholder="['开始日期', '结束日期']"
       >
         <a-icon slot="suffixIcon" type="smile" />
@@ -28,23 +28,23 @@ export default {
   name: 'saleTitle',
   data() {
     return {
-      currentType: 'day',
+      currentType: 'today',
       timeOption: [
         {
           label: '今日',
-          key: 'day'
+          key: 'today'
         },
         {
           label: '本周',
-          key: 'week'
+          key: 'this-week'
         },
         {
           label: '本月',
-          key: 'month'
+          key: 'this-month'
         },
         {
           label: '本年',
-          key: 'year'
+          key: 'this-year'
         },
         {
           label: '时间段',

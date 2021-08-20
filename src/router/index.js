@@ -59,6 +59,15 @@ export const asyncRoutes = [
         }
       },
       {
+        name: 'meetingRoom',
+        path: '/meetingRoom',
+        component: () => import('@/views/meeting/index'),
+        meta: {
+          title: 'meeting',
+          icon: 'meeting'
+        }
+      },
+      {
         name: 'im',
         path: '/im',
         component: mainLayout,
@@ -157,7 +166,7 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ];
 
-const createRouter = function() {
+const createRouter = function () {
   return new VueRouter({
     routes: baseRoute,
     scrollBehavior: () => ({ y: 0 })

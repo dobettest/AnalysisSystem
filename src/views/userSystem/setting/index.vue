@@ -1,10 +1,10 @@
 <template>
   <div class="setting-container">
     <a-card :hoverable="true" :bordered="false">
-      <a-card title="基本资料" :bordered="false">
+      <a-card :title="$t('common.baseInfo')" :bordered="false">
         <account-base />
       </a-card>
-      <a-card title="安全设置" :bordered="false">
+      <a-card :title="$t('common.secureSetting')" :bordered="false">
         <security-setting />
       </a-card>
     </a-card>

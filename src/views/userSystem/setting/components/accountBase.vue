@@ -8,31 +8,31 @@
     ref="accountForm"
     hideRequiredMark
   >
-    <a-form-model-item prop="avatarUrl" label="头像">
+    <a-form-model-item prop="avatarUrl" :label="$t('common.avatar')">
       <avatar-upload
         :avatarUrl="accountForm.avatar"
         @change="updateAvatar"
         v-model="accountForm.avatar"
       ></avatar-upload>
     </a-form-model-item>
-    <a-form-model-item prop="username" label="用户名" hasFeedback>
+    <a-form-model-item prop="username" :label="$t('common.username')" hasFeedback>
       <a-input v-model="accountForm.username" placeholder="请输入用户名" allow-clear />
     </a-form-model-item>
-    <a-form-model-item label="角色">
+    <a-form-model-item :label="$t('common.role')">
       <a-input v-model="accountForm.role" disabled />
     </a-form-model-item>
-    <a-form-model-item prop="position" label="职位" hasFeedback>
+    <a-form-model-item prop="position" :label="$t('common.job')" hasFeedback>
       <a-input v-model="accountForm.position" allow-clear />
     </a-form-model-item>
-    <a-form-model-item prop="location" label="所在城市">
+    <a-form-model-item prop="location" :label="$t('common.city')">
       <a-input v-model="accountForm.location" allow-clear />
     </a-form-model-item>
-    <a-form-model-item prop="label" label="个人介绍">
+    <a-form-model-item prop="label" :label="$t('common.signature')">
       <a-textarea v-model="accountForm.label" placeholder="请输入个人介绍..." :autoSize="{ minRows: 4, maxRows: 7 }" />
     </a-form-model-item>
     <a-form-item class="text-center">
-      <a-button type="primary" @click="updateValue" :loading="loading"> 提交 </a-button>
-      <a-button style="margin-left: 25px" @click="resetFrom"> 取消 </a-button>
+      <a-button type="primary" @click="updateValue" :loading="loading"> {{ $t('common.submit') }} </a-button>
+      <a-button style="margin-left: 25px" @click="resetFrom"> {{ $t('common.cancel') }} </a-button>
     </a-form-item>
   </a-form-model>
 </template>
@@ -41,6 +41,7 @@
 import { mapState } from 'vuex';
 import avatarUpload from './avatar-upload';
 import { editTable } from '@/api/userManage';
+import tim from '@/lib/tim';
 export default {
   name: 'accountBase',
   components: { avatarUpload },
@@ -82,6 +83,11 @@ export default {
           const { username, position, location, label, skill, role, avatar } = this.accountForm;
           await editTable(this.accountForm);
           await this.$store.dispatch('user/updateInfo', { username, position, location, label, skill, role, avatar });
+          await tim.updateMyProfile({
+            nick: username,
+            avatar,
+            selfSignature: label
+          });
           this.$message.success('修改成功！');
           this.loading = false;
         }
