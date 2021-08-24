@@ -1,22 +1,46 @@
 // outline
-export { default as SettingOutline } from '@ant-design/icons/lib/outline/SettingOutline';
-export { default as DeleteOutline } from '@ant-design/icons/lib/outline/DeleteOutline';
-export { default as ZoomInOutline } from '@ant-design/icons/lib/outline/ZoomInOutline';
-export { default as StarOutline } from '@ant-design/icons/lib/outline/StarOutline';
-export { default as PlusOutline } from '@ant-design/icons/lib/outline/PlusOutline';
-export { default as SmileOutline } from '@ant-design/icons/lib/outline/SmileOutline';
-export { default as MessageOutline } from '@ant-design/icons/lib/outline/MessageOutline';
-export { default as LikeOutline } from '@ant-design/icons/lib/outline/LikeOutline';
-export { default as MenuFoldOutline } from '@ant-design/icons/lib/outline/MenuFoldOutline';
-export { default as MenuUnfoldOutline } from '@ant-design/icons/lib/outline/MenuUnfoldOutline';
-export { default as CaretDownOutline } from '@ant-design/icons/lib/outline/CaretDownOutline';
-export { default as CaretUpOutline } from '@ant-design/icons/lib/outline/CaretUpOutline';
-export { default as UserOutline } from '@ant-design/icons/lib/outline/UserOutline';
-export { default as SearchOutline } from '@ant-design/icons/lib/outline/SearchOutline';
-export { default as CheckCircleOutline } from '@ant-design/icons/lib/outline/CheckCircleOutline';
-export { default as LoadingOutline } from '@ant-design/icons/lib/outline/LoadingOutline';
-export { default as ExclamationCircleOutline } from '@ant-design/icons/lib/outline/ExclamationCircleOutline';
-export { default as CloseCircleOutline } from '@ant-design/icons/lib/outline/CloseCircleOutline';
-export { default as CheckCircleFill } from '@ant-design/icons/lib/fill/CheckCircleFill';
-export { default as ExclamationCircleFill } from '@ant-design/icons/lib/fill/ExclamationCircleFill';
-export { default as CloseCircleFill } from '@ant-design/icons/lib/fill/CloseCircleFill';
+import SettingOutline from '@ant-design/icons/lib/outline/SettingOutline';
+import DeleteOutline from '@ant-design/icons/lib/outline/DeleteOutline';
+import ZoomInOutline from '@ant-design/icons/lib/outline/ZoomInOutline';
+import StarOutline from '@ant-design/icons/lib/outline/StarOutline';
+import PlusOutline from '@ant-design/icons/lib/outline/PlusOutline';
+import SmileOutline from '@ant-design/icons/lib/outline/SmileOutline';
+import MessageOutline from '@ant-design/icons/lib/outline/MessageOutline';
+import LikeOutline from '@ant-design/icons/lib/outline/LikeOutline';
+import MenuFoldOutline from '@ant-design/icons/lib/outline/MenuFoldOutline';
+import MenuUnfoldOutline from '@ant-design/icons/lib/outline/MenuUnfoldOutline';
+import CaretDownOutline from '@ant-design/icons/lib/outline/CaretDownOutline';
+import CaretUpOutline from '@ant-design/icons/lib/outline/CaretUpOutline';
+import UserOutline from '@ant-design/icons/lib/outline/UserOutline';
+import SearchOutline from '@ant-design/icons/lib/outline/SearchOutline';
+import CheckCircleOutline from '@ant-design/icons/lib/outline/CheckCircleOutline';
+import LoadingOutline from '@ant-design/icons/lib/outline/LoadingOutline';
+import ExclamationCircleOutline from '@ant-design/icons/lib/outline/ExclamationCircleOutline';
+import CloseCircleOutline from '@ant-design/icons/lib/outline/CloseCircleOutline';
+import CheckCircleFill from '@ant-design/icons/lib/fill/CheckCircleFill';
+import ExclamationCircleFill from '@ant-design/icons/lib/fill/ExclamationCircleFill';
+import CloseCircleFill from '@ant-design/icons/lib/fill/CloseCircleFill';
+
+export default {
+  SettingOutline,
+  DeleteOutline,
+  ZoomInOutline,
+  StarOutline,
+  PlusOutline,
+  SmileOutline,
+  MessageOutline,
+  LikeOutline,
+  MenuFoldOutline,
+  MenuUnfoldOutline,
+  CaretDownOutline,
+  CaretUpOutline,
+  UserOutline,
+  SearchOutline,
+  CheckCircleOutline,
+  LoadingOutline,
+  ExclamationCircleOutline,
+  CloseCircleOutline,
+  CheckCircleFill,
+  ExclamationCircleFill,
+  CloseCircleFill,
+}

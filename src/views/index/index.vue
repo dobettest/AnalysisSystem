@@ -16,17 +16,25 @@
 
     <a-row :gutter="24" class="sale-list">
       <a-col :span="8">
-        <a-card title="消费种类占比" :hoverable="true" :bordered="false">
+        <chart-panel title="消费种类占比">
           <pie-chart :chartData="pieData" />
-        </a-card>
+        </chart-panel>
       </a-col>
       <a-col :span="8">
         <a-card title="热门搜索" :hoverable="true" :bordered="false">
+          <div slot="extra">
+            <svg-icon icon="screencut"></svg-icon>
+            <svg-icon icon="excel"></svg-icon>
+          </div>
           <hot-chart :chartData="hotData" />
         </a-card>
       </a-col>
       <a-col :span="8">
         <a-card title="到店人数统计" :hoverable="true" :bordered="false">
+          <div slot="extra">
+            <svg-icon icon="screencut"></svg-icon>
+            <svg-icon icon="excel"></svg-icon>
+          </div>
           <more-chart :chartData="moreData" />
         </a-card>
       </a-col>
@@ -37,6 +45,7 @@
 <script>
 import { cardList, saleTitle, shopRank, pieChart, hotChart, moreChart } from './components';
 import { getRankShopData, getPieTypeData, getHotSearchData, getMoreData } from '@/api/dashboard';
+import chartPanel from '@/components/chartPanel';
 export default {
   name: 'index',
   components: {
@@ -45,7 +54,8 @@ export default {
     shopRank,
     pieChart,
     hotChart,
-    moreChart
+    moreChart,
+    chartPanel
   },
   data() {
     return {
@@ -130,6 +140,20 @@ export default {
   }
   .sale-list {
     margin: 25px 0;
+  }
+  /deep/ .ant-card {
+    .ant-card-extra {
+      visibility: hidden;
+      .svgClass {
+        font-size: 24px !important;
+        margin: 0 4px;
+      }
+    }
+    &:hover {
+      .ant-card-extra {
+        visibility: visible;
+      }
+    }
   }
 }
 </style>

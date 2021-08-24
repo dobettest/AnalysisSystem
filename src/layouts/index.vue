@@ -29,9 +29,6 @@ import { mapState } from 'vuex';
 export default {
   name: 'layout',
   components: { sideBar, navBar, tagView, setting, backTop, horizontalSide },
-  data() {
-    return {};
-  },
   computed: {
     ...mapState({
       open: state => state.setting.open,
@@ -45,7 +42,7 @@ export default {
   },
   methods: {
     changeVisivle() {
-      this.$store.dispatch('setting/changeVisible', true);
+      this.$store.dispatch('setting/changeSetting', { key: 'settingVisible', value: true });
     }
   }
 };

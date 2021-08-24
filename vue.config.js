@@ -2,15 +2,10 @@ const path = require('path');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 //const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-const minimist = require('minimist');
 const resolve = dir => {
   return path.join(__dirname, dir);
 };
 const isProd = process.env.NODE_ENV === 'production';
-const rawArgv = process.argv.slice(3);
-//minimist是nodejs的命令行参数解析工具，因其简单好用，轻量等特性，所以用户使用较多。
-const args = minimist(rawArgv);
-//const publicPath = process.env.publicPath || './';
 const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk } = require('./src/plugins/cdn');
 const cdn = {
   css: [],
@@ -29,7 +24,7 @@ const cdn = {
 
 module.exports = {
   productionSourceMap: false,
-  publicPath:isProd?'https://cdn.dobettest.cn':'./',
+  publicPath: isProd ? 'https://cdn.dobettest.cn' : './',
   lintOnSave: !isProd,
   css: {
     loaderOptions: {

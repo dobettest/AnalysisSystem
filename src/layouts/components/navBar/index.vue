@@ -65,7 +65,7 @@ export default {
       this.isFullscreen = !this.isFullscreen;
     },
     changeVisible() {
-      this.$store.dispatch('setting/changeVisible', true);
+      this.$store.dispatch('setting/changeSetting', { key: 'settingVisible', value: true });
     },
     toNotice() {
       this.count = 0;

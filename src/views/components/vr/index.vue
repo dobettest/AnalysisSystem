@@ -1,40 +1,75 @@
 <template>
-  <div class="PSViewer" ref="psvdbg" style="height: calc(100vh - 148px)"></div>
+  <div class="PSViewer" ref="psvdbg" style="height: calc(100vh - 148px)">
+    <div class="scene-container" ref="scene">
+      <ul class="scene-list" :style="{ width }">
+        <li class="scene-item" v-for="(item, idx) in scene" :key="idx" @click="change(item.src)">
+          <img v-lazy="item.src" class="scene-img" />
+          <div class="scene-title">{{ item.title }}</div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
 import remoteLoad from '@/utils/remoteLoad';
 import { threeJs } from '@/plugins/cdn.js';
 import 'photo-sphere-viewer/dist/photo-sphere-viewer.css';
+import bs from '@better-scroll/core';
 export default {
   name: 'vr',
   data() {
     return {
-      img: require('../../../assets/vr/base.jpg'),
+      img: require('@/assets/vr/base.jpg'),
       psv: null,
       scene: [
         {
-          src: require('../../../assets/vr/base.jpg'),
+          src: require('@/assets/vr/base.jpg'),
           title: '客厅'
         },
         {
-          src: require('../../../assets/vr/room.jpeg'),
+          src: require('@/assets/vr/room.jpeg'),
           title: '卧室'
         },
         {
-          src: require('../../../assets/vr/child.jpeg'),
+          src: require('@/assets/vr/child.jpeg'),
           title: '儿童房'
         },
         {
-          src: require('../../../assets/vr/kitchen.jpeg'),
+          src: require('@/assets/vr/kitchen.jpeg'),
           title: '厨房'
         },
         {
-          src: require('../../../assets/vr/p1.jpeg'),
+          src: require('@/assets/vr/p1.jpeg'),
+          title: '厕所'
+        },
+        {
+          src: require('@/assets/vr/base.jpg'),
+          title: '客厅'
+        },
+        {
+          src: require('@/assets/vr/room.jpeg'),
+          title: '卧室'
+        },
+        {
+          src: require('@/assets/vr/child.jpeg'),
+          title: '儿童房'
+        },
+        {
+          src: require('@/assets/vr/kitchen.jpeg'),
+          title: '厨房'
+        },
+        {
+          src: require('@/assets/vr/p1.jpeg'),
           title: '厕所'
         }
       ]
     };
+  },
+  computed: {
+    width() {
+      return this.scene.length * 124 + 'px';
+    }
   },
   async mounted() {
     await remoteLoad(threeJs);
@@ -42,50 +77,21 @@ export default {
     this.psv = new Viewer({
       panorama: this.img, //图片
       container: this.$refs.psvdbg, //id
+      navbar: ['autorotate', 'zoom', 'caption'],
       size: {
         width: '100%',
-        height: this.$refs.psvdbg.offsetHeight
+        height: '100%'
       },
-      navbar: ['autorotate', 'zoom', 'caption'],
       plugins: []
     });
-    this.initScene();
+    new bs(this.$refs.scene, {
+      scrollX: true,
+      scrollY: false
+    });
   },
   methods: {
-    initScene() {
-      let { scene } = this;
-      let fragment = document.createDocumentFragment();
-      let el = document.createElement('div');
-      el.className = 'scene-list';
-      el.addEventListener(
-        'click',
-        e => {
-          let ele = e.target || e.srcElement;
-          if (ele.parentNode.classList.contains('scene-item')) {
-            let panorama = ele.parentNode.getAttribute('panorama');
-            this.psv.setPanorama(panorama);
-          }
-        },
-        {
-          passive: true
-        }
-      );
-      for (let item of scene) {
-        let div = document.createElement('div');
-        div.className = 'scene-item';
-        div.setAttribute('panorama', item.src);
-        let img = document.createElement('img');
-        let title = document.createElement('div');
-        title.innerText = item.title;
-        title.className = 'scene-title';
-        img.className = 'scene-img';
-        img.src = item.src;
-        div.appendChild(img);
-        div.appendChild(title);
-        el.appendChild(div);
-      }
-      fragment.appendChild(el);
-      this.$refs.psvdbg.appendChild(fragment);
+    change(panorama) {
+      this.psv.setPanorama(panorama);
     }
   }
 };
@@ -93,35 +99,40 @@ export default {
 <style lang="scss">
 .PSViewer {
   position: relative;
+  overflow-x: hidden;
 }
-.scene-list {
+.scene-container {
   position: absolute;
   bottom: 48px;
   left: 50%;
   transform: translateX(-50%);
-  height: 90px;
   z-index: 1000;
-  white-space: nowrap;
-  .scene-item {
-    display: inline-block;
-    width: 120px;
+  width: 620px;
+  overflow: hidden;
+  .scene-list {
     height: 90px;
-    margin: 0 2px;
-    border: 0.1px solid #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-    .scene-img {
-      width: 100%;
-      height: 100%;
-    }
-    .scene-title {
-      color: #fff;
-      position: absolute;
-      bottom: 3px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-weight: 600;
+    white-space: nowrap;
+    .scene-item {
+      display: inline-block;
+      width: 120px;
+      height: 90px;
+      margin: 0 2px;
+      border: 0.1px solid #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      .scene-img {
+        height: 90px;
+        width: 100%;
+      }
+      .scene-title {
+        color: #fff;
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 600;
+      }
     }
   }
 }

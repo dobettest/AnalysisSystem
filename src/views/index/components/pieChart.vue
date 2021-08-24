@@ -28,7 +28,7 @@ export default {
       this.myChart = echarts.init(this.$refs.pieChart);
       this.myChart.setOption(
         {
-          color: colorLost,
+          color: ['#4FD8FF', '#C15FFF', '#FF5F55', '#FFC935', '#767BFB', 'rgb(248,70,102)'],
           tooltip: {
             trigger: 'item',
             formatter: params => {

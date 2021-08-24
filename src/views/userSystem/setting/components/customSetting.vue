@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { changeTheme } from '@/store/modules/setting';
 export default {
   name: 'custom',
   data() {
@@ -65,10 +66,9 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'theme',
-          value: val,
-          cache: 'THEME'
+          value: val
         });
-        document.getElementsByTagName('body')[0].className = `miscro-cloud-station-${val}Theme`;
+        changeTheme(val);
       }
     },
     layout: {
@@ -78,8 +78,7 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'layout',
-          value: val,
-          cache: 'LAYOUT'
+          value: val
         });
       }
     },
@@ -90,8 +89,7 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'tagShow',
-          value: val,
-          cache: 'TAG_SHOW'
+          value: val
         });
       }
     },
@@ -102,8 +100,7 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'fixHeader',
-          value: val,
-          cache: 'FIX_HEARDER'
+          value: val
         });
       }
     }

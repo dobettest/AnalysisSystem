@@ -166,7 +166,7 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ];
 
-const createRouter = function () {
+const createRouter = function() {
   return new VueRouter({
     routes: baseRoute,
     scrollBehavior: () => ({ y: 0 })

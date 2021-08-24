@@ -3,7 +3,6 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import { i18n } from './i18n';
-import screenfull from '@/components/screenfull';
 
 Vue.config.productionTip = false;
 import '@/styles/index.scss'; // global css
@@ -18,7 +17,6 @@ import '@/assets/font/iconfont.css';
 import scrollBar from '@/components/scrollBar';
 import '@/components/scrollBar/index.scss';
 Vue.component('scroll-bar', scrollBar);
-Vue.use(screenfull);
 import loading from '@/components/loading/loading'; // 引入loading
 
 import VueLazyLoad from 'vue-lazyload';

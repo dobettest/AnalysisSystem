@@ -20,5 +20,6 @@
     "submit": "提交",
     "cancel": "取消",
     "none": "暂无",
-    "username": "用户名"
+    "username": "用户名",
+    "role":"角色"
 }

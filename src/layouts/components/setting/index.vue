@@ -49,7 +49,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { changeTheme } from '@/store/modules/setting';
+import { changeLocale } from '@/i18n';
 export default {
   name: 'setting',
   data() {
@@ -102,27 +103,9 @@ export default {
         }
         this.$store.dispatch('setting/changeSetting', {
           key: 'theme',
-          value: color,
-          cache: 'THEME'
+          value: color
         });
-        const theme = document.getElementById('theme-style');
-        const style = theme || document.createElement('link');
-
-        style.href = `theme/${color}Theme.css`;
-
-        if (!theme) {
-          style.type = 'text/css';
-          style.rel = 'stylesheet';
-          style.id = 'theme-style';
-
-          document
-            .getElementsByTagName('head')
-            .item(0)
-            .appendChild(style);
-        }
-        document.getElementsByTagName('body')[0].className = `${color}Theme`;
-        // 设置 css 变量
-        document.getElementsByTagName('body')[0].style.setProperty('--color-primary', color);
+        changeTheme(color);
       }
     },
     settingVisible: {
@@ -130,7 +113,7 @@ export default {
         return this.$store.state.setting.settingVisible;
       },
       set(val) {
-        this.$store.dispatch('setting/changeVisible', val);
+        this.$store.dispatch('setting/changeSetting', { key: 'settingVisible', value: val });
       }
     },
     layout: {
@@ -140,8 +123,7 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'layout',
-          value: val,
-          cache: 'LAYOUT'
+          value: val
         });
       }
     },
@@ -152,8 +134,7 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'tagShow',
-          value: val,
-          cache: 'TAG_SHOW'
+          value: val
         });
       }
     },
@@ -164,16 +145,23 @@ export default {
       set(val) {
         this.$store.dispatch('setting/changeSetting', {
           key: 'fixHeader',
-          value: val,
-          cache: 'FIX_HEARDER'
+          value: val
         });
       }
     },
-    ...mapState({ lang: state => state.setting.locale })
+    lang: {
+      get() {
+        return this.$store.state.setting.locale;
+      },
+      set(value) {
+        this.$store.dispatch('setting/changeSetting', { key: 'locale', value });
+        changeLocale(value);
+      }
+    }
   },
   methods: {
     changeLocale(value) {
-      this.$store.dispatch('setting/changeLocale', value);
+      this.lang = value;
     },
     changeTag(checked) {
       this.tagShow = checked;
