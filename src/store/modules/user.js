@@ -1,7 +1,7 @@
 import { getCache, setCache, removeCache } from '@/utils/session';
 import { login, logout, getCodeTest, getInfo } from '@/api/user';
 import { resetRouter } from '@/router';
-import tim from '@/lib/tim';
+//import tim from '@/lib/tim';
 import { bootstrap } from './setting';
 const state = {
   accountInfo: null,
@@ -86,17 +86,17 @@ const actions = {
         commit('SET_USERINFO', info);
         commit('SET_USERSIGN', userSig);
         await bootstrap(info['config']);//配置用户个性主题
-        await tim
-          .login({
-            userID: info.userID,
-            userSig
-          })
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        // await tim
+        //   .login({
+        //     userID: info.userID,
+        //     userSig
+        //   })
+        //   .then(res => {
+        //     console.log(res);
+        //   })
+        //   .catch(err => {
+        //     console.log(err);
+        //   });
         return Promise.resolve(info);
       }
       return Promise.reject(message);

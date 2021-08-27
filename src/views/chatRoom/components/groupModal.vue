@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import tim from '@/lib/tim';
+//import tim from '@/lib/tim';
 export default {
   props: {
     currentRow: [Object, null],
@@ -93,19 +93,19 @@ export default {
   },
   methods: {
     getOptions() {
-      let options = {
-        ...this.form
-      };
-      if (
-        [this.TIM.TYPES.GRP_WORK, this.TIM.TYPES.GRP_AVCHATROOM, this.TIM.TYPES.GRP_MEETING].includes(this.form.type)
-      ) {
-        delete options.joinOption;
-      }
-      return options;
+      // let options = {
+      //   ...this.form
+      // };
+      // if (
+      //   [this.TIM.TYPES.GRP_WORK, this.TIM.TYPES.GRP_AVCHATROOM, this.TIM.TYPES.GRP_MEETING].includes(this.form.type)
+      // ) {
+      //   delete options.joinOption;
+      // }
+      // return options;
     },
     async handleOk() {
-      const res = await tim.createGroup(this.getOptions());
-      console.log('res', res);
+      // const res = await tim.createGroup(this.getOptions());
+      // console.log('res', res);
     },
     selectType(type) {
       console.log('type', type);

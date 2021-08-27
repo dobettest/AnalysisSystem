@@ -10,7 +10,7 @@
         </div>
         <tag-view v-if="tagShow" />
       </div>
-      <div class="rightPanl fixed pointer" @click="changeVisivle">
+      <div class="rightPanl" @click="changeVisivle">
         <a-icon type="setting" class="settingIcon" />
         <setting />
       </div>
@@ -50,7 +50,6 @@ export default {
 <style lang="scss" scoped>
 .all-container {
   height: 100%;
-  position: relative;
 }
 .aside-container {
   background: rgb(41, 51, 72);
@@ -63,27 +62,30 @@ export default {
   height: 100%;
 }
 .rightPanl {
+  position: fixed;
   right: 1px;
-  top: 300px;
+  top:50%;
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
   color: #fff;
-  background: #1890ff;
+  background: $color-primary;
   border-radius: 6px 0 0 6px;
   text-align: center;
   line-height: 50px;
   font-size: 24px;
   z-index: 999;
+  cursor: pointer;
 }
 .app-main {
   height: 100%;
+  width: 100%;
 }
 
 .main-container {
   height: 100%;
-  flex-grow: 1;
   margin-left: 256px;
+  width: calc(100% - 256px);
   .fixed-header {
     position: fixed;
     top: 0;
@@ -120,6 +122,9 @@ export default {
 
 //水平布局
 .horizontal {
+  .aside-container{
+    width: 0;
+  }
   .horizontal-nav {
     background: #293348;
     color: #f1f1f1;
@@ -128,6 +133,7 @@ export default {
   }
   .main-container {
     margin-left: 0;
+    width:100%;
   }
   .fixed-header {
     width: 100%;

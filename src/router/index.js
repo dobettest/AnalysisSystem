@@ -59,15 +59,6 @@ export const asyncRoutes = [
         }
       },
       {
-        name: 'meetingRoom',
-        path: '/meetingRoom',
-        component: () => import('@/views/meeting/index'),
-        meta: {
-          title: 'meeting',
-          icon: 'meeting'
-        }
-      },
-      {
         name: 'im',
         path: '/im',
         component: mainLayout,

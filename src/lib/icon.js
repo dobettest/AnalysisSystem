@@ -20,7 +20,9 @@ import CloseCircleOutline from '@ant-design/icons/lib/outline/CloseCircleOutline
 import CheckCircleFill from '@ant-design/icons/lib/fill/CheckCircleFill';
 import ExclamationCircleFill from '@ant-design/icons/lib/fill/ExclamationCircleFill';
 import CloseCircleFill from '@ant-design/icons/lib/fill/CloseCircleFill';
-
+import LeftOutline from '@ant-design/icons/lib/outline/LeftOutline';
+import RightOutline from '@ant-design/icons/lib/outline/RightOutline';
+import CaretDownFill from '@ant-design/icons/lib/fill/CaretDownFill';
 export default {
   SettingOutline,
   DeleteOutline,
@@ -43,4 +45,7 @@ export default {
   CheckCircleFill,
   ExclamationCircleFill,
   CloseCircleFill,
+  LeftOutline,
+  RightOutline,
+  CaretDownFill
 }

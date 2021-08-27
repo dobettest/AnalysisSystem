@@ -4,7 +4,7 @@
     <div class="sale-time">
       <span
         v-for="item in timeOption"
-        class="time-item pointer"
+        class="time-item"
         :key="item.key"
         :class="{ activeTime: currentType === item.key }"
         @click="changeType(item.key)"
@@ -92,6 +92,7 @@ export default {
       background: #fff;
       text-align: center;
       margin: 0 5px;
+      cursor: pointer;
       &.activeTime {
         background: #1890ff;
         border-radius: 4px;

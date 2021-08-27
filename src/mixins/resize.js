@@ -1,4 +1,5 @@
 import { debounce } from '@/utils/index.js';
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -7,9 +8,10 @@ export default {
     };
   },
   computed: {
-    open() {
-      return this.$store.state.setting.open;
-    }
+    ...mapState({
+      open: state => state.setting.open,
+      layout: state => state.setting.layout
+    })
   },
   mounted() {
     this.resizeHandler = debounce(() => {
@@ -55,6 +57,11 @@ export default {
   },
   watch: {
     open() {
+      if (this.myChart) {
+        this.myChart.resize();
+      }
+    },
+    layout() {
       if (this.myChart) {
         this.myChart.resize();
       }

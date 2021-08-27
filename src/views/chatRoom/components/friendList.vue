@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import tim from '@/lib/tim';
+//import tim from '@/lib/tim';
 export default {
   data() {
     return {
@@ -47,14 +47,14 @@ export default {
   },
   methods: {
     getFriendList() {
-      tim
-        .getFriendList()
-        .then(res => {
-          console.log('tim', res);
-        })
-        .catch(err => {
-          this.$$message.error(err.message);
-        });
+      // tim
+      //   .getFriendList()
+      //   .then(res => {
+      //     console.log('tim', res);
+      //   })
+      //   .catch(err => {
+      //     this.$$message.error(err.message);
+      //   });
     }
   }
 };

@@ -2,7 +2,7 @@
   <div class="icon-container">
     <a-list :grid="{ gutter: 16, column: 6 }" :data-source="localIcon">
       <a-list-item slot="renderItem" slot-scope="item">
-        <div class="text-center pointer icon-wrapper" @click.capture.stop="handleCopy(item, $event)">
+        <div class="text-center icon-wrapper" @click.capture.stop="handleCopy(item, $event)">
           <svg-icon :icon="item" :size="30" class="disabled" />
           <div style="margin-top: 8px">{{ item }}</div>
         </div>
@@ -32,6 +32,7 @@ export default {
   background-color: #f0f2f5;
   .icon-wrapper {
     padding: 15px 0;
+    cursor: pointer;
     &:hover {
       background-color: #1890ff;
       color: #fff;

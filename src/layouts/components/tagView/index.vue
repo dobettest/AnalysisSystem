@@ -1,10 +1,10 @@
 <template>
   <div class="tagView-wrapper">
-    <a-icon type="left" class="pointer tag_btn" style="left: 0" @click="handleScroll(240)" v-show="hanldeBtn" />
-    <div class="scroll-outer" ref="scrollOuter" :style="outerWidth">
-      <div class="scroll-body" ref="scrollBody" :style="{ left: tagBodyLeft + 'px' }">
+    <a-icon type="left" class="tag_btn" style="left: 0" @click="handleScroll(240)" v-show="hanldeBtn" />
+    <div class="scroll-outer" ref="scrollOuter">
+      <div class="scroll-body" ref="scrollBody">
         <router-link
-          class="tag-item pointer inline-block"
+          class="tag-item inline-block"
           :to="item.path"
           v-for="(item, index) in tagList"
           :key="item.path"
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <a-icon type="right" class="pointer tag_btn" style="right: 0" @click="handleScroll(-240)" v-show="hanldeBtn" />
+    <a-icon type="right" class="tag_btn" style="right: 0" @click="handleScroll(-240)" v-show="hanldeBtn" />
   </div>
 </template>
 
@@ -55,8 +55,6 @@ export default {
     }
   },
   mounted() {
-    this.addTag();
-    this.changeTagWidth();
   },
 
   methods: {
@@ -74,8 +72,6 @@ export default {
             path: data[data.length - 1].path
           });
         }
-        this.changeTagWidth();
-        this.moveToTag();
       });
     },
     handleScroll(val) {
@@ -105,7 +101,7 @@ export default {
 
         //标签在左边
         if (eleLeft == 0 && index == 0) {
-          return;
+          return; //首页
         }
         if (eleLeft < -this.tagBodyLeft) {
           this.tagBodyLeft = -eleLeft + 4;
@@ -118,10 +114,11 @@ export default {
     }
   },
   watch: {
-    $route(nl) {
-      this.changeTagWidth();
-      this.addTag();
-      this.moveToTag();
+    $route: {
+      handler(nl) {
+        this.addTag();
+      },
+      immediate: true
     }
   }
 };
@@ -142,10 +139,12 @@ $height: 46px;
     transform: translateY(-50%);
     z-index: 99;
     position: absolute;
+    cursor: pointer;
   }
   .scroll-outer {
     position: absolute;
     height: 100%;
+    width: 100%;
     overflow: hidden;
     z-index: 1;
     .scroll-body {
@@ -154,6 +153,7 @@ $height: 46px;
       display: inline-block;
       white-space: nowrap;
       height: 100%;
+      width: calc(100% - 8px);
       line-height: $height;
       position: absolute;
       .tag-item {
@@ -164,6 +164,7 @@ $height: 46px;
         border-radius: 4px;
         padding: 0 8px;
         margin-right: 10px;
+        cursor: pointer;
 
         .tag-title {
           display: inline-block;

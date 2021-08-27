@@ -121,6 +121,7 @@ export default {
       border-radius: 4px;
       cursor: pointer;
       position: relative;
+      user-select:none;//禁止选择
       .scene-img {
         height: 90px;
         width: 100%;

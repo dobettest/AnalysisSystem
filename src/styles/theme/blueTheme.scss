@@ -1,13 +1,33 @@
+$html-selector:html;
 $color-primary:#1890ff;
-.blueTheme {
-  .rightPanl {
-    background: $color-primary !important;
-    .settingIcon {
-      color: #fff;
-    }
-  }
+$menu-prefix-cls:ant-menu;
+$ant-radio-button-wrapper:ant-radio-button-wrapper;
+#{$html-selector}{
+  --antd-wave-shadow-color:#{$color-primary};
+  --theme-color:#{$color-primary};
+}
+.blueTheme{
   .tagView-wrapper .scroll-outer .scroll-body .activeTag {
     background: $color-primary !important;
+  }
+  .ant-btn-primary{
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
+  .ant-menu{
+    &-horizontal,&-vertical {
+      > .#{$menu-prefix-cls}-item,
+      > .#{$menu-prefix-cls}-submenu {
+        &:hover,
+        &-active,
+        &-open{
+          color: $color-primary;
+        }
+      }
+    }
+    &-item-selected{
+      background-color:$color-primary !important;
+    }
   }
   .sale-title .sale-time .time-item.activeTime {
     background: $color-primary !important;
@@ -15,19 +35,38 @@ $color-primary:#1890ff;
       background: $color-primary !important;
     }
   }
-  .backTop .ant-back-top {
-    background: $color-primary !important;
+  .ant-back-top{
+    background-color: $color-primary !important;
   }
-
-  .ant-menu.ant-menu-dark .ant-menu-item-selected {
-    background: $color-primary !important;
+  .ant-switch-checked{
+    background-color: $color-primary !important;
   }
-  .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-    background: $color-primary !important;
-    border-color: $color-primary !important;
-    box-shadow: -1px 0 0 0 $color-primary !important;
+  .ant-tabs-nav{
+    .ant-tabs-tab-active,.ant-tabs-tab:hover{
+    color:$color-primary;
   }
-  .ant-switch-checked {
-    background: $color-primary !important;
   }
+  .ant-tabs-ink-bar{
+    background-color: $color-primary;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner{
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
+  .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner::after{
+    background-color: $color-primary;
+  }
+  .ant-tree-checkbox-checked .ant-tree-checkbox-inner{
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
+  .ant-radio-group-solid .#{$ant-radio-button-wrapper}-checked:not(.#{$ant-radio-button-wrapper}-disabled) {
+    background: $color-primary;
+    border-color: $color-primary;
+    &:hover {
+      background: $color-primary;
+      border-color: $color-primary;
+    }
+  
+}
 }

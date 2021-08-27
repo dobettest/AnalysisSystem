@@ -1,26 +1,54 @@
-.greenTheme .rightPanl {
-  background: #52c41a !important; }
-  .greenTheme .rightPanl .settingIcon {
-    color: #fff; }
+html {
+  --antd-wave-shadow-color:#52c41a;
+  --theme-color:#52c41a; }
 
 .greenTheme .tagView-wrapper .scroll-outer .scroll-body .activeTag {
   background: #52c41a !important; }
+
+.greenTheme .ant-btn-primary {
+  background-color: #52c41a;
+  border-color: #52c41a; }
+
+.greenTheme .ant-menu-horizontal > .ant-menu-item:hover, .greenTheme .ant-menu-horizontal > .ant-menu-item-active, .greenTheme .ant-menu-horizontal > .ant-menu-item-open,
+.greenTheme .ant-menu-horizontal > .ant-menu-submenu:hover,
+.greenTheme .ant-menu-horizontal > .ant-menu-submenu-active,
+.greenTheme .ant-menu-horizontal > .ant-menu-submenu-open {
+  color: #52c41a; }
+
+.greenTheme .ant-menu-item-selected {
+  background-color: #52c41a !important; }
 
 .greenTheme .sale-title .sale-time .time-item.activeTime {
   background: #52c41a !important; }
   .greenTheme .sale-title .sale-time .time-item.activeTime:hover {
     background: #52c41a !important; }
 
-.greenTheme .backTop .ant-back-top {
-  background: #52c41a !important; }
-
-.greenTheme .ant-menu.ant-menu-dark .ant-menu-item-selected {
-  background: #52c41a !important; }
-
-.greenTheme .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  background: #52c41a !important;
-  border-color: #52c41a !important;
-  box-shadow: -1px 0 0 0 #52c41a !important; }
+.greenTheme .ant-back-top {
+  background-color: #52c41a !important; }
 
 .greenTheme .ant-switch-checked {
-  background: #52c41a !important; }
+  background-color: #52c41a !important; }
+
+.greenTheme .ant-tabs-nav .ant-tabs-tab-active, .greenTheme .ant-tabs-nav .ant-tabs-tab:hover {
+  color: #52c41a; }
+
+.greenTheme .ant-tabs-ink-bar {
+  background-color: #52c41a; }
+
+.greenTheme .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #52c41a;
+  border-color: #52c41a; }
+
+.greenTheme .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner::after {
+  background-color: #52c41a; }
+
+.greenTheme .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+  background-color: #52c41a;
+  border-color: #52c41a; }
+
+.greenTheme .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background: #52c41a;
+  border-color: #52c41a; }
+  .greenTheme .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+    background: #52c41a;
+    border-color: #52c41a; }

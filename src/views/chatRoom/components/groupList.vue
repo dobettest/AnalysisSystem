@@ -19,7 +19,7 @@
 
 <script>
 import groupModal from './groupModal.vue';
-import tim from '@/lib/tim';
+//import tim from '@/lib/tim';
 export default {
   data() {
     return {
@@ -63,16 +63,16 @@ export default {
       this.visible = true;
     },
     getGroupList() {
-      tim
-        .getGroupList()
-        .then(({ data: { groupList } }) => {
-          console.log(groupList, typeof groupList);
-          this.groupList = groupList;
-          //this.$store.dispatch("updateGroupList", groupList);
-        })
-        .catch(error => {
-          this.$message.error(error.message);
-        });
+      // tim
+      //   .getGroupList()
+      //   .then(({ data: { groupList } }) => {
+      //     console.log(groupList, typeof groupList);
+      //     this.groupList = groupList;
+      //     //this.$store.dispatch("updateGroupList", groupList);
+      //   })
+      //   .catch(error => {
+      //     this.$message.error(error.message);
+      //   });
     }
   }
 };

@@ -1,7 +1,6 @@
-$color-primary:rgb(82, 196, 26);
+$html-selector:html;
 $primary: #1890ff;
-
-$color-primary: var(--color-primary, $primary);
+$color-primary: var(--theme-color, $primary);
 $color-success: #67c23a;
 $color-danger: #f56c6c;
 $color-info: #909399;

@@ -15,7 +15,7 @@ export default {
 <style lang="scss" scoped>
 .paddingBox-container {
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   padding: 24px;
   background: #f0f2f5;
 }

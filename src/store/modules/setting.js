@@ -38,7 +38,7 @@ export const changeTheme = (color) => {
   }
   document.getElementsByTagName('body')[0].className = `${color}Theme`;
   // 设置 css 变量
-  document.getElementsByTagName('body')[0].style.setProperty('--color-primary', color);
+  //document.getElementsByTagName('body')[0].style.setProperty('--color-primary', color);
 }
 const mutations = {
   TOGGLE_OPEN(state) {

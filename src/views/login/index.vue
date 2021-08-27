@@ -75,7 +75,7 @@
           <a-checkbox v-model="loginForm.remember" v-if="currentTab === 'user'">记住密码</a-checkbox>
           <div style="float: right">
             <span style="margin-right: 15px">其他登录方式</span>
-            <svg-icon icon="qq" :size="25" class="pointer verticalMiddle"></svg-icon>
+            <svg-icon icon="qq" :size="25" class="verticalMiddle"></svg-icon>
           </div>
         </a-form-item>
       </a-form-model>
