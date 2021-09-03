@@ -225,7 +225,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .login-container {
   background-image: url('~@/assets/login/background.jpg');
   .layout {

@@ -9,26 +9,34 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const { ProvidePlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const dotenv = require('dotenv');
-const minimist = require('minimist');
 const resolve = (dir) => {
     return path.join(__dirname, dir);
 }
+dotenv.config({
+    path: resolve(['.env.', process.env.NODE_ENV].join(''))
+})
 const isProd = process.env.NODE_ENV === 'production';
-const resolveClientEnv = () => {
-    const { parsed: dotconfig } = dotenv.config({
-        path: resolve([".env.", process.env.NODE_ENV].join(''))
-    })
-    const args = minimist(process.argv.slice(4), {
-        boolean: [
-            'report'
-        ]
-    })
-    console.log(process.argv, args)
-}
-resolveClientEnv();
+const resolvePlugin = isProd ? [new DefinePlugin({
+    'process.env': JSON.stringify(process.env)
+}),
+new MiniCssExtractPlugin({
+    filename: 'css/[contenthash:8].css',
+    chunkFilename: 'css/[contenthash:8].css'
+}), new BundleAnalyzerPlugin(),
+new IgnorePlugin({
+    resourceRegExp: /^\.\/locale$/,
+    contextRegExp: /moment$/
+}),
+new CompressionWebpackPlugin({
+    filename: '[path][base].gz',
+    algorithm: 'gzip',
+    test: /\.js$|\.css/, //匹配文件名
+    threshold: 10240, //对超过10k的数据压缩
+    minRatio: 0.8
+})] : []
 const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk } = require('./src/plugins/cdn');
 const cdn = {
     css: [],
@@ -53,17 +61,14 @@ module.exports = {
         path: resolve("dist"),
         filename: 'js/[name].[contenthash:8].js',
         chunkFilename: 'js/[name].[contenthash:8].js',
-        publicPath: isProd ? 'https://cdn.dobettest.cn' : './'
+        //publicPath: isProd ? 'https://cdn.dobettest.cn' : './'
+        publicPath: './'
     },
     watchOptions: {
         ignored: /node_modules/
     },
     devServer: {
-        contentBase: path.join(__dirname, "dist"),
-        compress: true,
-        host: '0.0.0.0',
-        port: 8081,
-        https: false
+        static:'dist'
     },
     resolve: {
         alias: {
@@ -72,7 +77,7 @@ module.exports = {
             '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js'),
             vue$: 'vue/dist/vue.esm.js'
         },
-        extensions: ['.js', '.vue', '.json'],
+        extensions: ['.mjs', '.js', '.jsx', '.js', '.vue', '.json'],
         modules: ['node_modules']
     },
     module: {
@@ -97,19 +102,34 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
-                include: resolve('src/icons'),
-                use: [{
-                    loader: 'svg-sprite-loader',
-                    options: {
-                        symbolId: 'icon-[name]'
+                oneOf: [
+                    {
+                        include: resolve('src/icons'),
+                        use: [{
+                            loader: 'svg-sprite-loader',
+                            options: {
+                                symbolId: 'icon-[name]'
+                            }
+                        }]
+                    },
+                    {
+                        exclude: resolve('src/icons'),
+                        use: [
+                            {
+                                loader: 'url-loader',
+                                options: {
+                                    limit: 4096,
+                                    // use explicit fallback to avoid regression in url-loader>=1.1.0
+                                    fallback: {
+                                        loader: 'file-loader',
+                                        options: {
+                                            name: 'svg/[name].[contenthash:8].[ext]'
+                                        }
+                                    }
+                                }
+                            }
+                        ]
                     }
-                }]
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
                 ]
             },
             {
@@ -121,17 +141,27 @@ module.exports = {
                         loader: 'less-loader',
                         options: {
                             lessOptions: {
-                                javascriptEnabled: true,
-                                strictMath: false
+                                javascriptEnabled: true
                             }
                         }
                     }
                 ]
             },
             {
-                test: /\.(scss)$/,
+                test: /\.(s?css)$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    isProd ?
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                            options: {
+                                publicPath: (resourcePath, context) => {
+                                    // publicPath 是资源相对于上下文的相对路径
+                                    // 例如：对于 ./css/admin/main.css publicPath 将会是 ../../
+                                    // 而对于 ./css/main.css publicPath 将会是 ../
+                                    return path.relative(path.dirname(resourcePath), context) + '/';
+                                }
+                            }
+                        } : 'style-loader',
                     'css-loader',
                     {
                         loader: 'sass-loader',
@@ -143,21 +173,20 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 4096,
-                            // use explicit fallback to avoid regression in url-loader>=1.1.0
-                            fallback: {
-                                loader: 'file-loader',
-                                options: {
-                                    name: 'img/[name].[contenthash:8].[ext]'
-                                }
-                            }
-                        }
+                type: 'asset',
+                //解析
+                parser: {
+                    //转base64的条件
+                    dataUrlCondition: {
+                        maxSize: 4 * 1024, // 25kb
                     }
-                ]
+                },
+                generator: {
+                    //与output.assetModuleFilename是相同的,这个写法引入的时候也会添加好这个路径
+                    filename: 'img/[name].[contenthash:8][ext]',
+                    //打包后对资源的引入，文件命名已经有/img了
+                    publicPath: '../'
+                }
             }
         ]
     },
@@ -166,12 +195,12 @@ module.exports = {
         maxEntrypointSize: 10000000,
         maxAssetSize: 30000000
     },
-    optimization: {
+    optimization: isProd ? {
         minimizer: [new TerserPlugin({
             terserOptions: {
                 compress: {
                     warnings: false,
-                    drop_console: true
+                    //drop_console: true
                 }
             }
         }), new CssMinimizerPlugin()],
@@ -193,14 +222,10 @@ module.exports = {
                 }
             }
         }
-    },
+    } : {},
     plugins: [
-        new ProvidePlugin({
-            process: 'process/browser'
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'css/[name].[contenthash:8].css',
-            chunkFilename: 'css/[name].[contenthash:8].css'
+        new DefinePlugin({
+            'process.env': JSON.stringify(process.env)
         }),
         new HtmlWebpackPlugin({
             favicon: resolve("public/favicon.ico"),
@@ -212,18 +237,6 @@ module.exports = {
         }),
         new ProgressBarPlugin(),
         new VueLoaderPlugin(),
-        new BundleAnalyzerPlugin(),
-        new IgnorePlugin({
-            resourceRegExp: /^\.\/locale$/,
-            contextRegExp: /moment$/
-        }),
-        new CompressionWebpackPlugin({
-            filename: '[path][base].gz',
-            algorithm: 'gzip',
-            test: /\.js$|\.css/, //匹配文件名
-            threshold: 10240, //对超过10k的数据压缩
-            minRatio: 0.8
-        }),
         new CopyPlugin({
             patterns: [
                 {
@@ -241,5 +254,5 @@ module.exports = {
                 }
             ]
         })
-    ]
+    ].concat(resolvePlugin)
 }
