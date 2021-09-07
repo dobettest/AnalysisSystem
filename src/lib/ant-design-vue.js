@@ -34,7 +34,8 @@ import {
   Badge,
   DatePicker,
   Modal,
-  Tree
+  Tree,
+  Result
 } from 'ant-design-vue';
 [
   BackTop,
@@ -71,7 +72,8 @@ import {
   Badge,
   DatePicker,
   Modal,
-  Tree
+  Tree,
+  Result
 ].forEach(v => {
   Vue.use(v);
 });

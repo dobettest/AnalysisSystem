@@ -15,8 +15,9 @@ const dotenv = require('dotenv');
 const resolve = (dir) => {
     return path.join(__dirname, dir);
 }
+const mode=process.env.NODE_ENV||'development';
 dotenv.config({
-    path: resolve(['.env.', process.env.NODE_ENV].join(''))
+    path: resolve(['.env.', mode].join(''))
 })
 const isProd = process.env.NODE_ENV === 'production';
 const resolvePlugin = isProd ? [new DefinePlugin({
@@ -25,7 +26,8 @@ const resolvePlugin = isProd ? [new DefinePlugin({
 new MiniCssExtractPlugin({
     filename: 'css/[contenthash:8].css',
     chunkFilename: 'css/[contenthash:8].css'
-}), new BundleAnalyzerPlugin(),
+}),
+new BundleAnalyzerPlugin(),
 new IgnorePlugin({
     resourceRegExp: /^\.\/locale$/,
     contextRegExp: /moment$/
@@ -62,22 +64,19 @@ module.exports = {
         filename: 'js/[name].[contenthash:8].js',
         chunkFilename: 'js/[name].[contenthash:8].js',
         //publicPath: isProd ? 'https://cdn.dobettest.cn' : './'
-        publicPath: './'
+        //publicPath: './'
     },
     watchOptions: {
         ignored: /node_modules/
-    },
-    devServer: {
-        static:'dist'
     },
     resolve: {
         alias: {
             '@': resolve("src"),
             echart: resolve('src/lib/echarts.js'),
-            '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js'),
+           '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js'),
             vue$: 'vue/dist/vue.esm.js'
         },
-        extensions: ['.mjs', '.js', '.jsx', '.js', '.vue', '.json'],
+        extensions: ['.js', '.vue'],
         modules: ['node_modules']
     },
     module: {
@@ -85,6 +84,7 @@ module.exports = {
             {
                 test: /\.m?js$/,
                 exclude: /node_modules/,
+                include: [resolve("src")],
                 loader: 'babel-loader'
             },
             {
@@ -228,14 +228,18 @@ module.exports = {
             'process.env': JSON.stringify(process.env)
         }),
         new HtmlWebpackPlugin({
+            title: "Hello App",
             favicon: resolve("public/favicon.ico"),
             template: resolve("public/index.html"),
             inject: 'body',
             templateParameters: {
-                cdn: cdn
+                cdn: {
+                    js: [],
+                    css: []
+                }
             }
         }),
-        new ProgressBarPlugin(),
+        //new ProgressBarPlugin(),
         new VueLoaderPlugin(),
         new CopyPlugin({
             patterns: [

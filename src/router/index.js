@@ -59,6 +59,15 @@ export const asyncRoutes = [
         }
       },
       {
+        name: 'storage',
+        path: '/storage',
+        component: () => import('@/views/storage/index'),
+        meta: {
+          title: 'storage',
+          icon: 'storage'
+        }
+      },
+      {
         name: 'im',
         path: '/im',
         component: mainLayout,

@@ -31,5 +31,6 @@
     "addressBook": "addressBook",
     "friendList": "friendList",
     "groupList": "groupList",
-    "meeting": "meeting"
+    "meeting": "meeting",
+    "storage": "storage"
 }
