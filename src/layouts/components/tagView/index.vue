@@ -165,6 +165,7 @@ $height: 46px;
         padding: 0 8px;
         margin-right: 10px;
         cursor: pointer;
+        user-select: none;
 
         .tag-title {
           display: inline-block;

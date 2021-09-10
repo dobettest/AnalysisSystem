@@ -6,10 +6,14 @@ import { bootstrap } from './setting';
 const state = {
   accountInfo: null,
   token: getCache('TOKEN') || '',
-  userSign: getCache('SIGN') || ''
+  userSign: getCache('SIGN') || '',
+  cloudbaseAuth: null
 };
 
 const mutations = {
+  SET_CLOUDBASEAUTH(state, cloudbaseAuth) {
+    state.cloudbaseAuth = cloudbaseAuth;
+  },
   SET_TOKEN(state, token) {
     state.token = token;
   },
@@ -22,6 +26,9 @@ const mutations = {
 };
 
 const actions = {
+  SET_CLOUDBASEAUTH({ commit }, cloudbaseAuth) {
+    commit('SET_CLOUDBASEAUTH', cloudbaseAuth);
+  },
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
       login(userInfo)

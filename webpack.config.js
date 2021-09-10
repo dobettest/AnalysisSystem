@@ -15,7 +15,7 @@ const dotenv = require('dotenv');
 const resolve = (dir) => {
     return path.join(__dirname, dir);
 }
-const mode=process.env.NODE_ENV||'development';
+const mode = process.env.NODE_ENV || 'development';
 dotenv.config({
     path: resolve(['.env.', mode].join(''))
 })
@@ -40,6 +40,7 @@ new CompressionWebpackPlugin({
     minRatio: 0.8
 })] : []
 const { VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk } = require('./src/plugins/cdn');
+const { ProvidePlugin } = require('webpack');
 const cdn = {
     css: [],
     js: [VueCDN, AxiosCDN, VueRouterCDN, VuexCDN, i18n, timJsSdk],
@@ -73,11 +74,16 @@ module.exports = {
         alias: {
             '@': resolve("src"),
             echart: resolve('src/lib/echarts.js'),
-           '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js'),
-            vue$: 'vue/dist/vue.esm.js'
+            '@ant-design/icons/lib/dist$': resolve('src/lib/icon.js'),
+            vue$: 'vue/dist/vue.esm.js',
+            'vue-storage-plugin': resolve('src/lib/vue-storage-plugin')
         },
         extensions: ['.js', '.vue'],
-        modules: ['node_modules']
+        modules: ['node_modules'],
+        fallback: {
+            "crypto": require.resolve("crypto-browserify"),
+            "stream": require.resolve("stream-browserify")
+        }
     },
     module: {
         rules: [
@@ -111,24 +117,6 @@ module.exports = {
                                 symbolId: 'icon-[name]'
                             }
                         }]
-                    },
-                    {
-                        exclude: resolve('src/icons'),
-                        use: [
-                            {
-                                loader: 'url-loader',
-                                options: {
-                                    limit: 4096,
-                                    // use explicit fallback to avoid regression in url-loader>=1.1.0
-                                    fallback: {
-                                        loader: 'file-loader',
-                                        options: {
-                                            name: 'svg/[name].[contenthash:8].[ext]'
-                                        }
-                                    }
-                                }
-                            }
-                        ]
                     }
                 ]
             },
@@ -172,8 +160,9 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
+                test: /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/,
                 type: 'asset',
+                exclude:resolve("src/icons"),
                 //解析
                 parser: {
                     //转base64的条件
@@ -238,6 +227,9 @@ module.exports = {
                     css: []
                 }
             }
+        }),
+        new ProvidePlugin({
+
         }),
         //new ProgressBarPlugin(),
         new VueLoaderPlugin(),

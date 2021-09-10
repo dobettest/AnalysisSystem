@@ -24,8 +24,3 @@ export { default as LeftOutline } from '@ant-design/icons/lib/outline/LeftOutlin
 export { default as RightOutline } from '@ant-design/icons/lib/outline/RightOutline';
 export { default as CaretDownFill } from '@ant-design/icons/lib/fill/CaretDownFill';
 export { default as CloseCircleTwoTone } from '@ant-design/icons/lib/twotone/CloseCircleTwoTone';
-export { default as FileWordOutline } from '@ant-design/icons/lib/outline/FileWordOutline'
-export { default as DragOutline } from '@ant-design/icons/lib/outline/DragOutline';
-export { default as UploadOutline } from '@ant-design/icons/lib/outline/UploadOutline';
-export { default as CloseOutline } from '@ant-design/icons/lib/outline/CloseOutline';
-export { default as FolderAddOutline } from '@ant-design/icons/lib/outline/FolderAddOutline';

@@ -1,0 +1,24 @@
+{
+  "name": "vue-storage-plugin",
+  "version": "1.0.0",
+  "description": "a store-plugin for vue",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vue/cli-service": "^4.5.13",
+    "ant-design-vue": "^1.7.8",
+    "gulp": "^4.0.2",
+    "sass": "^1.3.0",
+    "sass-loader": "^8.0.2",
+    "vue-router": "^3.5.2",
+    "vuex": "^3.6.2"
+  },
+  "dependencies": {
+    "vue": "^2.6.14"
+  }
+}

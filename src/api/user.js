@@ -46,3 +46,12 @@ export function getCodeTest(data) {
 export function getInfo(data) {
   return request.post('/user/userInfo', data);
 }
+
+/**
+ * @description 获取用户存储信息
+ * @param {string}  userID
+ * @returns {string} userInfo
+ */
+ export function getCloudBaseAuth(userID) {
+  return request.post('/user//cloudbaseAuth', userID);
+}
