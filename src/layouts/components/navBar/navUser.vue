@@ -8,10 +8,7 @@
 
     <a-menu slot="overlay">
       <a-menu-item>
-        <router-link to="/userSystem/userInfo">个人中心</router-link>
-      </a-menu-item>
-      <a-menu-item>
-        <router-link to="/userSystem/setting">个人设置</router-link>
+        <router-link to="/userInfo">个人中心</router-link>
       </a-menu-item>
       <a-menu-divider />
       <a-menu-item>

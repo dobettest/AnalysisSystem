@@ -70,72 +70,19 @@ export const asyncRoutes = [
       {
         name: 'im',
         path: '/im',
-        component: mainLayout,
-        redirect: '/im/conversation',
+        component: () => import('@/views/chatRoom/index.vue'),
         meta: {
           title: 'im',
           icon: 'im'
-        },
-        children: [
-          {
-            name: 'conversation',
-            path: '/im/conversation',
-            component: () => import('@/views/chatRoom/components/conversationList.vue'),
-            meta: {
-              title: 'conversation'
-            }
-          },
-          {
-            name: 'addressbook',
-            path: '/im/addressbook',
-            component: () => import('@/views/chatRoom/components/addressBook.vue'),
-            redirect: '/im/addressbook/friendList',
-            meta: {
-              title: 'addressBook'
-            },
-            children: [
-              {
-                name: 'friendList',
-                path: '/im/addressbook/friendList',
-                component: () => import('@/views/chatRoom/components/friendList.vue'),
-                meta: {
-                  title: 'friendList'
-                }
-              },
-              {
-                name: 'groupList',
-                path: '/im/addressbook/groupList',
-                component: () => import('@/views/chatRoom/components/groupList.vue'),
-                meta: {
-                  title: 'groupList'
-                }
-              }
-            ]
-          }
-        ]
+        }
       },
       echartRouter,
       componentsRouter,
       {
         name: 'userSystem',
-        component: mainLayout,
-        path: '/userSystem',
-        redirect: '/userSystem/userInfo',
-        meta: { title: 'userSystem', icon: 'user' },
-        children: [
-          {
-            name: 'userInfo',
-            path: '/userSystem/userInfo',
-            component: () => import('@/views/userSystem/userInfo/index'),
-            meta: { title: 'userInfo' }
-          },
-          {
-            name: 'setting',
-            path: '/userSystem/setting',
-            component: () => import('@/views/userSystem/setting/index'),
-            meta: { title: 'userSetting' }
-          }
-        ]
+        path: '/userInfo',
+        component: () => import('@/views/userSystem/userInfo/index'),
+        meta: { title: 'userSystem', icon: 'user' }
       },
       {
         name: 'system',
@@ -166,7 +113,7 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ];
 
-const createRouter = function() {
+const createRouter = function () {
   return new VueRouter({
     routes: baseRoute,
     scrollBehavior: () => ({ y: 0 })

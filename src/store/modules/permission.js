@@ -3,7 +3,6 @@ import { getRoleRoute } from '@/api/roleManage';
 const state = {
   routes: []
 };
-
 const mutations = {
   SET_ROUTE(state, route) {
     state.routes = baseRoute.concat(route);

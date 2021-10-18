@@ -2,11 +2,30 @@
 @import './variables.scss';
 #app {
   height: 100%;
+  user-select: none;
+}
+.flex-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.scroll-bar{
+  &::-webkit-scrollbar{
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: #ccc;
+  }
+  
 }
 ul{
   margin: 0;
   padding: 0;
   list-style: none;
+}
+p,dd{
+  margin: 0;
+  padding: 0;
 }
 
 

@@ -34,7 +34,7 @@ export default {
   display: block;
   width: 25%;
   height: 25%;
-  background-color: #3ff9dc;
+  background-color: $color-primary;
   border-radius: 100%;
   animation: chase-dot-before 2s infinite ease-in-out both;
 }

@@ -29,3 +29,14 @@ export { default as DragOutline } from '@ant-design/icons/lib/outline/DragOutlin
 export { default as UploadOutline } from '@ant-design/icons/lib/outline/UploadOutline';
 export { default as CloseOutline } from '@ant-design/icons/lib/outline/CloseOutline';
 export { default as FolderAddOutline } from '@ant-design/icons/lib/outline/FolderAddOutline';
+export { default as MinusOutline } from '@ant-design/icons/lib/outline/MinusOutline';
+export { default as BorderOutline } from '@ant-design/icons/lib/outline/BorderOutline';
+export { default as TableOutline } from '@ant-design/icons/lib/outline/TableOutline';
+export { default as ProfileOutline } from '@ant-design/icons/lib/outline/ProfileOutline';
+export { default as ControlOutline } from '@ant-design/icons/lib/outline/ControlOutline';
+export { default as PhoneOutline } from '@ant-design/icons/lib/outline/PhoneOutline';
+export { default as CameraOutline } from '@ant-design/icons/lib/outline/CameraOutline';
+export { default as EditOutline } from '@ant-design/icons/lib/outline/EditOutline';
+export { default as MailOutline } from '@ant-design/icons/lib/outline/MailOutline';
+export { default as SaveOutline } from '@ant-design/icons/lib/outline/SaveOutline';
+export { default as CheckOutline } from '@ant-design/icons/lib/outline/CheckOutline';

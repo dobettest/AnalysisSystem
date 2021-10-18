@@ -9,9 +9,6 @@
 
     <bread-crumb v-show="!horizontal" />
     <div class="right-menu flex">
-      <div class="right-menu-item  boxHover" @click.stop="screenFull">
-        <svg-icon :icon="isFullscreen ? 'exit-fullscreen' : 'fullscreen'" :size="18" />
-      </div>
       <a-tooltip placement="bottom">
         <template slot="title"> 主题配置 </template>
         <div class="right-menu-item  boxHover" @click="changeVisible">

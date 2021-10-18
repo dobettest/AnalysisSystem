@@ -1,7 +1,7 @@
 <template>
   <div class="loading-container" :style="{ background: background }" v-if="show">
     <div class="loading-wrapper">
-      <svg-icon v-if="spin == 'loading'" icon="loading" color="#3ff9dc" :size="25" class="loading-icon" />
+      <svg-icon v-if="spin === 'loading'" icon="loading" color="#3ff9dc" :size="25" class="loading-icon" />
       <component :is="spin + '-spin'" v-else />
       <div class="text" :style="{ color: textColor }">{{ text }}</div>
     </div>
@@ -11,6 +11,7 @@
 <script>
 import { pulseSpin, rectSpin, planeSpin, cubeSpin, preloaderSpin, chaseSpin } from './spin';
 export default {
+  name: 'loading',
   props: {
     show: {
       type: Boolean,
@@ -30,7 +31,7 @@ export default {
     },
     spin: {
       type: String,
-      default: 'loading'
+      default: 'rect'
     }
   },
   components: { pulseSpin, rectSpin, planeSpin, cubeSpin, preloaderSpin, chaseSpin }
@@ -43,7 +44,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 1;
   .loading-wrapper {
     position: absolute;
     top: 50%;

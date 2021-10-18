@@ -27,7 +27,7 @@ export default {
   width: 33%;
   height: 33%;
   float: left;
-  background: #3ff9dc;
+  background: $color-primary;
   animation: cube-loader 1.3s infinite ease-in-out;
   animation-delay: 0.2s;
 }

@@ -2,7 +2,6 @@ import { getCache, setCache, removeCache } from '@/utils/session';
 import { login, logout, getCodeTest, getInfo } from '@/api/user';
 import { resetRouter } from '@/router';
 //import tim from '@/lib/tim';
-import { bootstrap } from './setting';
 const state = {
   accountInfo: null,
   token: getCache('TOKEN') || '',
@@ -66,7 +65,7 @@ const actions = {
     });
   },
 
-  logout({ commit }, state) {
+  logout({ commit }) {
     return new Promise((resolve, reject) => {
       logout()
         .then(() => {
@@ -82,9 +81,9 @@ const actions = {
     });
   },
 
-  async getInfo({ commit, state }) {
+  async getUserInfo({ commit }) {
     try {
-      var res = await getInfo({ token: state.token });
+      var res = await getInfo();
       const {
         data: { info, userSig },
         message
@@ -92,7 +91,6 @@ const actions = {
       if (info && userSig) {
         commit('SET_USERINFO', info);
         commit('SET_USERSIGN', userSig);
-        await bootstrap(info['config']);//配置用户个性主题
         // await tim
         //   .login({
         //     userID: info.userID,
@@ -119,7 +117,6 @@ const actions = {
     });
   }
 };
-
 export default {
   namespaced: true,
   state,

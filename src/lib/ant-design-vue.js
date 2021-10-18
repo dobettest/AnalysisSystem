@@ -35,7 +35,9 @@ import {
   DatePicker,
   Modal,
   Tree,
-  Result
+  Result,
+  Carousel,
+  Popover
 } from 'ant-design-vue';
 [
   BackTop,
@@ -73,7 +75,9 @@ import {
   DatePicker,
   Modal,
   Tree,
-  Result
+  Result,
+  Carousel,
+  Popover
 ].forEach(v => {
   Vue.use(v);
 });

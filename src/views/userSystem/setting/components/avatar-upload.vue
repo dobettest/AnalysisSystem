@@ -36,7 +36,7 @@
         </template>
       </template>
     </a-upload>
-    <a-modal :visible="previewVisible" :footer="null" @cancel="previewVisible = false">
+    <a-modal :visible="previewVisible" title="预览" :footer="null" @cancel="previewVisible = false">
       <img alt="example" style="width: 100%" :src="previewImage" />
     </a-modal>
   </div>

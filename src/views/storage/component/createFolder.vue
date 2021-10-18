@@ -6,11 +6,7 @@
     cancelText="取消"
     :confirmLoading="loading"
     @ok="handleSure"
-    @cancel="
-      () => {
-        $emit('close');
-      }
-    "
+    @cancel="$emit('close')"
   >
     <a-form-model :model="Form" :rules="rules" ref="form">
       <a-form-model-item prop="folder">
@@ -21,9 +17,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { files } from '../../../lib/storage';
+import cloneDeep from 'lodash/cloneDeep';
 export default {
+  name: 'create-folder',
   props: {
     visible: {
       type: Boolean,
@@ -32,6 +29,10 @@ export default {
     current: {
       type: Object,
       required: true
+    },
+    creator: {
+      type: String,
+      require: true
     }
   },
   data() {
@@ -39,8 +40,11 @@ export default {
       if (value.length === 0) {
         callback(new Error('文件夹名称不能为空'));
       }
-      if (value.length > 8) {
-        callback(new Error('请输入1~8个字符'));
+      if (value.length > 14) {
+        callback(new Error('请输入1~14个字符'));
+      }
+      if (/\//.test(value)) {
+        callback(new Error('请不要使用特殊字符/'));
       }
       if (this.current.files.some(f => f.fname === value)) {
         callback(new Error('同名文件夹已存在'));
@@ -59,11 +63,8 @@ export default {
   },
   computed: {
     copyedCurrent() {
-      return { ...this.current };
-    },
-    ...mapState({
-      userInfo: state => state.user.accountInfo
-    })
+      return cloneDeep(this.current);
+    }
   },
   methods: {
     handleSure() {
@@ -74,19 +75,21 @@ export default {
           let {
             Form: { folder },
             copyedCurrent,
-            userInfo
+            creator
           } = this;
           let obj = {
             cdate: [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-            creator: userInfo.userID,
+            creator,
             dirname: copyedCurrent.dirname + '/' + folder,
             files: []
           };
           copyedCurrent['files'].push({
             cdate: [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-            creator: userInfo.userID,
+            creator,
             ftype: 'folder',
-            fname: folder
+            fname: folder,
+            filesize:0,
+            fileID: 'dir' + folder
           });
           await files
             .where({

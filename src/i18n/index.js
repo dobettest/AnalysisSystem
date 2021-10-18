@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n'; //引入国际化
 Vue.use(VueI18n);
-const locale = 'CN';
-
 // 加载所有语言环境并记住上下文
 function loadMessages() {
   const context = require.context('./lang', true, /[a-z0-9-_]+\.json$/i);
@@ -34,11 +32,13 @@ if (module.hot) {
   });
 }
 export const i18n = new VueI18n({
-  locale,
+  locale: 'CN',
   messages,
   silentTranslationWarn: true
 });
 export const changeLocale = locale => {
-  i18n.locale = locale;
+  if (locale !== i18n['locale']) {
+    i18n.locale = locale;
+  }
 };
 // VueI18n 实例

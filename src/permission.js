@@ -9,10 +9,10 @@ NProgress.configure({ showSpinner: false }); // NProgress Configuration
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   document.title = getPageTitle(to.meta.title);
-  const isLogin = getCache('TOKEN');
-  if (to.path == '/login') {
+  if (to.path === '/login') {
     next();
   } else {
+    const isLogin = getCache('TOKEN');
     if (!isLogin) {
       next('/login');
     } else {
@@ -21,9 +21,9 @@ router.beforeEach(async (to, from, next) => {
         next();
       } else {
         try {
-          const { role } = await store.dispatch('user/getInfo');
+          const { role, config } = await store.dispatch('user/getUserInfo');
+          await store.dispatch('setting/bootstrap', config);
           const accountRoute = await store.dispatch('permission/getRoute', role);
-
           router.addRoutes(accountRoute);
           next({ ...to, replace: true });
         } catch {

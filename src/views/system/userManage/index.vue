@@ -117,11 +117,6 @@ const tableHead = [
     ellipsis: true
   },
   {
-    title: '描述',
-    dataIndex: 'text',
-    ellipsis: true
-  },
-  {
     title: '操作',
     scopedSlots: { customRender: 'action' },
     width: 140

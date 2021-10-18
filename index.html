@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <div id="app">
+        {{text}}
+        <span>{{number}}</span>
+    </div>
+    <script>
+                console.log(document.getElementById("app").outerHTML)
+        new Vue({
+            data:{
+                text:'text',
+                number:20
+            }
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>

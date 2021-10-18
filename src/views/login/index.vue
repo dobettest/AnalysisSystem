@@ -1,271 +1,389 @@
 <template>
-  <div class="login-container bgImg content">
-    <div class="layout">
-      <a-form-model
-        :model="loginForm"
-        :rules="loginRules"
-        class="form-container"
-        :wrapper-col="{ span: 22 }"
-        ref="loginForm"
-      >
-        <div class="title">miscro-cloud-station</div>
-        <a-tabs v-model="currentTab" class="tabs" :tabBarGutter="35">
-          <a-tab-pane key="user" tab="账号密码登录">
-            <a-form-model-item prop="userID" v-if="currentTab === 'user'">
-              <a-input
-                v-model="loginForm.userID"
-                placeholder="请输入账号(手机号/ID)"
-                size="large"
-                allow-clear
-                @pressEnter="focusPassword"
-              >
-                <a-icon slot="prefix" type="user" />
-              </a-input>
-            </a-form-model-item>
-            <a-form-model-item prop="password" v-if="currentTab === 'user'">
-              <a-input
-                v-model="loginForm.password"
-                placeholder="请输入密码"
-                size="large"
-                type="password"
-                allow-clear
-                @pressEnter="toLogin"
-                ref="password"
-              >
-                <svg-icon icon="password" :size="14" slot="prefix"> </svg-icon>
-              </a-input>
-            </a-form-model-item>
-          </a-tab-pane>
-          <a-tab-pane key="phone" tab="手机号登录">
-            <a-form-model-item prop="phone" v-if="currentTab === 'phone'">
-              <a-input
-                v-model="loginForm.phone"
-                placeholder="请输入手机号"
-                size="large"
-                allow-clear
-                :maxLength="11"
-                type="text"
-              >
-                <svg-icon icon="phone" :size="14" slot="prefix"> </svg-icon>
-              </a-input>
-            </a-form-model-item>
-
-            <a-form-model-item prop="code" v-if="currentTab === 'phone'">
-              <a-input
-                v-model="loginForm.code"
-                placeholder="请输入验证码"
-                size="large"
-                :maxLength="6"
-                style="width: 58%"
-                ref="code"
-                @pressEnter="toLogin"
-              >
-              </a-input>
-              <a-button size="large" @click="getCode" :disabled="codeStatus" style="width: 35%; margin-left: 7%">{{
-                phoneCode
-              }}</a-button>
-            </a-form-model-item>
-          </a-tab-pane>
-        </a-tabs>
-
-        <a-form-item style="margin-top: -7px">
-          <a-button type="primary" block size="large" :loading="loading" @click="toLogin"> 登录 </a-button>
-        </a-form-item>
-        <a-form-item style="margin-top: -7px">
-          <a-checkbox v-model="loginForm.remember" v-if="currentTab === 'user'">记住密码</a-checkbox>
-          <div style="float: right">
-            <span style="margin-right: 15px">其他登录方式</span>
-            <svg-icon icon="qq" :size="25" class="verticalMiddle"></svg-icon>
+  <div class="login-container" id="loginContainer">
+    <header class="header">
+      <div class="logo-wrapper">
+        <svg-icon class="logo-img" icon="logo" :style="{ fontSize: 56 + 'px' }"></svg-icon>
+        <div class="logo-title">微云台</div>
+      </div>
+      <div class="header-right">
+        <a-button type="primary" @click="show = true"> 登录 </a-button>
+      </div>
+    </header>
+    <main class="main">
+      <a-carousel :autoplay="true">
+        <div class="carousel-item">
+          <img src="../../assets/login/carsoul/one.jpg" class="carousel-img" />
+        </div>
+        <div class="carousel-item">
+          <img src="../../assets/login/carsoul/two.jpg" class="carousel-img" />
+        </div>
+      </a-carousel>
+      <div class="part part-one">
+        <h1 class="part-title">项目介绍</h1>
+        <div class="project">
+          <div class="row">
+            <div class="row-item">
+              <img src="../../assets/login/system.png" alt="产品图" class="img-wrapper" />
+            </div>
+            <div class="row-item">
+              <dl class="Intro">
+                <dt class="Intro-title">
+                  <h1 class="main-title">系统概要</h1>
+                  <h2 class="sub-title">a brief about system.</h2>
+                </dt>
+                <dd class="Intro-item">
+                  <svg-icon icon="permission-manage"></svg-icon>
+                  <span>权限管理</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="member-manage"></svg-icon>
+                  <span>用户管理</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="storage"></svg-icon>
+                  <span>存储空间</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="graph"></svg-icon>
+                  <span>图表展示</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="Nginx"></svg-icon>
+                  <span>高性能服务器</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="cdn"></svg-icon>
+                  <span>CDN部署</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="https"></svg-icon>
+                  <span>https加密</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="blog"></svg-icon>
+                  <span>个人空间</span>
+                </dd>
+              </dl>
+            </div>
           </div>
-        </a-form-item>
-      </a-form-model>
-    </div>
+          <div class="row">
+            <div class="row-item">
+              <img src="../../assets/login/advantage.svg" alt="产品图" class="img-wrapper" />
+            </div>
+            <div class="row-item">
+              <dl class="Intro">
+                <dt class="Intro-title">
+                  <h1 class="main-title">强大优势</h1>
+                  <h2 class="sub-title">what's our advantages ?</h2>
+                </dt>
+                <dd class="Intro-item">
+                  <svg-icon icon="permission-manage"></svg-icon>
+                  <span>权限管理</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="member-manage"></svg-icon>
+                  <span>用户管理</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="storage"></svg-icon>
+                  <span>存储空间</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="graph"></svg-icon>
+                  <span>图表展示</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="Nginx"></svg-icon>
+                  <span>高性能服务器</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="cdn"></svg-icon>
+                  <span>CDN部署</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="https"></svg-icon>
+                  <span>https加密访问</span>
+                </dd>
+                <dd class="Intro-item">
+                  <svg-icon icon="graph"></svg-icon>
+                  <span>图表展示</span>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="part part-two">
+        <h1 class="part-title">依托社区</h1>
+        <div class="community">
+          <div class="community-item">
+            <img class="community-item-img" src="../../assets/logo/tencent.svg" />
+            <p class="community-name">腾讯云</p>
+          </div>
+          <div class="community-item">
+            <img class="community-item-img" src="../../assets/logo/webpack.svg" />
+            <p class="community-name">webpack</p>
+          </div>
+          <div class="community-item">
+            <img class="community-item-img" src="../../assets/logo/vue.svg" />
+            <p class="community-name">vuejs</p>
+          </div>
+          <div class="community-item">
+            <img class="community-item-img" src="../../assets/logo/nodejs.svg" />
+            <p class="community-name">nodejs</p>
+          </div>
+          <div class="community-item">
+            <img class="community-item-img" src="../../assets/logo/scss.svg" />
+            <p class="community-name">scss</p>
+          </div>
+          <div class="community-item">
+            <img class="community-item-img" src="../../assets/logo/linux.svg" />
+            <p class="community-name">linux</p>
+          </div>
+        </div>
+      </div>
+      <login-form-modal :show="show" @hide="show = false"></login-form-modal>
+    </main>
+    <footer class="footer">
+      <div class="relative-info">
+        <div class="relative-link">
+          <dl class="link-row">
+            <dt class="link-item link-title">友情链接--</dt>
+            <dd class="link-item"><a href="https://cloud.tencent.com/">腾讯云</a></dd>
+            <dd class="link-item"><a href="https://www.iconfont.cn/">阿里图库</a></dd>
+            <dd class="link-item"><a href="https://www.jb51.net/">脚本之家</a></dd>
+            <dd class="link-item"><a href="">模板之家</a></dd>
+          </dl>
+        </div>
+      </div>
+      <div class="beian">
+        <a
+          target="_blank"
+          class="beian-link"
+          href="http://www.beian.gov.cn/portal/registersystemIntro?recordcode=36010602000065"
+        >
+          <img src="../../assets/login/beian.png" class="beian-img" />
+          <p class="beian-info">赣公网安备 36010602000065号</p>
+          <p class="beian-info">|</p>
+          <p class="beian-info">赣ICP备19014139号</p>
+        </a>
+        <div class="copyright clearfix">
+          <p class="copyright-item">Copyright © 2019 - {{ new Date().getFullYear() }} Dobettest.</p>
+          <p class="copyright-item">All Rights Reserved. 都贝斯特 版权所有</p>
+        </div>
+      </div>
+      <div class="contact">
+        <!-- <p>联系方式</p> -->
+        <img src="../../assets/login/wxqrcode.png" class="contact-img" />
+        <!-- <p><a-icon type="phone"></a-icon><span style="fontStyle:italic">17770831435</span></p> -->
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
-import { isPhone, isPassWord, isCode } from '@/utils/validate';
-import { getCache, setCache, removeCache } from '@/utils/session';
-import { getPhoneCode } from '@/api/user';
+import loginFormModal from './components/loginFormModal.vue';
 export default {
-  name: 'login',
+  components: {
+    loginFormModal
+  },
   data() {
-    const validateuserID = (rule, value, callback) => {
-      if (value.trim().length === 0) {
-        callback(new Error('用户名不能为空'));
-      } else {
-        callback();
-      }
-    };
-    const validatePassword = (rule, value, callback) => {
-      if (!isPassWord(value)) {
-        callback(new Error('请正确输入密码'));
-      } else {
-        callback();
-      }
-    };
-    const validatePhone = (rule, value, callback) => {
-      if (!isPhone(value)) {
-        callback(new Error('手机号码有误，请重新填写'));
-      } else {
-        callback();
-      }
-    };
-    const validateCode = (rule, value, callback) => {
-      if (!isCode(value)) {
-        callback(new Error('验证码有误，请重新填写'));
-      } else {
-        callback();
-      }
-    };
-
     return {
-      currentTab: 'user',
-      loginForm: {
-        userID: '',
-        password: '',
-        phone: '',
-        code: '',
-        remember: true
-      },
-      loginRules: {
-        userID: [{ required: true, trigger: 'blur', validator: validateuserID }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-        code: [{ required: true, trigger: 'blur', validator: validateCode }]
-      },
-      loading: false,
-      phoneCode: '获取验证码',
-      codeStatus: false,
-      currentCode: null
+      show: false
     };
-  },
-  mounted() {
-    const cache = getCache('LOGIN_INFO');
-    if (cache) {
-      this.loginForm.userID = cache.userID;
-      this.loginForm.password = cache.password;
-    }
-  },
-  methods: {
-    focusPassword() {
-      this.$refs.password.focus();
-    },
-    //获取验证码
-    getCode() {
-      if (isPhone(this.loginForm.phone)) {
-        this.codeStatus = true;
-        let time = 60;
-        var getPhoneIntval = setInterval(() => {
-          if (time > 0) {
-            time--;
-            this.phoneCode = `重新获取(${time}s)`;
-          } else {
-            clearInterval(getPhoneIntval);
-            getPhoneIntval = null;
-            this.phoneCode = '获取验证码';
-            this.codeStatus = false;
-          }
-        }, 1000);
-
-        this.$refs.code.focus();
-        getPhoneCode({ phone: this.loginForm.phone });
-      } else {
-        this.$message.error('请正确输入手机号');
-      }
-    },
-    //登录
-    toLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          if (this.currentTab === 'user') {
-            const { userID, password } = this.loginForm;
-            this.$store
-              .dispatch('user/login', { userID, password })
-              .then(() => {
-                if (this.loginForm.remember) {
-                  setCache('LOGIN_INFO', { userID, password });
-                  let path = '/index';
-                  this.$router.push({
-                    path: path
-                  });
-                  this.loading = false;
-                } else {
-                  removeCache('LOGIN_INFO');
-                }
-              })
-              .catch(() => {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 500);
-              });
-          } else if (this.currentTab === 'phone') {
-            const { phone, code } = this.loginForm;
-            this.$store
-              .dispatch('user/codeTest', { phone, code })
-              .then(() => {
-                removeCache('LOGIN_INFO');
-                this.$router.push({
-                  path: '/index'
-                });
-                this.loading = false;
-              })
-              .catch(() => {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 500);
-              });
-          }
-        } else {
-          return false;
-        }
-      });
-    }
   }
 };
 </script>
 <style lang="scss">
 .login-container {
-  background-image: url('~@/assets/login/background.jpg');
-  .layout {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    .form-container {
-      width: 400px;
-      position: absolute;
-      top: 50%;
-      right: 20%;
-      transform: translateY(-50%);
-      .title {
-        font-weight: 700;
-        font-size: 1.8rem;
-        padding-left: 5px;
+  .header {
+    background-color: #354060;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 70px;
+    z-index: 999;
+    .logo-wrapper {
+      .logo-img,
+      .logo-title {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 32px;
       }
-      .tabs {
-        margin: 15px 0;
+    }
+    .header-right {
+      height: 70px;
+      line-height: 70px;
+      float: right;
+      margin-right: 32px;
+    }
+  }
+  .main {
+    .ant-carousel {
+      margin-top: 70px;
+      .slick-slide {
+        height: 420px;
+        .carousel-item {
+          overflow: hidden;
+          .carousel-img {
+            height: 420px;
+            width: 100%;
+          }
+        }
       }
-      .forge-password {
-        font-size: 14px;
-        float: right;
-        color: #1890ff;
+    }
+    .part {
+      .part-title {
+        font-size: 36px;
+        text-align: center;
+      }
+      &.part-one {
+        .project {
+          .row {
+            text-align: center;
+            .row-item {
+              display: inline-block;
+              vertical-align: middle;
+              .img-wrapper {
+                padding: 10px;
+                width: 480px;
+                height: 480px;
+              }
+              .Intro {
+                margin: 0;
+                text-align: center;
+                color: #000;
+                width: 450px;
+                .Intro-title {
+                  margin-bottom: 20px;
+                  .main-title {
+                    font-size: 30px;
+                    border-bottom: 0.5px solid rgba(0, 0, 0, 0.4);
+                    margin: 0;
+                  }
+                }
+                .Intro-item {
+                  float: left;
+                  display: flex;
+                  width: 96px;
+                  flex-direction: column;
+                  align-items: center;
+                  padding: 6px;
+                  margin: 2px;
+                  .svgClass {
+                    font-size: 32px !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &.part-two {
+        margin-bottom: 25px;
+        .community {
+          width: 436px;
+          margin: 0 auto;
+          text-align: center;
+          .community-item {
+            padding: 6px;
+            display: inline-block;
+            .community-item-img {
+              width: 60px;
+              height: 60px;
+            }
+            .community-name {
+              font-weight: 600;
+              font-size: 16px;
+            }
+          }
+        }
       }
     }
   }
-}
-</style>
-<style lang="scss">
-.login-container {
-  .ant-tabs-bar {
-    border-bottom: none !important;
-  }
-  .ant-input-affix-wrapper .ant-input:not(:first-child) {
-    padding-left: 35px !important;
-  }
-  .ant-tabs-bar {
-    margin-bottom: 30px !important;
+  .footer {
+    position: relative;
+    background-color: #354060;
+    color: #fff;
+    height: 132px;
+    overflow: hidden;
+    .relative-info {
+      position: relative;
+      height: 60px;
+      .relative-link {
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        .link-row {
+          margin: 0;
+          display: flex;
+          align-items: center;
+          color: rgba(255, 255, 255, 0.7);
+          .link-item {
+            padding: 0 6px;
+            font-size: 12px;
+            cursor: pointer;
+            float: left;
+            white-space: nowrap;
+            &:hover {
+              color: #fff;
+            }
+            a {
+              &:link,
+              &:visited,
+              &:active {
+                color: rgba(255, 255, 255, 0.7);
+              }
+            }
+          }
+          .link-title {
+            padding: 0;
+            font-weight: 600;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .contact {
+      text-align: center;
+      margin-right: 20px;
+      position: absolute;
+      right: 10px;
+      bottom: 25px;
+      .contact-img {
+        width: 80px;
+      }
+    }
+    .beian {
+      color: #fff;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      padding: 10px;
+      white-space: nowrap;
+      .beian-link {
+        display: block;
+        color: #fff;
+        .beian-img,
+        .beian-info {
+          display: inline-block;
+          vertical-align: middle;
+          padding: 2px;
+        }
+      }
+      .copyright {
+        padding: 2px;
+        text-align: center;
+        .copyright-item {
+          float: left;
+        }
+      }
+    }
   }
 }
 </style>

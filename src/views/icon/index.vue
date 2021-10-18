@@ -28,8 +28,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .icon-container {
-  padding: 24px;
-  background-color: #f0f2f5;
+  padding: 10px;
+  border:15px solid #f0f2f5;
   .icon-wrapper {
     padding: 15px 0;
     cursor: pointer;

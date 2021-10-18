@@ -16,7 +16,7 @@ export default {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #3ff9dc;
+  background-color: $color-primary;
   animation: pulse-loader 0.4s ease 0s infinite alternate;
   position: relative;
   display: inline-block;

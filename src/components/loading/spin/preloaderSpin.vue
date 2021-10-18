@@ -18,7 +18,6 @@ export default {
   width: 20px;
   height: 20px;
   border-radius: 20px;
-  background: blue;
   content: '';
   position: absolute;
   background: #9b59b6;
@@ -29,7 +28,6 @@ export default {
   width: 20px;
   height: 20px;
   border-radius: 20px;
-  background: blue;
   content: '';
   position: absolute;
   background: #2ecc71;

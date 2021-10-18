@@ -45,7 +45,8 @@
 </template>
 
 <script>
-import { editTable, addTable } from '@/api/userManage';
+import {addTable } from '@/api/userManage';
+import {updateUserInfo } from '@/api/user.js';
 import { getRoleTable } from '@/api/roleManage';
 export default {
   name: 'userModel',
@@ -84,7 +85,7 @@ export default {
         if (valid) {
           if (this.currentRow) {
             //编辑
-            editTable(this.userForm).then(() => {
+            updateUserInfo(this.userForm).then(() => {
               this.$message.success('修改成功!');
               this.loading = false;
               this.$emit('ok');

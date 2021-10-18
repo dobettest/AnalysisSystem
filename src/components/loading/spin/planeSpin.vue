@@ -11,7 +11,7 @@ export default {
 .plane-wrapper {
   width: 60px;
   height: 60px;
-  background-color: #3ff9dc;
+  background-color: $color-primary;
   display: inline-block;
   animation: plane-loader 1.2s infinite ease-in-out;
 }

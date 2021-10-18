@@ -10,12 +10,12 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, ' ') +
-      '"}'
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"')
+      .replace(/\+/g, ' ') +
+    '"}'
   );
 }
 
@@ -28,9 +28,9 @@ export function param2Obj(url) {
  */
 
 export function debounce(func, delay, immediate = false) {
-  let timer,
-    context = this;
-  return (...args) => {
+  let timer;
+  return function (...args) {
+    let context = this;
     if (immediate) {
       func.apply(context, args);
       immediate = false;
@@ -50,4 +50,15 @@ export function debounce(func, delay, immediate = false) {
 
 export function formatJson(arr, filterVal) {
   return arr.map(v => filterVal.map(j => v[j].toString()));
+}
+/**
+ * 转换Base64
+ * @param  {img}
+ * @param  {callback}
+ * @return {String}
+ */
+export function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
 }

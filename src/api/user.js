@@ -48,10 +48,19 @@ export function getInfo(data) {
 }
 
 /**
- * @description 获取用户存储信息
+ * @description 获取用户存储授权信息
  * @param {string}  userID
  * @returns {string} userInfo
  */
  export function getCloudBaseAuth(userID) {
-  return request.post('/user//cloudbaseAuth', userID);
+  return request.post('/user/cloudbaseAuth', userID);
+}
+
+/**
+ * @description 更新用户信息
+ * @param {Object}  要更新的值
+ * @returns {string} userInfo
+ */
+ export function updateUserInfo(data) {
+  return request.post('/user/userUpdate', data);
 }

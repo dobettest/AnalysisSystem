@@ -17,7 +17,7 @@ export default {
 .rect-item {
   width: 6px;
   height: 60px;
-  background-color: #3ff9dc;
+  background-color: $color-primary;
   display: inline-block;
   margin: 0 4px;
   animation: rect-loader 1.2s infinite ease-in-out;

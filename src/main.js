@@ -22,8 +22,8 @@ import loading from '@/components/loading/loading'; // 引入loading
 import VueLazyLoad from 'vue-lazyload';
 Vue.use(VueLazyLoad, {
   preLoad: 1,
-  error: require('./assets/img/v-error.png'),
-  loading: require('./assets/img/v-loading.gif'),
+  error: require('./assets/img/default.jpg'),
+  loading: require('./assets/img/default.jpg'),
   attempt: 2
 });
 Vue.use(loading); // 全局使用loading

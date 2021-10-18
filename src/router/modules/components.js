@@ -27,12 +27,6 @@ const componentsRouter = {
       path: '/components/lottery',
       component: () => import('@/views/components/lottery/index'),
       meta: { title: 'lottery' }
-    },
-    {
-      name: 'loading',
-      path: '/components/loading',
-      component: () => import('@/views/components/loading/index'),
-      meta: { title: 'loading' }
     }
   ]
 };

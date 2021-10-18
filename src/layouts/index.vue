@@ -10,10 +10,7 @@
         </div>
         <tag-view v-if="tagShow" />
       </div>
-      <div class="rightPanl" @click="changeVisivle">
-        <a-icon type="setting" class="settingIcon" />
-        <setting />
-      </div>
+      <setting />
       <div class="app-main">
         <router-view />
         <back-top />
@@ -64,7 +61,7 @@ export default {
 .rightPanl {
   position: fixed;
   right: 1px;
-  top:50%;
+  top: 50%;
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
@@ -122,7 +119,7 @@ export default {
 
 //水平布局
 .horizontal {
-  .aside-container{
+  .aside-container {
     width: 0;
   }
   .horizontal-nav {
@@ -133,16 +130,13 @@ export default {
   }
   .main-container {
     margin-left: 0;
-    width:100%;
+    width: 100%;
   }
   .fixed-header {
     width: 100%;
   }
   .nav-user {
     background: #293348;
-  }
-  .app-main {
-    background: #f0f2f5;
   }
 }
 </style>

@@ -9,21 +9,6 @@ const defaultSetting = {
   theme: 'blue',
   locale: 'CN'
 };
-let state = getCache('_app_') || defaultSetting;
-export const bootstrap = (options) => {
-  return new Promise((resolve, reject) => {
-    options['locale'] ? '' : options = defaultSetting;
-    Object.keys(options).forEach(key => {
-      if (state[key] !== options[key])
-        state[key] = options[key];
-    })
-    let { theme, locale } = state;
-    changeTheme(theme);
-    changeLocale(locale);
-    setCache('_app_', state);
-    resolve();
-  })
-}
 //切换主题
 export const changeTheme = (color) => {
   const theme = document.getElementById('theme-style');
@@ -40,6 +25,7 @@ export const changeTheme = (color) => {
   // 设置 css 变量
   //document.getElementsByTagName('body')[0].style.setProperty('--color-primary', color);
 }
+const state = getCache('_app_') || defaultSetting;
 const mutations = {
   TOGGLE_OPEN(state) {
     state.open = !state.open;
@@ -47,12 +33,29 @@ const mutations = {
   CHANGE_SETTING(state, { key, value }) {
     state[key] = value;
     setCache('_app_', state);
+  },
+  BOOTSTRAP(state, options) {
+    options['locale'] ? '' : options = defaultSetting;
+    Object.keys(options).forEach(key => {
+      if (state[key] !== options[key])
+        state[key] = options[key];
+    })
+    let { theme, locale } = state;
+    changeTheme(theme);
+    changeLocale(locale);
+    setCache('_app_', state);
   }
 };
 
 const actions = {
   changeSetting({ commit }, setting) {
     commit('CHANGE_SETTING', setting);
+  },
+  bootstrap({ commit }, options) {
+    return new Promise((resolve, reject) => {
+      commit('BOOTSTRAP', options);
+      resolve();
+    })
   }
 };
 export default {
