@@ -8,12 +8,13 @@
       <div class="dynamic-btn-container">
         <a-icon type="like" class="dynamic-meta-btn"></a-icon>
         <p class="like-list clearfix">
-          <router-link
-            :to="{ path: '/userInfo', query: { userID: it['userid'] } }"
+          <span
             class="like-item"
             v-for="(it, idx) in dynamic['likelist']"
             :key="idx"
-            >{{ it['username'] }}</router-link
+            @click="navigate(it['userid'])"
+          >
+            {{ it['username'] }}</span
           >
           <span>等人觉得很赞</span>
         </p>
@@ -41,8 +42,10 @@ export default {
       required: true
     }
   },
-  mounted() {
-    console.log(this.dynamic);
+  methods: {
+    navigate(userID) {
+      this.$bus.$emit('getUserInfo', userID);
+    }
   }
 };
 </script>
@@ -78,6 +81,7 @@ export default {
         .like-item {
           color: currentColor;
           font-size: 12px;
+          cursor: pointer;
           &:not(:nth-last-child()) {
             &::after {
               display: block;

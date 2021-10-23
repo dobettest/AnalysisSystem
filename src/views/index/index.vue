@@ -120,7 +120,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .index-container {
-  padding: 24px;
+  padding: 24px 24px 32px 24px;
   background: #f0f2f5;
   .sale-card {
     background: #fff;

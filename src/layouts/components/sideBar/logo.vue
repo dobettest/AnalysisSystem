@@ -1,7 +1,7 @@
 <template>
   <router-link to="/index" class="logo-wrapper">
     <svg-icon icon="logo" class="verticalMiddle" :size="30" />
-    <div class="logo-title verticalMiddle">{{ $t('common.' + 'miscro-cloud-station') }}</div>
+    <div class="logo-title verticalMiddle">{{ $t('common.programName') }}</div>
   </router-link>
 </template>
 

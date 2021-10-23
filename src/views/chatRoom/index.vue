@@ -6,8 +6,8 @@
       </div>
       <div class="tabs">
         <div class="tab-pane">
-          <conversation-list v-show="tabKey === 'conversationList'" />
-          <contact-book v-show="tabKey === 'contactBook'" />
+          <conversation-list v-show="tabKey === 'conversationList'" :isTimReady="isTimReady" />
+          <contact-book v-show="tabKey === 'contactBook'" :isTimReady="isTimReady" />
         </div>
         <div class="tab-bar">
           <div
@@ -128,6 +128,8 @@ import conversationList from './components/conversationList.vue';
 import contactBook from './subView/contactBook/index.vue';
 import conversationProfile from './components/ConversationProfile';
 import emojiList from '@/assets/emoji.json';
+import tim from '@/lib/tim.js';
+import { mapState } from 'vuex';
 export default {
   name: 'im',
   components: {
@@ -147,11 +149,18 @@ export default {
       showConversationProfile: false
     };
   },
-  async created() {
-    const res = await getUserTable();
-    console.log('res', res);
-  },
   methods: {
+    async getFriendList() {
+      // console.log('getFriendList',tim,tim.getFriendList)
+      await tim
+        .getFriendList()
+        .then(res => {
+          console.log('tim', res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     setTabKey(val) {
       this.tabKey = val;
     },
@@ -167,6 +176,22 @@ export default {
     messageH() {
       let h = this.arr.length * 48;
       return h + 'px';
+    },
+    ...mapState({
+      isTimReady: state => state.tim.ready,
+      userInfo: state => state.user.accountInfo
+    })
+  },
+  watch: {
+    isTimReady: {
+      handler(nl, ol) {
+        console.log('chatRoom ready', nl, ol);
+        if (nl === false) {
+          this.$loading.show();
+        } else {
+          this.$loading.hide();
+        }
+      }
     }
   },
   mounted() {
@@ -175,6 +200,10 @@ export default {
       scrollbar: true,
       mouseWheel: true
     });
+    this.$store.dispatch('setNeedNotice', false);
+  },
+  destroyed() {
+    this.$store.dispatch('setNeedNotice', true);
   }
 };
 </script>

@@ -160,7 +160,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/,
+                test: /\.(png|jpe?g|gif|webp|svg|mp3)(\?.*)?$/,
                 type: 'asset',
                 exclude:resolve("src/icons"),
                 //解析

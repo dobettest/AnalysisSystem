@@ -10,8 +10,7 @@ import '@/styles/index.scss'; // global css
 import './icons'; //icon
 import './permission'; // 路由导航守卫
 import './lib/ant-design-vue';
-//import './lib/tim'; //引入及时通讯
-//import './lib/trtc'; //引入实时音视频
+// import './lib/trtc'; //引入实时音视频
 //import '@/assets/font/iconfont.css';
 
 import scrollBar from '@/components/scrollBar';
@@ -27,6 +26,7 @@ Vue.use(VueLazyLoad, {
   attempt: 2
 });
 Vue.use(loading); // 全局使用loading
+Vue.prototype.$bus = new Vue();
 new Vue({
   router,
   store,

@@ -2,7 +2,7 @@
   <div class="all-container" :class="{ closeSide: !open, horizontal: horizontal }">
     <side-bar class="aside-container" :collapsed="open" v-if="!horizontal" />
     <div class="main-container" :class="{ hasTag: tagShow }">
-      <div :class="{ 'fixed-header': fixHeader }">
+      <div class="fixed-header">
         <nav-bar :collapsed="open" v-if="!horizontal" />
         <div v-else class="horizontal-nav flex">
           <horizontal-side />
@@ -23,19 +23,33 @@
 import { sideBar, navBar, tagView, setting, horizontalSide } from './components';
 import backTop from '@/components/backTop/index';
 import { mapState } from 'vuex';
+import timMx from '@/mixins/tim.js';
+import cloudbaseMx from '@/mixins/cloudbase.js';
+import { auth } from '../lib/cloudbase';
 export default {
   name: 'layout',
   components: { sideBar, navBar, tagView, setting, backTop, horizontalSide },
+  mixins: [cloudbaseMx, timMx],
   computed: {
     ...mapState({
       open: state => state.setting.open,
       fixHeader: state => state.setting.fixHeader,
       tagShow: state => state.setting.tagShow,
-      layout: state => state.setting.layout
+      layout: state => state.setting.layout,
+      userInfo: state => state.user.accountInfo
     }),
     horizontal() {
       return this.layout == 'horizontal';
     }
+  },
+  async created() {
+    let {
+      userInfo: { userID }
+    } = this;
+    await this.$store.dispatch('cloudbase/login', { userID });
+    console.log("login",auth.hasLoginState(),userID)
+    await this.$store.dispatch('tim/login', { userID });
+    console.log("login")
   },
   methods: {
     changeVisivle() {
@@ -75,7 +89,6 @@ export default {
   cursor: pointer;
 }
 .app-main {
-  height: 100%;
   width: 100%;
 }
 
@@ -91,14 +104,17 @@ export default {
     transition: width 0.28s;
     width: calc(100% - 256px);
     & ~ .app-main {
-      padding-top: 54px;
+      padding-top: 60px;
     }
   }
 }
 .hasTag {
   .fixed-header {
+    .nav-wrapper {
+      border-bottom-color: #e7e7e7;
+    }
     & ~ .app-main {
-      padding-top: 100px !important;
+      padding-top: 106px;
       height: 100%;
     }
   }
@@ -125,8 +141,8 @@ export default {
   .horizontal-nav {
     background: #293348;
     color: #f1f1f1;
-    height: 54px;
-    line-height: 54px;
+    height: 60px;
+    line-height: 60px;
   }
   .main-container {
     margin-left: 0;

@@ -32,5 +32,6 @@
     "friendList": "friendList",
     "groupList": "groupList",
     "meeting": "meeting",
-    "storage": "storage"
+    "storage": "storage",
+    "memberManage":"memberManage"
 }

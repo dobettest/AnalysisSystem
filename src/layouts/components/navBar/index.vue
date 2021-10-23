@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-wrapper flex justify-between align-center">
+  <div class="nav-wrapper flex-box">
     <a-icon
       :type="collapsed ? 'menu-fold' : 'menu-unfold'"
       class="nav-fold boxHover"
@@ -8,20 +8,22 @@
     />
 
     <bread-crumb v-show="!horizontal" />
-    <div class="right-menu flex">
+    <div class="right-menu flex-box">
       <a-tooltip placement="bottom">
-        <template slot="title"> 主题配置 </template>
-        <div class="right-menu-item  boxHover" @click="changeVisible">
-          <svg-icon icon="color" :size="18" />
+        <template slot="title"> 系统设置 </template>
+        <div class="right-menu-item boxHover" @click="changeVisible">
+          <svg-icon icon="globalSetting" :size="20" />
         </div>
       </a-tooltip>
-
-      <div class="right-menu-item boxHover" style="margin-right: 15px" @click="toNotice">
-        <a-badge :count="count" :overflow-count="99" :offset="[3, -4]">
-          <svg-icon icon="bell" :size="18" />
-        </a-badge>
-      </div>
-      <nav-user class="right-menu-item  boxHover flex-sub" />
+      <a-tooltip placement="bottom">
+        <template slot="title">未读消息{{ unread }}</template>
+        <div class="right-menu-item boxHover" style="margin-right: 15px" @click="toNotice">
+          <a-badge :count="unread" :overflow-count="99" :offset="[10, -10]">
+            <svg-icon icon="bell" :size="20" :class="{ notice }" />
+          </a-badge>
+        </div>
+      </a-tooltip>
+      <nav-user class="right-menu-item boxHover flex-sub" />
     </div>
   </div>
 </template>
@@ -30,6 +32,7 @@
 import navUser from './navUser';
 import screenfull from 'screenfull';
 import breadCrumb from './breadCrumb';
+let timer = null;
 export default {
   name: 'navBar',
   props: {
@@ -45,11 +48,23 @@ export default {
   components: { navUser, breadCrumb },
   data() {
     return {
-      count: 6,
-      isFullscreen: false
+      isFullscreen: false,
+      notice: false
     };
   },
+  computed: {
+    unread() {
+      return this.$store.state.tim.unread;
+    }
+  },
   methods: {
+    notify() {
+      timer && clearTimeout(timer);
+      this.notice = true;
+      timer = setTimeout(() => {
+        this.notice = false;
+      }, 600); //保证喇叭动画效果
+    },
     toggleOpen() {
       this.$store.commit('setting/TOGGLE_OPEN');
     },
@@ -65,25 +80,35 @@ export default {
       this.$store.dispatch('setting/changeSetting', { key: 'settingVisible', value: true });
     },
     toNotice() {
-      this.count = 0;
       this.$router.push({
-        name: 'userInfo',
-        params: {
-          key: 'noticePage'
-        }
+        path: '/im'
       });
     }
+  },
+  mounted() {
+    this.$bus.$on('bell', this.notify);
   }
 };
 </script>
 <style lang="scss" scoped>
+@keyframes scale {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.notice {
+  animation: scale 0.3s infinite;
+}
 .nav-wrapper {
-  height: 54px;
+  height: 60px;
   overflow: hidden;
   position: relative;
   background: #fff;
-  -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  border-bottom: 1px solid transparent;
   .boxHover {
     &:hover {
       background: rgba(0, 0, 0, 0.025);
@@ -94,7 +119,7 @@ export default {
     height: 100%;
     cursor: pointer;
     font-size: 20px;
-    line-height: 58px;
+    line-height: 60px;
     transition: all 0.3s, padding 0s;
   }
 
@@ -104,7 +129,7 @@ export default {
     .right-menu-item {
       height: 100%;
       padding: 0 8px;
-      line-height: 54px;
+      line-height: 60px;
       cursor: pointer;
     }
   }

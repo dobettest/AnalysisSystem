@@ -1,5 +1,11 @@
 <template>
-  <a-modal title="登录" :visible="show" @cancel="$emit('hide')" :footer="null" :getContainer="getContainer">
+  <a-modal
+    title="登录"
+    :visible="show"
+    @cancel="$emit('hide')"
+    :footer="null"
+    :bodyStyle="{ 'padding-bottom': '6px', 'padding-top': '0px' }"
+  >
     <a-form-model :model="loginForm" :rules="loginRules" class="form-container" ref="loginForm">
       <a-tabs v-model="currentTab" class="tabs" :tabBarGutter="35">
         <a-tab-pane key="user" tab="账号密码登录">
@@ -20,6 +26,7 @@
               placeholder="请输入密码"
               size="large"
               type="password"
+              autocomplete
               allow-clear
               @pressEnter="toLogin"
               ref="password"
@@ -63,12 +70,29 @@
       <a-form-item style="margin-top: -7px">
         <a-button type="primary" block size="large" :loading="loading" @click="toLogin"> 登录 </a-button>
       </a-form-item>
-      <a-form-item style="margin-top: -7px">
-        <a-checkbox v-model="loginForm.remember" v-if="currentTab === 'user'">记住密码</a-checkbox>
-        <div style="float: right">
-          <span style="margin-right: 15px">其他登录方式</span>
-          <svg-icon icon="qq" :size="25" class="verticalMiddle"></svg-icon>
+      <a-form-item style="margin-top: -7px; margin-bottom: 7px">
+        <div style="float: left">
+          <a-checkbox v-model="loginForm.remember" v-if="currentTab === 'user'" style="float: left; line-height: 40px"
+            >记住密码</a-checkbox
+          >
+          <div
+            class="hover-box"
+            style="float: left; line-height: 40px; cursor: pointer; padding: 0 4px"
+            @click="toRegister"
+          >
+            <span>注册</span>
+          </div>
+          <div class="hover-box" style="float: left; line-height: 40px; cursor: pointer">
+            <span style="padding: 0 4px">找回密码</span>
+          </div>
         </div>
+        <dl style="float: right; margin: 0" class="flex-box">
+          <dt class="transform-trigger" style="margin-right: 4px"><b>其他登录方式</b></dt>
+          <dd class="flex-box">
+            <svg-icon icon="qq" :size="25" style="margin: 0 4px; cursor: pointer"></svg-icon>
+          </dd>
+          <!-- <svg-icon icon="qq" :size="25" class="verticalMiddle"></svg-icon> -->
+        </dl>
       </a-form-item>
     </a-form-model>
   </a-modal>
@@ -78,6 +102,34 @@
 import { isPhone, isPassWord, isCode } from '@/utils/validate';
 import { getCache, setCache, removeCache } from '@/utils/session';
 import { getPhoneCode } from '@/api/user';
+const validateuserID = (rule, value, callback) => {
+  if (value.trim().length === 0) {
+    callback(new Error('用户名不能为空'));
+  } else {
+    callback();
+  }
+};
+const validatePassword = (rule, value, callback) => {
+  if (!isPassWord(value)) {
+    callback(new Error('请正确输入密码'));
+  } else {
+    callback();
+  }
+};
+const validatePhone = (rule, value, callback) => {
+  if (!isPhone(value)) {
+    callback(new Error('手机号码有误，请重新填写'));
+  } else {
+    callback();
+  }
+};
+const validateCode = (rule, value, callback) => {
+  if (!isCode(value)) {
+    callback(new Error('验证码有误，请重新填写'));
+  } else {
+    callback();
+  }
+};
 export default {
   name: 'login-form-modal',
   props: {
@@ -87,35 +139,6 @@ export default {
     }
   },
   data() {
-    const validateuserID = (rule, value, callback) => {
-      if (value.trim().length === 0) {
-        callback(new Error('用户名不能为空'));
-      } else {
-        callback();
-      }
-    };
-    const validatePassword = (rule, value, callback) => {
-      if (!isPassWord(value)) {
-        callback(new Error('请正确输入密码'));
-      } else {
-        callback();
-      }
-    };
-    const validatePhone = (rule, value, callback) => {
-      if (!isPhone(value)) {
-        callback(new Error('手机号码有误，请重新填写'));
-      } else {
-        callback();
-      }
-    };
-    const validateCode = (rule, value, callback) => {
-      if (!isCode(value)) {
-        callback(new Error('验证码有误，请重新填写'));
-      } else {
-        callback();
-      }
-    };
-
     return {
       currentTab: 'user',
       loginForm: {
@@ -124,12 +147,6 @@ export default {
         phone: '',
         code: '',
         remember: true
-      },
-      loginRules: {
-        userID: [{ required: true, trigger: 'blur', validator: validateuserID }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-        code: [{ required: true, trigger: 'blur', validator: validateCode }]
       },
       loading: false,
       phoneCode: '获取验证码',
@@ -144,7 +161,25 @@ export default {
       this.loginForm.password = cache.password;
     }
   },
+  computed: {
+    loginRules() {
+      {
+        return this.currentTab === 'user'
+          ? {
+              userID: [{ required: true, trigger: 'blur', validator: validateuserID }],
+              password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+            }
+          : {
+              phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+              code: [{ required: true, trigger: 'blur', validator: validateCode }]
+            };
+      }
+    }
+  },
   methods: {
+    toRegister() {
+        // this.$bus.$emit('registerModal');
+    },
     focusPassword() {
       this.$refs.password.focus();
     },
@@ -180,7 +215,7 @@ export default {
             const { userID, password } = this.loginForm;
             this.$store
               .dispatch('user/login', { userID, password })
-              .then(() => {
+              .then(async () => {
                 if (this.loginForm.remember) {
                   setCache('LOGIN_INFO', { userID, password });
                   let path = '/index';
@@ -218,15 +253,7 @@ export default {
           return false;
         }
       });
-    },
-    getContainer() {
-      let el = document.getElementById('app');
-      console.log('el', el);
-      return el;
     }
   }
 };
 </script>
-
-<style>
-</style>

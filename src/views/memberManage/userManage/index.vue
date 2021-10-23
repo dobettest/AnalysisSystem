@@ -92,33 +92,41 @@ const tableHead = [
     title: '序号',
     dataIndex: 'index',
     scopedSlots: { customRender: 'index' },
-    width: 60
+    align: 'center',
+    width: 80
   },
   {
     title: '头像',
     dataIndex: 'avatar',
     scopedSlots: { customRender: 'avatar' },
-    width: 80
+    align: 'center',
+    width: 120
   },
   {
     title: '用户名',
-    dataIndex: 'username'
+    dataIndex: 'username',
+    align:'center',
   },
   {
     title: '职位',
     dataIndex: 'job',
-    scopedSlots: { customRender: 'job' }
+    scopedSlots: { customRender: 'job' },
+    align: 'center',
+    width: 160
   },
   {
     title: '创建日期',
     dataIndex: 'date',
     defaultSortOrder: 'ascend',
     sorter: (a, b) => a.date > b.date,
-    ellipsis: true
+    ellipsis: true,
+    align: 'center',
+    width: 240
   },
   {
     title: '操作',
     scopedSlots: { customRender: 'action' },
+    align:'center',
     width: 140
   }
 ];

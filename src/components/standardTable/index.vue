@@ -9,6 +9,7 @@
       @change="handleTableChange"
       rowKey="id"
       :scroll="scroll"
+      bordered
     >
       <template
         slot-scope="text, record, index"

@@ -22,8 +22,7 @@
 <script>
 import articleContainer from './subview/article/index.vue';
 import dynamicContainer from './subview/dynamic/index.vue';
-import { db, isAuth, app } from '@/lib/storage.js';
-import { getCloudBaseAuth } from '@/api/user';
+import { db } from '@/lib/cloudbase.js';
 export default {
   name: 'dynamic-article-tab',
   components: {
@@ -42,28 +41,19 @@ export default {
       required: true
     }
   },
-  mounted() {
-    if (!isAuth.get()) {
-      let { userID } = this;
-      getCloudBaseAuth(userID).then(({ data: ticket }) => {
-        app.auth().customAuthProvider().signIn(ticket);
-        isAuth.set(true);
-      });
-    }
-  },
   methods: {
     async getDynamicList() {
       let { userID } = this;
-      console.log(userID);
+      // console.log(userID);
       let regexp = `^v\\d{8}${userID}\\d{2,3}$`;
-      const { data } = await db
-        .collection('vblog')
-        .where({
+      const { data } = await this.$store.dispatch('cloudbase/access', {
+        name: 'vblog',
+        params: {
           vid: new db.RegExp({
             regexp
           })
-        })
-        .get();
+        }
+      });
       this.dynamicList = data;
     },
     change(val) {

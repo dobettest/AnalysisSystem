@@ -1,5 +1,9 @@
 {
     "customSetting": "customSetting",
+    "globalSetting": "globalSetting",
+    "securitySetting": "securitySetting",
+    "communitySetting": "communitySetting",
+    "allowType":"allowType",
     "theme": "theme",
     "layout": "layout",
     "lang": "lang",
@@ -9,5 +13,6 @@
     "sunset": "sunset",
     "grass": "grass",
     "sideNav": "sideNav",
-    "topNav": "topNav"
+    "topNav": "topNav",
+    "bell": "bell"
 }

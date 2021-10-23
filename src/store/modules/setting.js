@@ -7,7 +7,9 @@ const defaultSetting = {
   settingVisible: false,
   layout: 'inline',
   theme: 'blue',
-  locale: 'CN'
+  locale: 'CN',
+  bell: true,
+  allowType: "ALLOW_TYPE_ALLOW_ANY"
 };
 //切换主题
 export const changeTheme = (color) => {

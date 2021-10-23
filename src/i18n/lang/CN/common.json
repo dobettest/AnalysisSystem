@@ -1,4 +1,5 @@
 {
+    "locale": "简体中文",
     "open": "开",
     "close": "关",
     "edit": "编辑",
@@ -11,7 +12,7 @@
     "tag": "标签",
     "skill": "技能",
     "dynamic": "动态",
-    "miscro-cloud-station": "微云台",
+    "programName": "微云台",
     "secureSetting": "安全设置",
     "avatar": "头像",
     "city": "城市",
@@ -21,5 +22,19 @@
     "cancel": "取消",
     "none": "暂无",
     "username": "用户名",
-    "role":"角色"
+    "role": "角色",
+    "login": "登录",
+    "projectIntroduce": "项目介绍",
+    "systemBrief": "系统概要",
+    "powers": "强大优势",
+    "communityDep": "依托社区",
+    "permissionM": "权限管理",
+    "memberM": "成员管理",
+    "storage": "存储空间",
+    "graph": "图表展示",
+    "computed": "高性能服务器",
+    "cdn": "CDN加速",
+    "https": "https加密",
+    "ownspace": "个人空间",
+    "relative": "友情链接"
 }

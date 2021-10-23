@@ -9,6 +9,16 @@
   justify-content: center;
   align-items: center;
 }
+.over-box{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hover-box{
+  &:hover{
+    color:$color-primary;
+  }
+}
 .scroll-bar{
   &::-webkit-scrollbar{
     width: 4px;
@@ -23,7 +33,7 @@ ul{
   padding: 0;
   list-style: none;
 }
-p,dd{
+p,dd,dl{
   margin: 0;
   padding: 0;
 }

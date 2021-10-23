@@ -1,4 +1,5 @@
 {
+    "locale": "English",
     "open": "open",
     "close": "close",
     "edit": "edit",
@@ -11,7 +12,7 @@
     "tag": "tag",
     "skill": "skill",
     "dynamic": "dynamic",
-    "miscro-cloud-station": "miscro-cloud-station",
+    "programName": "miscro-cloud-station",
     "secureSetting": "secureSetting",
     "avatar": "avatar",
     "role": "role",
@@ -21,5 +22,19 @@
     "submit": "submit",
     "cancel": "cancel",
     "none": "none",
-    "username": "username"
+    "username": "username",
+    "login": "login",
+    "projectIntroduce": "project-introduce",
+    "systemBrief": "system-brief",
+    "powers": "powers",
+    "communityDep": "community-depencencies",
+    "permissionM": "permissionM",
+    "memberM": "memberM",
+    "storage": "storage",
+    "graph": "graph",
+    "computed": "computed",
+    "cdn": "cdn",
+    "https": "https",
+    "ownspace": "ownspace",
+    "relative":"relative"
 }

@@ -1,8 +1,8 @@
 <template>
-  <div class="userInfo-container" ref="userInfo">
+  <div class="userInfo-container" ref="userInfo" @getUserInfo="getUserInfo">
     <div class="header" v-if="userInfo">
       <div class="bgi">
-        <img src="../../../assets/guide-cover.jpg" alt="" srcset="" class="bgi-cover" />
+        <img src="../../assets/guide-cover.jpg" alt="" srcset="" class="bgi-cover" />
         <div class="edit-cover" v-if="isSelf">
           <label style="cursor: pointer">
             <a-icon type="camera"></a-icon>
@@ -62,7 +62,7 @@
           </button>
           <div class="edit-button-group" v-else>
             <div class="edit-button" title="互相关注,才可以发送消息哦">
-              <a-icon type="check" style="margin-right: 4px"></a-icon>加为关注
+              <a-icon type="plus" style="margin-right: 4px"></a-icon>加为关注
             </div>
           </div>
         </div>
@@ -87,17 +87,31 @@ import { getBase64 } from '@/utils/index.js';
 export default {
   data() {
     return {
+      previewVisible: false,
+      loading: false,
       userInfo: null,
-      previewVisible: false
+      isSelf: null
     };
   },
   components: { skillCard, summaryCard, dynamicArticleTab },
   methods: {
-    async getUserInfo() {
-      let { userID } = this.$route.query;
-      const { data } = await getInfo({ userID });
-      if (data['info']) {
-        this.userInfo = data['info'];
+    async getUserInfo(userID) {
+      let userInfo;
+      if (userID === '') {
+        userInfo = this.$store.state.user['accountInfo'];
+      } else {
+        this.loading = true;
+        try {
+          const { data } = await getInfo({ userID });
+          if (data['info']) {
+            userInfo = data['info'];
+          }
+        } catch (error) {
+          console.log(error);
+        }
+        this.userInfo = userInfo;
+        this.isSelf = this.userInfo['userID'] === this.$store.state.user.accountInfo['userID'];
+        this.loading = false;
       }
     },
     uploadAvatar(ev) {
@@ -112,6 +126,7 @@ export default {
                 avatar: imageUrl
               }).then(() => {
                 this.$store.dispatch('user/getUserInfo');
+                this.getUserInfo();
               });
             });
           } else {
@@ -124,15 +139,9 @@ export default {
     }
   },
   watch: {
-    isSelf: {
+    loading: {
       handler(nl, ol) {
-        nl ? (this.userInfo = this.$store.state.user['accountInfo']) : this.getUserInfo();
-      },
-      immediate: true
-    },
-    userInfo: {
-      handler(nl, ol) {
-        if (!nl) {
+        if (nl) {
           this.$nextTick(() => {
             this.$loading.show({
               getContainer: () => {
@@ -147,14 +156,13 @@ export default {
       immediate: true
     }
   },
+  created() {
+    this.getUserInfo();
+    this.$bus.$on('getUserInfo', this.getUserInfo);
+  },
   computed: {
     noSecret() {
       return true;
-    },
-    isSelf() {
-      return this.$route.query['userID']
-        ? this.$route.query['userID'] === this.$store.state.user.accountInfo['userID']
-        : true;
     }
   }
 };

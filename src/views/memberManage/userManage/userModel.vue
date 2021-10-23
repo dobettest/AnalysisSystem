@@ -28,7 +28,7 @@
         <a-input v-model="userForm.username" />
       </a-form-model-item>
       <a-form-model-item prop="password" label="密码" hasFeedback>
-        <a-input v-model="userForm.password" />
+        <a-input-password v-model="userForm.password" />
       </a-form-model-item>
       <a-form-model-item prop="role" label="权限">
         <a-radio-group v-model="userForm.role">

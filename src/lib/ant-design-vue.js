@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {
+  Notification,
   BackTop,
   Button,
   Card,
@@ -37,10 +38,11 @@ import {
   Tree,
   Result,
   Carousel,
-  Popover
+  Popover,
 } from 'ant-design-vue';
 [
   BackTop,
+  Notification,
   Button,
   Card,
   FormModel,
@@ -82,3 +84,4 @@ import {
   Vue.use(v);
 });
 Vue.prototype.$message = message;
+Vue.prototype.$notification = Notification;

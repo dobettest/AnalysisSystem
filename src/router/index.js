@@ -2,7 +2,17 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
-
+//重定向时报错，用这个不让他报错
+const originalPush = VueRouter.prototype.push;
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject);
+  return originalPush.call(this, location).catch(err => err);
+};
+VueRouter.prototype.replace = function replace(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject);
+  return originalReplace.call(this, location).catch(err => err);
+};
 import Layout from '@/layouts';
 import mainLayout from '@/layouts/mainLayout';
 import echartRouter from './modules/echarts';
@@ -79,31 +89,31 @@ export const asyncRoutes = [
       echartRouter,
       componentsRouter,
       {
-        name: 'userSystem',
+        name: 'userInfo',
         path: '/userInfo',
-        component: () => import('@/views/userSystem/userInfo/index'),
+        component: () => import('@/views/userInfo/index'),
         meta: { title: 'userSystem', icon: 'user' }
       },
       {
-        name: 'system',
+        name: 'memberManage',
         component: mainLayout,
-        path: '/system',
-        redirect: '/system/userManage',
+        path: '/memberManage',
+        redirect: '/memberManage/userManage',
         meta: {
-          title: 'system',
-          icon: 'system'
+          title: 'memberManage',
+          icon: 'memberManage'
         },
         children: [
           {
             name: 'userManage',
-            path: '/system/userManage',
-            component: () => import('@/views/system/userManage/index'),
+            path: '/memberManage/userManage',
+            component: () => import('@/views/memberManage/userManage/index'),
             meta: { title: 'userManage' }
           },
           {
             name: 'roleManage',
-            path: '/system/roleManage',
-            component: () => import('@/views/system/roleManage/index'),
+            path: '/memberManage/roleManage',
+            component: () => import('@/views/memberManage/roleManage/index'),
             meta: { title: 'roleManage' }
           }
         ]
@@ -123,14 +133,11 @@ const createRouter = function () {
 const router = createRouter();
 
 export function resetRouter() {
-  router.matcher = createRouter().matcher;
+  return new Promise((resolve, reject) => {
+    let matcher = createRouter().matcher;
+    router.matcher = matcher;
+    resolve();
+  })
 }
-
-//重定向时报错，用这个不让他报错
-const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(location, onResolve, onReject) {
-  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject);
-  return originalPush.call(this, location).catch(err => err);
-};
 
 export default router;

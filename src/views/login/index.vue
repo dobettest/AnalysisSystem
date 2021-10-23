@@ -3,10 +3,22 @@
     <header class="header">
       <div class="logo-wrapper">
         <svg-icon class="logo-img" icon="logo" :style="{ fontSize: 56 + 'px' }"></svg-icon>
-        <div class="logo-title">微云台</div>
+        <div class="logo-title">{{ $t('common.programName') }}</div>
       </div>
-      <div class="header-right">
-        <a-button type="primary" @click="show = true"> 登录 </a-button>
+      <div class="header-right flex-box">
+        <dl class="international-wrapper">
+          <dt class="flex-box inter-title">
+            <svg-icon icon="international" :size="24"></svg-icon
+            ><span class="inter-name">{{ $t('common.locale') }}</span
+            ><span class="arrow"></span>
+          </dt>
+          <dd class="inter-sub-wrapper">
+            <div :class="['inter-item', locale === 'CN' ? 'active' : '']" @click="locale = 'CN'">简体中文</div>
+            <div :class="['inter-item', locale === 'EN' ? 'active' : '']" @click="locale = 'EN'">English</div>
+            <div :class="['inter-item', locale === 'JP' ? 'active' : '']" @click="locale = 'JP'">日本語</div>
+          </dd>
+        </dl>
+        <a-button type="primary" @click="show = true" style="margin-left: 16px"> {{ $t('common.login') }} </a-button>
       </div>
     </header>
     <main class="main">
@@ -19,7 +31,7 @@
         </div>
       </a-carousel>
       <div class="part part-one">
-        <h1 class="part-title">项目介绍</h1>
+        <h1 class="part-title">{{ $t('common.projectIntroduce') }}</h1>
         <div class="project">
           <div class="row">
             <div class="row-item">
@@ -28,40 +40,40 @@
             <div class="row-item">
               <dl class="Intro">
                 <dt class="Intro-title">
-                  <h1 class="main-title">系统概要</h1>
+                  <h1 class="main-title">{{ $t('common.systemBrief') }}</h1>
                   <h2 class="sub-title">a brief about system.</h2>
                 </dt>
                 <dd class="Intro-item">
                   <svg-icon icon="permission-manage"></svg-icon>
-                  <span>权限管理</span>
+                  <span>{{ $t('common.permissionM') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="member-manage"></svg-icon>
-                  <span>用户管理</span>
+                  <span>{{ $t('common.memberM') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="storage"></svg-icon>
-                  <span>存储空间</span>
+                  <span>{{ $t('common.storage') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="graph"></svg-icon>
-                  <span>图表展示</span>
+                  <span>{{ $t('common.graph') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="Nginx"></svg-icon>
-                  <span>高性能服务器</span>
+                  <span>{{ $t('common.computed') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="cdn"></svg-icon>
-                  <span>CDN部署</span>
+                  <span>{{ $t('common.cdn') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="https"></svg-icon>
-                  <span>https加密</span>
+                  <span>{{ $t('common.https') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="blog"></svg-icon>
-                  <span>个人空间</span>
+                  <span>{{ $t('common.ownspace') }}</span>
                 </dd>
               </dl>
             </div>
@@ -73,40 +85,40 @@
             <div class="row-item">
               <dl class="Intro">
                 <dt class="Intro-title">
-                  <h1 class="main-title">强大优势</h1>
+                  <h1 class="main-title">{{ $t('common.powers') }}</h1>
                   <h2 class="sub-title">what's our advantages ?</h2>
                 </dt>
                 <dd class="Intro-item">
                   <svg-icon icon="permission-manage"></svg-icon>
-                  <span>权限管理</span>
+                  <span>{{ $t('common.permissionM') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="member-manage"></svg-icon>
-                  <span>用户管理</span>
+                  <span>{{ $t('common.memberM') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="storage"></svg-icon>
-                  <span>存储空间</span>
+                  <span>{{ $t('common.storage') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="graph"></svg-icon>
-                  <span>图表展示</span>
+                  <span>{{ $t('common.graph') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="Nginx"></svg-icon>
-                  <span>高性能服务器</span>
+                  <span>{{ $t('common.computed') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="cdn"></svg-icon>
-                  <span>CDN部署</span>
+                  <span>{{ $t('common.cdn') }}</span>
                 </dd>
                 <dd class="Intro-item">
                   <svg-icon icon="https"></svg-icon>
-                  <span>https加密访问</span>
+                  <span>{{ $t('common.https') }}</span>
                 </dd>
                 <dd class="Intro-item">
-                  <svg-icon icon="graph"></svg-icon>
-                  <span>图表展示</span>
+                  <svg-icon icon="blog"></svg-icon>
+                  <span>{{ $t('common.ownspace') }}</span>
                 </dd>
               </dl>
             </div>
@@ -114,7 +126,7 @@
         </div>
       </div>
       <div class="part part-two">
-        <h1 class="part-title">依托社区</h1>
+        <h1 class="part-title">{{ $t('common.communityDep') }}</h1>
         <div class="community">
           <div class="community-item">
             <img class="community-item-img" src="../../assets/logo/tencent.svg" />
@@ -143,12 +155,13 @@
         </div>
       </div>
       <login-form-modal :show="show" @hide="show = false"></login-form-modal>
+      <register-modal></register-modal>
     </main>
     <footer class="footer">
       <div class="relative-info">
         <div class="relative-link">
           <dl class="link-row">
-            <dt class="link-item link-title">友情链接--</dt>
+            <dt class="link-item link-title">{{$t('common.relative')}}--</dt>
             <dd class="link-item"><a href="https://cloud.tencent.com/">腾讯云</a></dd>
             <dd class="link-item"><a href="https://www.iconfont.cn/">阿里图库</a></dd>
             <dd class="link-item"><a href="https://www.jb51.net/">脚本之家</a></dd>
@@ -172,7 +185,7 @@
           <p class="copyright-item">All Rights Reserved. 都贝斯特 版权所有</p>
         </div>
       </div>
-      <div class="contact">
+      <div class="additional">
         <!-- <p>联系方式</p> -->
         <img src="../../assets/login/wxqrcode.png" class="contact-img" />
         <!-- <p><a-icon type="phone"></a-icon><span style="fontStyle:italic">17770831435</span></p> -->
@@ -182,19 +195,43 @@
 </template>
 
 <script>
+import { changeLocale } from '@/i18n';
 import loginFormModal from './components/loginFormModal.vue';
+import registerModal from './components/registerModal.vue';
 export default {
   components: {
-    loginFormModal
+    loginFormModal,
+    registerModal
   },
   data() {
     return {
       show: false
     };
+  },
+  computed: {
+    locale: {
+      get() {
+        return this.$store.state.setting.locale;
+      },
+      set(value) {
+        this.$store.dispatch('setting/changeSetting', {
+          key: 'locale',
+          value
+        });
+        changeLocale(value);
+      }
+    }
   }
 };
 </script>
 <style lang="scss">
+.login-box {
+  .forget-password {
+    float: left;
+    line-height: 40px;
+    cursor: pointer;
+  }
+}
 .login-container {
   .header {
     background-color: #354060;
@@ -214,9 +251,61 @@ export default {
     }
     .header-right {
       height: 70px;
-      line-height: 70px;
       float: right;
       margin-right: 32px;
+      .international-wrapper {
+        color: #fff;
+        position: relative;
+        cursor: pointer;
+        height: 70px;
+        &:hover {
+          color: rgba(255, 255, 255, 0.85);
+          .inter-sub-wrapper {
+            display: block;
+          }
+          .arrow {
+            transform: rotate(180deg);
+            border-top-color: rgba(255, 255, 255, 0.85);
+          }
+        }
+        .inter-title {
+          display: flex;
+          align-items: center;
+          height: 70px;
+          .inter-name {
+            text-align: center;
+            width: 70px;
+            padding: 0 4px;
+          }
+        }
+        .arrow {
+          display: block;
+          content: ' ';
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid #fff;
+        }
+        .inter-sub-wrapper {
+          display: none;
+          width: 120px;
+          background-color: #354060;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 70px;
+          border-top: 1px solid rgba(255, 255, 255, 0.85);
+          .inter-item {
+            height: 28px;
+            padding: 0 24px;
+          }
+        }
+      }
+    }
+    .inter-item:hover {
+      color: #fff;
+    }
+    .inter-item.active {
+      color: $color-primary;
     }
   }
   .main {
@@ -307,7 +396,7 @@ export default {
     background-color: #354060;
     color: #fff;
     height: 132px;
-    overflow: hidden;
+    // overflow: hidden;
     .relative-info {
       position: relative;
       height: 60px;
@@ -347,7 +436,7 @@ export default {
         }
       }
     }
-    .contact {
+    .additional {
       text-align: center;
       margin-right: 20px;
       position: absolute;
@@ -366,6 +455,7 @@ export default {
       text-align: center;
       padding: 10px;
       white-space: nowrap;
+      overflow: hidden;
       .beian-link {
         display: block;
         color: #fff;

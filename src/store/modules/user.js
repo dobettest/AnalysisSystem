@@ -1,33 +1,21 @@
 import { getCache, setCache, removeCache } from '@/utils/session';
 import { login, logout, getCodeTest, getInfo } from '@/api/user';
-import { resetRouter } from '@/router';
-//import tim from '@/lib/tim';
+import router, { resetRouter } from '@/router';
 const state = {
   accountInfo: null,
-  token: getCache('TOKEN') || '',
-  userSign: getCache('SIGN') || '',
-  cloudbaseAuth: null
+  token: getCache('TOKEN') || ''
 };
 
 const mutations = {
-  SET_CLOUDBASEAUTH(state, cloudbaseAuth) {
-    state.cloudbaseAuth = cloudbaseAuth;
-  },
   SET_TOKEN(state, token) {
     state.token = token;
   },
   SET_USERINFO(state, userInfo) {
     state.accountInfo = userInfo;
-  },
-  SET_USERSIGN(state, userSign) {
-    state.userSign = userSign;
   }
 };
 
 const actions = {
-  SET_CLOUDBASEAUTH({ commit }, cloudbaseAuth) {
-    commit('SET_CLOUDBASEAUTH', cloudbaseAuth);
-  },
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
       login(userInfo)
@@ -65,48 +53,30 @@ const actions = {
     });
   },
 
-  logout({ commit }) {
-    return new Promise((resolve, reject) => {
-      logout()
-        .then(() => {
-          commit('SET_TOKEN', '');
-          commit('SET_USERINFO', '');
-          removeCache('TOKEN');
-          resetRouter();
-          resolve();
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+  async logout({ commit, dispatch }) {
+    await logout()
+    commit('SET_TOKEN', '');
+    commit('SET_USERINFO', '');
+    await removeCache('TOKEN');
+    await dispatch("cloudbase/logout", null, { root: true });
+    await dispatch("tim/logout", null, { root: true });
+    await resetRouter();
   },
 
   async getUserInfo({ commit }) {
     try {
       var res = await getInfo();
       const {
-        data: { info, userSig },
+        data: { info },
         message
       } = res;
-      if (info && userSig) {
+      if (info) {
         commit('SET_USERINFO', info);
-        commit('SET_USERSIGN', userSig);
-        // await tim
-        //   .login({
-        //     userID: info.userID,
-        //     userSig
-        //   })
-        //   .then(res => {
-        //     console.log(res);
-        //   })
-        //   .catch(err => {
-        //     console.log(err);
-        //   });
-        return Promise.resolve(info);
+        return info;
       }
-      return Promise.reject(message);
+      return message;
     } catch (error) {
-      return Promise.reject(error);
+      return error;
     }
   },
 

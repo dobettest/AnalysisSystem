@@ -4,7 +4,7 @@
     <div class="scroll-outer" ref="scrollOuter">
       <div class="scroll-body" ref="scrollBody">
         <router-link
-          class="tag-item inline-block"
+          class="tag-item flex-box"
           :to="item.path"
           v-for="(item, index) in tagList"
           :key="item.path"
@@ -54,8 +54,7 @@ export default {
       };
     }
   },
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
     isActive(path) {
@@ -150,15 +149,14 @@ $height: 46px;
     .scroll-body {
       transition: left 0.3s ease;
       z-index: 1;
-      display: inline-block;
-      white-space: nowrap;
+      display: flex;
+      align-items: center;
       height: 100%;
       width: calc(100% - 8px);
       line-height: $height;
       position: absolute;
       .tag-item {
         height: 32px;
-        line-height: 26px;
         text-align: center;
         border: 1px solid #d9d9d9;
         border-radius: 4px;
@@ -166,11 +164,11 @@ $height: 46px;
         margin-right: 10px;
         cursor: pointer;
         user-select: none;
+        float: left;
 
         .tag-title {
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 7px;
+          height: 32px;
+          line-height: 32px;
           color: #666;
         }
         .tag-icon {

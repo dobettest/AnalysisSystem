@@ -2,13 +2,14 @@
   <div class="storage-container">
     <div class="file-header">
       <div class="file-header-tool">
-        <dl class="file-header-path" @click="goto">
-          <dt class="path-title">当前路径:</dt>
-          <dd v-for="(item, idx) in paths" :key="idx" class="path-item">
-            <span class="path-name" :data-index="idx">{{ item }} </span
-            ><span class="path-split" v-if="idx < paths.length - 1">/</span>
-          </dd>
-        </dl>
+        <div class="path-list">
+          <p class="path-title">当前路径:</p>
+          <a-breadcrumb separator="/" class="over-box">
+            <a-breadcrumb-item v-for="(item, idx) in paths" :key="idx" class="path-item" @click.native="goto(idx)">
+              {{ item }}
+            </a-breadcrumb-item>
+          </a-breadcrumb>
+        </div>
         <div class="file-header-extra">
           <a-button type="primary" class="file-header-extra-item" icon="control" @click="mutiSelect">批量操作</a-button>
           <a-button type="primary" class="file-header-extra-item">
@@ -72,8 +73,9 @@
           <span>{{ filesize | format }}</span>
         </div>
         <div slot="action">
+          <a-button type="primary" size="small" style="margin: 0 4px">移动</a-button>
           <a-button type="danger" size="small" style="margin: 0 4px"> 删除 </a-button>
-          <!-- <a-button type="primary" size="small" style="margin: 0 4px"> 编辑 </a-button> -->
+          <a-button type="primary" size="small" style="margin: 0 4px"> 重命名 </a-button>
         </div>
       </a-table>
       <div class="empty-container" v-if="empty"></div>
@@ -128,6 +130,8 @@ export default {
         {
           dataIndex: 'index',
           title: '序号',
+          width:65,
+          align:'center',
           scopedSlots: {
             customRender: 'index'
           }
@@ -136,12 +140,13 @@ export default {
           dataIndex: 'ftype',
           title: '类型',
           width: 120,
+          align: 'center',
           scopedSlots: { customRender: 'ftype' }
         },
         {
           dataIndex: 'filesize',
           title: '大小',
-          width: 120,
+          width: 100,
           scopedSlots: { customRender: 'filesize' },
           sorter: (a, b) => {
             return a['filesize'] - b['filesize'];
@@ -150,16 +155,19 @@ export default {
         {
           dataIndex: 'fname',
           title: '文件名',
-          width: 240,
+          width: 180,
+          align: 'center',
           ellipsis: true
         },
         {
           dataIndex: 'creator',
-          title: '创建者'
+          title: '创建者',
+          align: 'center'
         },
         {
           dataIndex: 'cdate',
           title: '创建时间',
+          align: 'center',
           sorter: (a, b) => {
             let tempA = a['cdate'].split('/');
             let tempB = b['cdate'].split('/');
@@ -174,6 +182,8 @@ export default {
         {
           key: 'action',
           title: '操作',
+          align: 'center',
+          width:260,
           scopedSlots: {
             customRender: 'action'
           }
@@ -267,16 +277,8 @@ export default {
       }
       return type;
     },
-    goto(event) {
-      let e = event.srcElement || event.target;
-      let idx = -1;
-
-      if (e.parentNode.tagName.toLowerCase() === 'dd' && e.className.indexOf('path-name') !== -1) {
-        idx = parseInt(e.getAttribute('data-index'));
-      }
-      if (idx !== -1 && idx !== this.paths.length - 1) {
-        this.currentPath = this.paths.slice(0, ++idx).join('/');
-      }
+    goto(idx) {
+      this.currentPath = this.paths.slice(0, ++idx).join('/');
     },
     handleFiles(ev) {
       const files = ev.target.files;
@@ -470,59 +472,51 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .storage-container {
   height: 100%;
-  padding: 10px;
+  padding: 4px 8px;
   border: 15px solid #f0f2f5;
+  border-bottom-width: 22px;
   .file-header {
     height: 90px;
     .file-header-tool {
+      height: 52px;
       display: flex;
       align-items: center;
-      border-bottom: 0.5px solid #ccc;
-      padding-bottom: 8px;
-      .file-header-path {
-        user-select: none;
+      border-bottom: 0.5px solid #e7e7e7;
+      .path-list {
+        display: flex;
+        align-items: center;
         flex-grow: 1;
-        margin: 0;
-        font-size: 18px;
+        .over-box {
+          width: 320px;
+        }
         .path-title {
-          float: left;
-          margin-right: 6px;
+          font-size: 18px;
+          margin-right: 4px;
+          white-space: nowrap;
         }
         .path-item {
+          font-size: 18px;
           cursor: pointer;
-          margin: 0;
-          float: left;
-          text-align: center;
-          .path-name {
-            display: inline-block;
-            margin: 0;
-          }
-          .path-split {
-            margin: 0 5px;
-          }
-          &:not(:last-child) {
-            &:hover {
-              .path-name {
-                color: $color-primary;
-              }
+          &:hover {
+            &:not(:last-child) {
+              color: $color-primary !important;
             }
           }
         }
       }
       .file-header-extra {
-        float: right;
         .file-header-extra-item {
           margin: 0 4px;
         }
       }
     }
     .storage-resume {
-      padding-top: 6px;
       display: flex;
       align-items: center;
+      height: 32px;
       .storage-progress {
       }
       .storage-info {

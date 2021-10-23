@@ -37,8 +37,13 @@ export const i18n = new VueI18n({
   silentTranslationWarn: true
 });
 export const changeLocale = locale => {
-  if (locale !== i18n['locale']) {
-    i18n.locale = locale;
+  try {
+    if (locale !== i18n['locale'] && i18n.availableLocales.includes(locale)) {
+      i18n.locale = locale;
+    }
+  } catch (error) {
+    console.log("error", error)
+    i18n.locale = 'CN';
   }
 };
 // VueI18n 实例

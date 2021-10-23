@@ -3,7 +3,10 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- 优先使用Chrome内核 -->
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <meta name="description" content="A webSite about tencent-cloud powered by vue framework">
   <title>
@@ -12,6 +15,12 @@
   <% for (var css of cdn.css) { %>
     <link rel="stylesheet" href="<%= css %>" />
     <% } %>
+      <!-- <style>
+        body {
+          overflow: visible !important;
+          width: 100% !important;
+        }
+      </style> -->
 </head>
 
 <body>
@@ -19,6 +28,19 @@
   <% for (var js of cdn.js) { %>
     <script type="text/javascript" defer src="<%= js %>"></script>
     <% } %>
+      <script>
+        window.addEventListener('load', function () {
+          if ("Notification" in window) {
+            if (Notification.permission !== "granted") {
+              Notification.requestPermission(function (status) {
+                if (Notification.permission !== status) {
+                  Notification.permission = status;
+                }
+              })
+            }
+          }
+        })
+      </script>
 </body>
 
 </html>

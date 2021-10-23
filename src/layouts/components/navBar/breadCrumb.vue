@@ -46,8 +46,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .bread-wrapper {
-  height: 100%;
-  line-height: 54px;
   margin-left: 3px;
 }
 </style>

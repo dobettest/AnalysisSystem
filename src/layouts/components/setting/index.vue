@@ -1,50 +1,71 @@
 <template>
   <a-drawer
-    :title="$t('setting.customSetting')"
+    :title="$t('setting.globalSetting')"
     placement="right"
     :visible="settingVisible"
     @close="settingVisible = false"
     :width="325"
   >
-    <div class="item-setting">
-      <p>{{ $t('setting.theme') }}</p>
-      <a-radio-group button-style="solid" :value="theme" @change="changeTheme">
-        <a-radio-button :value="item.key" v-for="item in customList" :key="item.key">
-          {{ $t('setting.' + item.label) }}
-        </a-radio-button>
-      </a-radio-group>
-    </div>
-    <div class="item-setting">
-      <p>{{ $t('setting.layout') }}</p>
-      <a-radio-group :value="layout" button-style="solid" @change="changeLayout">
-        <a-radio-button :value="item.key" v-for="item in layoutList" :key="item.key">
-          {{ $t('setting.' + item.label) }}
-        </a-radio-button>
-      </a-radio-group>
-    </div>
-    <div class="item-setting">
-      <p>{{ $t('setting.lang') }}</p>
-      <a-select :options="langs" :value="lang" style="width: 180px" @change="changeLocale"></a-select>
-    </div>
-
-    <div class="item-setting flex justify-between">
-      {{ $t('setting.tagView') }}
-      <a-switch
-        :checked="tagShow"
-        :checked-children="$t('common.open')"
-        :un-checked-children="$t('common.close')"
-        @change="changeTag"
-      />
-    </div>
-    <div class="item-setting flex justify-between">
-      {{ $t('setting.fixedHeader') }}
-      <a-switch
-        :checked="fixHeader"
-        :checked-children="$t('common.open')"
-        :un-checked-children="$t('common.close')"
-        @change="changeHeader"
-      />
-    </div>
+    <section class="border-bottom">
+      <h4 class="sub-title">{{ $t('setting.customSetting') }}</h4>
+      <div class="item-setting">
+        <p>{{ $t('setting.theme') }}</p>
+        <a-radio-group button-style="solid" :value="theme" @change="changeTheme">
+          <a-radio-button :value="item.key" v-for="item in customList" :key="item.key">
+            {{ $t('setting.' + item.label) }}
+          </a-radio-button>
+        </a-radio-group>
+      </div>
+      <div class="item-setting">
+        <p>{{ $t('setting.layout') }}</p>
+        <a-radio-group :value="layout" button-style="solid" @change="changeLayout">
+          <a-radio-button :value="item.key" v-for="item in layoutList" :key="item.key">
+            {{ $t('setting.' + item.label) }}
+          </a-radio-button>
+        </a-radio-group>
+      </div>
+      <div class="item-setting flex justify-between">
+        {{ $t('setting.tagView') }}
+        <a-switch
+          :checked="tagShow"
+          :checked-children="$t('common.open')"
+          :un-checked-children="$t('common.close')"
+          @change="changeTag"
+        />
+      </div>
+    </section>
+    <section>
+      <h4 class="sub-title">{{ $t('setting.communitySetting') }}</h4>
+      <div class="item-setting flex justify-between">
+        {{ $t('setting.bell') }}
+        <a-switch
+          :checked="bell"
+          :checked-children="$t('common.open')"
+          :un-checked-children="$t('common.close')"
+          @change="changeBell"
+        />
+      </div>
+      <div class="item-setting">
+        <p>{{ $t('setting.allowType') }}</p>
+        <a-select :options="allowTypes" :value="allowType" style="width: 120px;text-align:center" @change="changeAllow"></a-select>
+      </div>
+    </section>
+    <section>
+      <h4 class="sub-title">{{ $t('setting.securitySetting') }}</h4>
+      <div class="item-setting flex justify-between">
+        {{ $t('setting.bell') }}
+        <a-switch
+          :checked="tagShow"
+          :checked-children="$t('common.open')"
+          :un-checked-children="$t('common.close')"
+          @change="changeTag"
+        />
+      </div>
+      <div class="item-setting">
+        <p>{{ $t('setting.allowType') }}</p>
+        <a-select :options="allowTypes" :value="allowType" style="width: 180px" @change="changeLocale"></a-select>
+      </div>
+    </section>
   </a-drawer>
 </template>
 
@@ -88,6 +109,20 @@ export default {
         {
           value: 'CN',
           label: 'CN 简体中文'
+        }
+      ],
+      allowTypes: [
+        {
+          value: 'ALLOW_TYPE_ALLOW_ANY',
+          label: '允许任何人'
+        },
+        {
+          value: 'ALLOW_TYPE_NEED_CONFIRM',
+          label: '需要我确认'
+        },
+        {
+          value: 'ALLOW_TYPE_DENY_ANY',
+          label: '禁止加好友'
         }
       ]
     };
@@ -157,6 +192,22 @@ export default {
         this.$store.dispatch('setting/changeSetting', { key: 'locale', value });
         changeLocale(value);
       }
+    },
+    bell: {
+      get() {
+        return this.$store.state.setting.bell;
+      },
+      set(value) {
+        this.$store.dispatch('setting/changeSetting', { key: 'bell', value });
+      }
+    },
+    allowType: {
+      get() {
+        return this.$store.state.setting.allowType;
+      },
+      set(value) {
+        this.$store.dispatch('setting/changeSetting', { key: 'allowType', value });
+      }
     }
   },
   methods: {
@@ -172,14 +223,31 @@ export default {
     changeLayout(val) {
       this.layout = val.target.value;
     },
+    changeAllow(value) {
+      this.allowType = value;
+    },
     changeTheme(val) {
       this.theme = val.target.value;
+    },
+    changeBell(checked) {
+      this.bell = checked;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.border-bottom {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+.sub-title {
+  height: 24px;
+  border-bottom: 1px solid #e7e7e7;
+}
 .item-setting {
   margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

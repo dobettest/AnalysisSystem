@@ -122,8 +122,8 @@ export default {
   .side-wrapper {
     display: flex;
     .logo-wrapper {
-      height: 54px;
-      line-height: 54px;
+      height: 60px;
+      line-height: 60px;
       min-width: 250px;
     }
     .side-main {
@@ -132,8 +132,8 @@ export default {
       color: #fff;
     }
     /deep/ .ant-menu-horizontal {
-      height: 54px !important;
-      line-height: 54px;
+      height: 60px !important;
+      line-height: 60px;
     }
   }
 }

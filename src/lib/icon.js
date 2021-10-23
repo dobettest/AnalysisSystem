@@ -40,3 +40,6 @@ export { default as EditOutline } from '@ant-design/icons/lib/outline/EditOutlin
 export { default as MailOutline } from '@ant-design/icons/lib/outline/MailOutline';
 export { default as SaveOutline } from '@ant-design/icons/lib/outline/SaveOutline';
 export { default as CheckOutline } from '@ant-design/icons/lib/outline/CheckOutline';
+export { default as CaretUpFill } from '@ant-design/icons/lib/fill/CaretUpFill';
+export { default as QuestionCircleOutline } from '@ant-design/icons/lib/outline/QuestionCircleOutline';
+export { default as QuestionOutline } from '@ant-design/icons/lib/outline/QuestionOutline';

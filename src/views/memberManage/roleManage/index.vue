@@ -48,7 +48,8 @@ const tableHead = [
     title: '序号',
     dataIndex: 'index',
     scopedSlots: { customRender: 'index' },
-    width: 60
+    align:'center',
+    width: 80
   },
   {
     title: 'id',

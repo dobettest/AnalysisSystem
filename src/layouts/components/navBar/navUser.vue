@@ -1,7 +1,9 @@
 <template>
   <a-dropdown class="navUser-wrppaer">
-    <div>
-      <img v-lazy="accountInfo['avatar']" class="userImg" alt="" />
+    <div class="flex-box">
+      <a-badge :status="status" :offset="[-4, 12]">
+        <img v-lazy="accountInfo['avatar']" class="userImg" alt="" />
+      </a-badge>
       <span class="userTitle">{{ accountInfo.username }}</span>
       <a-icon type="caret-down" style="margin-left: 5px" />
     </div>
@@ -11,8 +13,8 @@
         <router-link to="/userInfo">个人中心</router-link>
       </a-menu-item>
       <a-menu-divider />
-      <a-menu-item>
-        <span @click.self="logout">退出登录 </span>
+      <a-menu-item @click.self="logout">
+        <span>退出登录 </span>
       </a-menu-item>
     </a-menu>
   </a-dropdown>
@@ -27,7 +29,8 @@ export default {
   },
   computed: {
     ...mapState({
-      accountInfo: state => state.user.accountInfo
+      accountInfo: state => state.user.accountInfo,
+      status: state => state.tim.status
     })
   },
   methods: {

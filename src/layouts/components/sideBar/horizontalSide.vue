@@ -31,15 +31,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .horizontalSide-logo {
-  height: 54px;
-  line-height: 54px;
+  height: 60px;
+  line-height: 60px;
   width: 260px;
   box-sizing: border-box;
 }
 .side-main {
   width: calc(100% - 260px);
-  height: 54px;
-  line-height: 54px;
+  height: 60px;
+  line-height: 60px;
   background: #293348;
   float: right;
 }
