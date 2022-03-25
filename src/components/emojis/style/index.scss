@@ -1,0 +1,28 @@
+.emoji-list {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(36px,1fr));
+    .emoji-item {
+      font-size: 24px;
+      cursor: pointer;
+      text-align: center;
+    }
+}
+.tab-pane{
+  height: 180px;
+  overflow: auto;
+  box-shadow: inset 0 0 0 2px #f8f8f8;
+  padding: 6px;
+  margin-bottom: 4px;
+}
+.favorite-list{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(42px,1fr));
+}
+.favorite-item{
+  width: 52px;
+  height: 52px;
+  text-align: center;
+}
+.favorite-add{
+  box-shadow: 0 0 0 1px #555;
+}

@@ -9,6 +9,8 @@ const defaultSetting = {
   theme: 'blue',
   locale: 'CN',
   bell: true,
+  findMeByPhone: true,
+  notice: true,
   allowType: "ALLOW_TYPE_ALLOW_ANY"
 };
 //切换主题

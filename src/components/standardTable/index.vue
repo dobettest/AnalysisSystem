@@ -9,6 +9,7 @@
       @change="handleTableChange"
       rowKey="id"
       :scroll="scroll"
+      :size="size"
       bordered
     >
       <template
@@ -47,6 +48,10 @@ export default {
     },
     scroll: {
       type: Object
+    },
+    size:{
+      type:String,
+      default:'default'
     }
   },
   data() {

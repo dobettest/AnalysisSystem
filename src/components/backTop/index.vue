@@ -1,7 +1,7 @@
 <template>
   <div class="backTop">
     <a-back-top :visibilityHeight="320">
-      <svg-icon icon="backTop" />
+      <my-svg-icon icon="backTop" />
     </a-back-top>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .backTop {
-  /deep/ .ant-back-top {
+  ::v-deep .ant-back-top {
     background-color: #1890ff;
     text-align: center;
     line-height: 40px;

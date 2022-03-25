@@ -3,9 +3,8 @@ import TIM from 'tim-js-sdk';
 import tim from '@/lib/tim.js';
 import { debounce } from '@/utils/index.js';
 import msg from "../assets/audio/9478.mp3";
-import { auth } from "../lib/cloudbase";
 export default {
-    name: 'tim-plugin',
+    name: 'tim-mx',
     data() {
         return {
             player: null
@@ -13,8 +12,7 @@ export default {
     },
     computed: {
         ...mapState({
-            ready: state => state.tim.ready,
-            // userInfo: state => state.user.accountInfo,
+            userSig: state => state.user.userSig,
             needNotice: state => state.needNotice
         })
     },
@@ -24,27 +22,37 @@ export default {
         })
     },
     created() {
-        this.initListender();
+        this.initTim();
     },
     methods: {
         messageReceived: debounce(function () {
+            console.log('messageReceived', this.needNotice)
             this.player.play();
             this.$bus.$emit('bell');
             if (this.needNotice) {
                 this.$store.dispatch("notice");
             }
         }, 1000),
-        initListender() {
-            // 监听事件，如：
-            tim.on(TIM.EVENT.SDK_READY, ({ name }) => {
-                // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
-                if (name === TIM.EVENT.SDK_READY) {
-                    // console.log(name)
-                    this.$store.dispatch("tim/setState", true);
-                    this.$store.dispatch("tim/setStatus", 'success');
+        CONVERSATION_LIST_UPDATED(event) {
+            console.log('TIM.CONVERSATION_LIST_UPDATE', event)
+            this.$store.dispatch("tim/setConversationList", event['data'])
+            // 收到会话列表更新通知，可通过遍历 event.data 获取会话列表数据并渲染到页面
+            // event.name - TIM.EVENT.CONVERSATION_LIST_UPDATED
+            // event.data - 存储 Conversation 对象的数组 - [Conversation]
+        },
+        SDK_READY(event) {
+            // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
+            if (event['name'] === TIM.EVENT.SDK_READY) {
+                // console.log(name)
+                this.$store.dispatch("tim/setState", true);
+                this.$store.dispatch("tim/setStatus", 'success');
+                // this.$store.dispatch("tim/setFriendList",)
 
-                }
-            });
+            }
+        },
+        initTim() {
+            // 监听事件，如：
+            tim.on(TIM.EVENT.SDK_READY, this.SDK_READY);
 
             tim.on(TIM.EVENT.MESSAGE_RECEIVED, this.messageReceived);
 
@@ -69,12 +77,7 @@ export default {
                 // event.data - event.data - 存储 Message 对象的数组 - [Message] - 每个 Message 对象的 isPeerRead 属性值为 true
             });
 
-            tim.on(TIM.EVENT.CONVERSATION_LIST_UPDATED, function (event) {
-                console.log('TIM.EVENT.MESSAGE_RECEIVED', event)
-                // 收到会话列表更新通知，可通过遍历 event.data 获取会话列表数据并渲染到页面
-                // event.name - TIM.EVENT.CONVERSATION_LIST_UPDATED
-                // event.data - 存储 Conversation 对象的数组 - [Conversation]
-            });
+            tim.on(TIM.EVENT.CONVERSATION_LIST_UPDATED, this.CONVERSATION_LIST_UPDATED);
 
             tim.on(TIM.EVENT.GROUP_LIST_UPDATED, function (event) {
                 console.log('TIM.EVENT.MESSAGE_RECEIVED', event)
@@ -136,6 +139,7 @@ export default {
 
             tim.on(TIM.EVENT.FRIEND_LIST_UPDATED, function (event) {
                 console.log('TIM.EVENT.MESSAGE_RECEIVED', event)
+                this.$store.dispatch("tim/setFriendList", event['data'])
                 // 收到好友列表更新通知（v2.13.0起支持）
                 // event.name - TIM.EVENT.FRIEND_LIST_UPDATED
                 // event.data - 存储 Friend 对象的数组 - [Friend]
@@ -160,20 +164,9 @@ export default {
                 // event.name - TIM.EVENT.FRIEND_GROUP_LIST_UPDATED
                 // event.data - 存储 FriendGroup 对象的数组 - [FriendGroup]
             });
-        }
-    },
-    watch: {
-        ready: {
-            handler: async function (nl, ol) {
-                console.log("userInfo tim",auth.hasLoginState(),this.userInfo,nl,ol)
-                /*防止因为注销导致的重登录 */
-                if (nl === false && this.userInfo) {
-                    let { userID } = this.userInfo;
-                    this.$store.dispatch('tim/login', {
-                        userID
-                    })
-                }
-            }
+        },
+        async timLogin({ userID, userSig }) {
+            await tim.login({ userID, userSig })
         }
     }
 }

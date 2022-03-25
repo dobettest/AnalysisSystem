@@ -25,12 +25,9 @@ export default {
       showBody: true
     };
   },
-  props: {
-    upList: {
-      type: Array,
-      default: function () {
-        return [];
-      }
+  computed: {
+    upList() {
+      return this.$store.state.cloudbase.uploadList;
     }
   },
   methods: {

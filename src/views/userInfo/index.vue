@@ -61,74 +61,83 @@
             <a-icon type="edit" style="margin-right: 4px"></a-icon>编辑个人资料
           </button>
           <div class="edit-button-group" v-else>
-            <div class="edit-button" title="互相关注,才可以发送消息哦">
-              <a-icon type="plus" style="margin-right: 4px"></a-icon>加为关注
+            <div class="edit-button flex-box" title="互相关注,才可以发送消息哦">
+              <span style="margin-right: 4px">发私信</span><a-icon type="mail" style="font-size: 18px"></a-icon>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="main clearfix" v-if="userInfo">
-      <div class="card-container">
-        <summary-card :summary="userInfo['summary']"></summary-card>
+    <div class="main" v-if="userInfo">
+      <div>
+        <summary-card :summary="userInfo['summary']" @change="setView"></summary-card>
         <skill-card :canEdit="isSelf" :skills="userInfo['skills']"></skill-card>
       </div>
-      <div class="dynamic-article-container">
-        <dynamic-article-tab :userID="userInfo['userID']"></dynamic-article-tab>
+      <div class="view-box">
+        <dynamic-editor v-if="viewKey === 'dynamic-editor'" @change="setView"></dynamic-editor>
+        <article-editor v-else-if="viewKey === 'article-editor'" @change="setView"></article-editor>
+        <dynamic-article-tab v-else :userID="userInfo['userID']"></dynamic-article-tab>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { skillCard, summaryCard, dynamicArticleTab } from './components/index.js';
-import { getInfo, updateUserInfo } from '@/api/user.js';
-import { getBase64 } from '@/utils/index.js';
+import { skillCard, summaryCard, dynamicArticleTab, dynamicEditor, articleEditor } from './components/index.js';
+import { getUserInfo, updateUserInfo } from '@/api/user.js';
 export default {
   data() {
     return {
       previewVisible: false,
       loading: false,
       userInfo: null,
-      isSelf: null
+      viewKey: 'normal'
     };
   },
-  components: { skillCard, summaryCard, dynamicArticleTab },
+  components: { skillCard, summaryCard, dynamicArticleTab, dynamicEditor, articleEditor },
   methods: {
-    async getUserInfo(userID) {
-      let userInfo;
-      if (userID === '') {
-        userInfo = this.$store.state.user['accountInfo'];
-      } else {
-        this.loading = true;
-        try {
-          const { data } = await getInfo({ userID });
-          if (data['info']) {
-            userInfo = data['info'];
-          }
-        } catch (error) {
-          console.log(error);
-        }
-        this.userInfo = userInfo;
-        this.isSelf = this.userInfo['userID'] === this.$store.state.user.accountInfo['userID'];
-        this.loading = false;
-      }
+    setView(viewKey) {
+      this.viewKey = viewKey;
     },
-    uploadAvatar(ev) {
+    async getUserInfo(userID) {
+      try {
+        switch (Boolean(userID)) {
+          case true:
+            this.userInfo = await getUserInfo({ userID });
+            break;
+          default:
+            this.userInfo = this.$store.getters.userInfo;
+            break;
+        }
+      } catch (error) {}
+    },
+    async uploadAvatar(ev) {
       let files = ev.target.files;
       if (files.length) {
         let file = files[0];
         if (/image\/(png|jpe?g)/.test(file.type)) {
           if (file.size < 2 * 1024 * 1024) {
-            getBase64(file, imageUrl => {
-              updateUserInfo({
-                userID: this.userInfo['userID'],
-                avatar: imageUrl
-              }).then(() => {
-                this.$store.dispatch('user/getUserInfo');
-                this.getUserInfo();
-              });
-            });
+            var form=new FormData();
+            form.append('file',file);
+            // let cloudPath = ['avatar', this.userInfo['userID'], file['name']].join('/');
+            // let { fileID } = await app.uploadFile({
+            //   cloudPath,
+            //   filePath: file,
+            //   onUploadProgress: function (progressEvent) {
+            //     this.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            //   }
+            // });
+            // let { fileList } = await app.getTempFileURL({
+            //   fileList: [fileID]
+            // });
+            // console.log(fileID, fileList);
+            // updateUserInfo({
+            //   userID: this.userInfo['userID'],
+            //   avatar: fileList[0]['download_url']
+            // }).then(() => {
+            //   this.$store.dispatch('user/getUserInfo');
+            //   this.getUserInfo();
+            // });
           } else {
             this.$message.error('头像文件不能大于2MB');
           }
@@ -138,31 +147,17 @@ export default {
       }
     }
   },
-  watch: {
-    loading: {
-      handler(nl, ol) {
-        if (nl) {
-          this.$nextTick(() => {
-            this.$loading.show({
-              getContainer: () => {
-                return this.$refs.userInfo;
-              }
-            });
-          });
-        } else {
-          this.$loading.hide();
-        }
-      },
-      immediate: true
-    }
-  },
   created() {
+    console.log(this.$store.getters.userInfo);
     this.getUserInfo();
     this.$bus.$on('getUserInfo', this.getUserInfo);
   },
   computed: {
     noSecret() {
       return true;
+    },
+    isSelf() {
+      return this.userInfo['userID'] === this.$store.getters.userInfo['userID'];
     }
   }
 };
@@ -260,9 +255,8 @@ export default {
         bottom: 0;
         padding: 4px;
         .edit-button {
-          // color: #06f;
-          // border: 1px solid #06f;
           height: 32px;
+          line-height: 32px;
           display: flex;
           align-items: center;
           padding: 1px 6px;
@@ -278,88 +272,8 @@ export default {
   .main {
     margin-top: 10px;
     display: flex;
-    .card-container {
-      .summary-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 348px;
-        background-color: #fff;
-        padding: 10px;
-        .summary-item {
-          width: 120px;
-          text-align: center;
-          cursor: pointer;
-          .summary-num {
-            padding: 4px;
-            font-family: Tahoma;
-            color: #333;
-            &:hover {
-              color: #eb7350;
-            }
-          }
-          .summary-name {
-            color: #808080;
-          }
-        }
-      }
-      .skill-card-container {
-        background-color: #fff;
-        width: 348px;
-        margin-top: 10px;
-        .skill-echart,
-        .skill-edit-container {
-          height: 300px;
-          width: 300px;
-        }
-        .skill-edit-container {
-          overflow-y: scroll;
-          &::-webkit-scrollbar {
-            width: 4px;
-          }
-          &:hover {
-            &::-webkit-scrollbar-thumb {
-              background-color: #ccc;
-            }
-          }
-          .skill-item {
-            height: 32px;
-            display: flex;
-            align-items: center;
-            .skill-name {
-              width: 60px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-            .skill-progress-bar {
-              flex: 1;
-              flex-grow: 1;
-              cursor: pointer;
-              outline: none;
-              margin: 0 4px;
-            }
-            .skill-dele-btn {
-              font-size: 18px;
-              color: red;
-              cursor: pointer;
-            }
-          }
-          .add-skill {
-            margin-top: 10px;
-            border: 1px solid #c1b1c1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 32px;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-    .dynamic-article-container {
+    .view-box {
       margin-left: 10px;
-      padding: 10px;
       background-color: #fff;
       flex-grow: 1;
     }

@@ -14,5 +14,7 @@
     "grass": "grass",
     "sideNav": "sideNav",
     "topNav": "topNav",
-    "bell": "bell"
+    "bell": "bell",
+    "findMeByPhone":"findMeByPhone",
+    "notice":"notice"
 }

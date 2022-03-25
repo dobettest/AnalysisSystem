@@ -2,15 +2,15 @@
   <a-tabs :activeKey="activeKey" @change="change">
     <a-tab-pane key="dynamic">
       <div slot="tab">
-        <a-badge count="5" :offset="[14, 0]">
+        <a-badge count="0" :offset="[14, 0]">
           <span>我的空间</span>
         </a-badge>
       </div>
-      <dynamic-container class="scroll-container" :dynamicList="dynamicList" />
+      <dynamic-container :userID="userID" :editable="editable" />
     </a-tab-pane>
     <a-tab-pane key="article">
       <div slot="tab">
-        <a-badge count="5" :offset="[14, 0]">
+        <a-badge count="0" :offset="[14, 0]">
           <span>我的文章</span>
         </a-badge>
       </div>
@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import articleContainer from './subview/article/index.vue';
-import dynamicContainer from './subview/dynamic/index.vue';
-import { db } from '@/lib/cloudbase.js';
+import articleContainer from './article/index.vue';
+import dynamicContainer from './dynamic/index.vue';
 export default {
   name: 'dynamic-article-tab',
   components: {
@@ -32,7 +31,7 @@ export default {
   data() {
     return {
       activeKey: 'dynamic',
-      dynamicList: []
+      editable: false
     };
   },
   props: {
@@ -42,39 +41,15 @@ export default {
     }
   },
   methods: {
-    async getDynamicList() {
-      let { userID } = this;
-      // console.log(userID);
-      let regexp = `^v\\d{8}${userID}\\d{2,3}$`;
-      const { data } = await this.$store.dispatch('cloudbase/access', {
-        name: 'vblog',
-        params: {
-          vid: new db.RegExp({
-            regexp
-          })
-        }
-      });
-      this.dynamicList = data;
-    },
     change(val) {
       this.activeKey = val;
-    }
-  },
-  watch: {
-    userID: {
-      handler(nl, ol) {
-        if (nl && nl !== ol) {
-          this.getDynamicList();
-        }
-      },
-      immediate: true
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .scroll-container {
-  height: 400px;
+  height: 450px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 4px;

@@ -1,11 +1,9 @@
 import axios from 'axios';
 import { message } from 'ant-design-vue';
-import qs from 'qs';
 import store from '@/store';
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 5000 // 请求超时时间
+  baseURL: '/api'
 });
 
 //请求
@@ -19,11 +17,11 @@ service.interceptors.request.use(config => {
 //响应
 service.interceptors.response.use(response => {
   const data = response.data;
-  if (data.code === 200) {
-    return Promise.resolve(response);
-  } else {
-    message.error(data.message || '');
+  if (data['errStr']) {
+    message.error(data.errStr || '');
     return Promise.reject(data);
+  } else {
+    return Promise.resolve(data);
   }
 });
 
@@ -35,7 +33,7 @@ let http = {};
  * @param {Object} params [请求时携带的参数]
  */
 
-http.get = function(url, params = null) {
+http.get = function (url, params = null) {
   return new Promise((resolve, reject) => {
     service
       .get(url, { params })
@@ -54,10 +52,10 @@ http.get = function(url, params = null) {
  * @param {Object} params [请求时携带的参数]
  */
 
-http.post = function(url, params) {
+http.post = function (url, params, config) {
   return new Promise((resolve, reject) => {
     service
-      .post(url, qs.stringify(params))
+      .post(url, params, config)
       .then(res => {
         resolve(res.data);
       })

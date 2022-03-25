@@ -16,9 +16,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .chase-wrapper {
-  width: 60px;
-  height: 60px;
-  display: inline-block;
+  display: flex;
+  width: unquote("max(100%, 30px)");
+  height: 100%;
   animation: chase-loader 2.5s infinite linear both;
 }
 .chase-item {

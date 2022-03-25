@@ -45,9 +45,33 @@
           @change="changeBell"
         />
       </div>
+      <div class="item-setting flex justify-between">
+        {{ $t('setting.notice') }}
+        <a-switch
+          :checked="notice"
+          :checked-children="$t('common.open')"
+          :un-checked-children="$t('common.close')"
+          @change="notice = !notice"
+        />
+      </div>
+
+      <div class="item-setting flex justify-between">
+        {{ $t('setting.findMeByPhone') }}
+        <a-switch
+          :checked="findMeByPhone"
+          :checked-children="$t('common.open')"
+          :un-checked-children="$t('common.close')"
+          @change="findMeByPhone = !findMeByPhone"
+        />
+      </div>
       <div class="item-setting">
         <p>{{ $t('setting.allowType') }}</p>
-        <a-select :options="allowTypes" :value="allowType" style="width: 120px;text-align:center" @change="changeAllow"></a-select>
+        <a-select
+          :options="allowTypes"
+          :value="allowType"
+          style="width: 120px; text-align: center"
+          @change="changeAllow"
+        ></a-select>
       </div>
     </section>
     <section>
@@ -60,10 +84,6 @@
           :un-checked-children="$t('common.close')"
           @change="changeTag"
         />
-      </div>
-      <div class="item-setting">
-        <p>{{ $t('setting.allowType') }}</p>
-        <a-select :options="allowTypes" :value="allowType" style="width: 180px" @change="changeLocale"></a-select>
       </div>
     </section>
   </a-drawer>
@@ -201,12 +221,32 @@ export default {
         this.$store.dispatch('setting/changeSetting', { key: 'bell', value });
       }
     },
+    findMeByPhone: {
+      get() {
+        return this.$store.state.setting.findMeByPhone;
+      },
+      set(val) {
+        this.$store.dispatch('setting/changeSetting', {
+          key: 'findMeByPhone',
+          value: val
+        });
+      }
+    },
     allowType: {
       get() {
         return this.$store.state.setting.allowType;
       },
       set(value) {
-        this.$store.dispatch('setting/changeSetting', { key: 'allowType', value });
+        // this.$store.dispatch('setting/changeSetting', { key: 'allowType', value });
+        this.$store.dispatch('tim/changeAllowType', value);
+      }
+    },
+    notice: {
+      get() {
+        return this.$store.state.setting.notice;
+      },
+      set(value) {
+        this.$store.dispatch('setting/changeSetting', { key: 'notice', value });
       }
     }
   },

@@ -14,12 +14,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.rect-wrapper {
+  height: 100%;
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+}
 .rect-item {
-  width: 6px;
-  height: 60px;
   background-color: $color-primary;
-  display: inline-block;
   margin: 0 4px;
+  height: 100%;
+  flex: 1;
   animation: rect-loader 1.2s infinite ease-in-out;
 }
 .rect2 {

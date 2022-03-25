@@ -1,0 +1,134 @@
+<template>
+  <div class="role-wrapper">
+    <a-card :hoverable="true" :bordered="false">
+      <div slot="title" class="flex flex-wrap">
+        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd"> 新增角色 </a-button>
+      </div>
+      <standard-table :tableData="tableData" :tableHead="tableHead" :loading="loading" :pagination="false">
+        <div slot="index" slot-scope="{ index }">
+          {{ index + 1 }}
+        </div>
+        <div slot="role" slot-scope="{ text }">
+          <a-tag :color="text | statusFilter">
+            {{ text }}
+          </a-tag>
+        </div>
+        <div slot="action" slot-scope="{ text }">
+          <a-button type="primary" size="small" @click="handleEdit(text)" :disabled="text.role && text.role == 'admin'">
+            {{ $t('common.edit') }}
+          </a-button>
+          <a-popconfirm
+            title="你确定要删除当前列吗?"
+            ok-text="是"
+            cancel-text="否"
+            :disabled="text.role && text.role == 'admin'"
+            @confirm="handleDelete(text)"
+          >
+            <a-button type="danger" size="small" style="margin-left: 8px" :disabled="text.role && text.role == 'admin'">
+              {{ $t('common.del') }}
+            </a-button>
+          </a-popconfirm>
+        </div>
+      </standard-table>
+    </a-card>
+    <role-model
+      :currentRow="currentRow"
+      :dialogVisible="dialogVisible"
+      @ok="handleOk"
+      @cancel="dialogVisible = false"
+      :tableData="tableData"
+      v-if="dialogVisible"
+    />
+  </div>
+</template>
+
+<script>
+const tableHead = [
+  {
+    title: '序号',
+    dataIndex: 'index',
+    scopedSlots: { customRender: 'index' },
+    align:'center',
+    width: 80
+  },
+  {
+    title: 'id',
+    dataIndex: 'id',
+    ellipsis: true
+  },
+  {
+    title: '角色',
+    dataIndex: 'role',
+    scopedSlots: { customRender: 'role' }
+  },
+  {
+    title: '描述',
+    dataIndex: 'text',
+    ellipsis: true
+  },
+  {
+    title: '操作',
+    scopedSlots: { customRender: 'action' },
+    width: 140
+  }
+];
+import standardTable from '@/components/standardTable/index';
+import { getRoles, deleteRoleTable } from '@/api/role';
+import roleModel from './roleModel';
+export default {
+  name: 'role',
+  components: { standardTable, roleModel },
+  filters: {
+    statusFilter(status) {
+      const statusList = {
+        admin: '#2db7f5',
+        test: '#f50',
+        custom: '#87d068'
+      };
+      return statusList[status];
+    }
+  },
+  data() {
+    return {
+      loading: false,
+      tableData: [],
+      currentRow: null,
+      dialogVisible: false,
+      tableHead
+    };
+  },
+  created() {
+    this.getRoles();
+  },
+
+  methods: {
+    //新增
+    handleAdd() {
+      this.currentRow = null;
+      this.dialogVisible = true;
+    },
+    getRoles() {
+      getRoles().then(res => {
+        this.tableData = res.data || [];
+      });
+    },
+    handleEdit(row) {
+      this.currentRow = { ...row };
+      this.dialogVisible = true;
+    },
+    handleOk() {
+      this.dialogVisible = false;
+      this.currentRow = null;
+      this.getRoles();
+    },
+    //删除
+    handleDelete(val) {
+      deleteRoleTable({ id: val.id }).then(() => {
+        this.$message.success('删除成功!');
+        this.getRoles();
+      });
+    }
+  }
+};
+</script>
+<style lang="scss" scoped></style>

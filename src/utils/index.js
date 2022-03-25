@@ -62,3 +62,6 @@ export function getBase64(img, callback) {
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
+export function tofix(number) {
+  return number >=10 ? number : [0, number].join('')
+}

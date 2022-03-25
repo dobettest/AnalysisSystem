@@ -39,6 +39,9 @@ import {
   Result,
   Carousel,
   Popover,
+  Skeleton,
+  Spin,
+  Steps
 } from 'ant-design-vue';
 [
   BackTop,
@@ -51,6 +54,7 @@ import {
   Icon,
   Breadcrumb,
   Tag,
+  Spin,
   Tooltip,
   Avatar,
   Timeline,
@@ -79,7 +83,9 @@ import {
   Tree,
   Result,
   Carousel,
-  Popover
+  Popover,
+  Skeleton,
+  Steps
 ].forEach(v => {
   Vue.use(v);
 });

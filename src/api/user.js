@@ -40,11 +40,10 @@ export function getCodeTest(data) {
 
 /**
  * @description 获取用户信息
- * @param {string}  token
  * @returns {string} userInfo
  */
-export function getInfo(data) {
-  return request.post('/user/userInfo', data);
+export function getUserInfo() {
+  return request.post('/user/userInfo');
 }
 
 /**
@@ -52,8 +51,8 @@ export function getInfo(data) {
  * @param {string}  userID
  * @returns {string} userInfo
  */
- export function getCloudBaseAuth(userID) {
-  return request.post('/user/cloudbaseAuth', userID);
+export function getCloudBaseAuth(data) {
+  return request.post('/user/cloudbase/createTicket', data);
 }
 
 /**
@@ -61,6 +60,34 @@ export function getInfo(data) {
  * @param {Object}  要更新的值
  * @returns {string} userInfo
  */
- export function updateUserInfo(data) {
+export function updateUserInfo(data) {
   return request.post('/user/userUpdate', data);
+}
+
+export function getCodeByPhone(data) {
+  return request.post('/user/getCodeByPhone', data)
+}
+export function getCodeByMail(data) {
+  return request.post('/user/getCodeByMail', data)
+}
+export function checkCodeByPhone(data) {
+  return request.post('/user/checkCodeByPhone', data)
+}
+export function checkCodeByMail(data) {
+  return request.post('/user/checkCodeByMail', data)
+}
+export function getImgCode() {
+  return request.get('/user/getImgCode')
+}
+export function loginByPhone(data) {
+  return request.post('/user/loginByPhone', data)
+}
+export function getWorkstations(data) {
+  return request.post('/user/getWorkstations', data)
+}
+export function createTimTicket(data) {
+  return request.post('/user/tim/createTicket', data)
+}
+export function upload(data) {
+  return request.post('/user/upload', data)
 }

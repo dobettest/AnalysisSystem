@@ -118,7 +118,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .markdownEditor {
-  /deep/ {
+  ::v-deep {
     .te-md-container {
       background: #fff !important;
     }

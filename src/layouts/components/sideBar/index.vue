@@ -10,12 +10,9 @@
         :open-keys="openKeys"
         @openChange="changeOpen"
       >
-        <template v-for="item in baseRoute">
-          <menu-item v-if="!item.children && !item.hidden" :key="item.path" :currentRoute="item" />
-          <template v-else v-for="temp in item.children">
-            <menu-item v-if="!temp.children" :key="temp.path" :currentRoute="temp" />
-            <sub-menu v-else :key="temp.path" :currentRoute="temp"></sub-menu>
-          </template>
+        <template v-for="temp in asyncRoutes">
+          <menu-item v-if="!temp.children" :key="temp.path" :currentRoute="temp" />
+          <sub-menu v-if="temp.children" :key="temp.path" :currentRoute="temp"></sub-menu>
         </template>
       </a-menu>
     </scroll-bar>
@@ -26,7 +23,6 @@
 import logo from './logo';
 import subMenu from './subMenu';
 import menuItem from './menuItem';
-import { mapGetters } from 'vuex';
 export default {
   name: 'sideBar',
   props: {
@@ -46,7 +42,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['baseRoute'])
+    asyncRoutes() {
+      return this.$store.getters.asyncRoutes;
+    }
   },
   mounted() {
     let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
@@ -57,7 +55,7 @@ export default {
   methods: {
     changeOpen(keys) {
       const currentOpenKey = keys.find(key => this.openKeys.indexOf(key) === -1);
-      const children = this.baseRoute.filter(item => item.children);
+      const children = this.asyncRoute.filter(item => item.children);
 
       if (children[0].children.findIndex(item => item.path == currentOpenKey) === -1) {
         this.openKeys = keys;
@@ -68,34 +66,8 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.logo-wrapper {
-  position: relative;
-  height: 64px;
-  padding-left: 24px;
-  overflow: hidden;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  line-height: 64px;
-  display: inline-block;
-  .logo-title {
-    font-size: 1.2rem;
-    color: #fff;
-    font-weight: 600;
-    margin-left: 12px;
-    display: inline-block;
-  }
-}
-
+<style lang="scss" scoped>
 .closeSide {
-  .horizontalSide-wrapper {
-    .logo-title {
-      display: inline-block !important;
-    }
-    .menu-title {
-      display: inline-block !important;
-    }
-  }
   .logo-title {
     display: none;
   }
@@ -121,17 +93,12 @@ export default {
 .horizontal {
   .side-wrapper {
     display: flex;
-    .logo-wrapper {
-      height: 60px;
-      line-height: 60px;
-      min-width: 250px;
-    }
     .side-main {
       height: 100%;
       flex: auto;
       color: #fff;
     }
-    /deep/ .ant-menu-horizontal {
+    ::v-deep ant-menu-horizontal {
       height: 60px !important;
       line-height: 60px;
     }

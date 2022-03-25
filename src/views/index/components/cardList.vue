@@ -4,7 +4,7 @@
       <a-col :xs="12" :md="12" :sm="12" :lg="6">
         <div class="card-item card-item-one" @click="sendTitle('销售额', 'sale')">
           <div class="card-title">
-            <a-space :size="8"> <svg-icon icon="sale" :size="20" /> 总销售额 </a-space>
+            <a-space :size="8"> <my-svg-icon icon="sale" :size="20" /> 总销售额 </a-space>
           </div>
           <div class="all-count">
             ¥ <count-to :startVal="0" :endVal="12367" :duration="2200" />
@@ -33,7 +33,7 @@
       <a-col :xs="12" :md="12" :sm="12" :lg="6">
         <div class="card-item card-item-two" @click="sendTitle('访问量', 'visit')">
           <div class="card-title">
-            <a-space :size="8"> <svg-icon icon="visit" :size="20" /> 访问量 </a-space>
+            <a-space :size="8"> <my-svg-icon icon="visit" :size="20" /> 访问量 </a-space>
           </div>
           <div class="all-count">
             <count-to :startVal="0" :endVal="3750" :duration="2200" />
@@ -55,7 +55,7 @@
       <a-col :xs="12" :md="12" :sm="12" :lg="6">
         <div class="card-item card-item-three" @click="sendTitle('加购数', 'shopCard')">
           <div class="card-title">
-            <a-space :size="8"> <svg-icon icon="shopCard" :size="20" /> 加购数 </a-space>
+            <a-space :size="8"> <my-svg-icon icon="shopCard" :size="20" /> 加购数 </a-space>
           </div>
           <div class="all-count">
             <count-to :startVal="0" :endVal="129795" :duration="2200" />
@@ -77,7 +77,7 @@
       <a-col :xs="12" :md="12" :sm="12" :lg="6">
         <div class="card-item card-item-four" @click="sendTitle('支付数', 'pay')">
           <div class="card-title">
-            <a-space :size="8"> <svg-icon icon="pay" :size="20" /> 支付笔数 </a-space>
+            <a-space :size="8"> <my-svg-icon icon="pay" :size="20" /> 支付笔数 </a-space>
           </div>
           <div class="all-count">
             <count-to :startVal="0" :endVal="13996" :duration="2200" />

@@ -4,7 +4,7 @@
       <div class="shop-item flex" v-for="(item, index) in rankData" :key="index">
         <div style="width:130px">
           <span class="rankIndex inline-block">
-            <svg-icon :icon="rankIndex[index + 1]" :size="30" v-if="index < 3" />
+            <my-svg-icon :icon="rankIndex[index + 1]" :size="30" v-if="index < 3" />
             <span v-else> {{ index + 1 }}</span>
           </span>
 

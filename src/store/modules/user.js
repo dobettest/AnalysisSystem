@@ -1,90 +1,80 @@
 import { getCache, setCache, removeCache } from '@/utils/session';
-import { login, logout, getCodeTest, getInfo } from '@/api/user';
-import router, { resetRouter } from '@/router';
+import { login, logout, getUserInfo, loginByPhone, getWorkstations, createTimTicket } from '@/api/user';
 const state = {
   accountInfo: null,
-  token: getCache('TOKEN') || ''
+  token: getCache('TOKEN') || '',
+  userSig: ''
 };
 
 const mutations = {
-  SET_TOKEN(state, token) {
+  setToken(state, token) {
     state.token = token;
   },
-  SET_USERINFO(state, userInfo) {
+  setUserInfo(state, userInfo) {
     state.accountInfo = userInfo;
+  },
+  setUserSig(state, userSig) {
+    state.userSig = userSig;
   }
 };
 
 const actions = {
-  login({ commit }, userInfo) {
-    return new Promise((resolve, reject) => {
-      login(userInfo)
-        .then(res => {
-          const { data, code } = res;
-          if (code === 200) {
-            commit('SET_TOKEN', data.token);
-            setCache('TOKEN', data.token);
-          }
-          resolve();
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+  async login({ commit }, userInfo) {
+    try {
+      let token = await login(userInfo)
+      commit('setToken', token);
+      setCache('TOKEN', token);
+      return token;
+    } catch (error) {
+      return null;
+    }
   },
-  codeTest({ commit }, userInfo) {
-    return new Promise((resolve, reject) => {
-      getCodeTest(userInfo)
-        .then(res => {
-          const {
-            data: { token }
-          } = res;
-          //console.log("codeTest",res,token)
-          if (token) {
-            // console.log("codeTest")
-            commit('SET_TOKEN', token);
-            setCache('TOKEN', token);
-          }
-          resolve();
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+  async createTimTicket({ commit, state }) {
+    let userSig = await createTimTicket({ userID: state['accountInfo']['userID'] });
+    commit('setUserSig', userSig)
   },
-
+  async getWorkstations({ commit, state }) {
+    let roles = await getWorkstations(state.accountInfo['roles']);
+    commit('role/setRoles', roles, { root: true });
+    commit('role/setCurrentRole', roles[0], { root: true })
+  },
+  async loginByPhone({ commit }, data) {
+    try {
+      let token = await loginByPhone(data);
+      if (token) {
+        commit('setToken', token);
+        setCache('TOKEN', token);
+      }
+      return token;
+    } catch (error) {
+      return null;
+    }
+  },
   async logout({ commit, dispatch }) {
-    await logout()
-    commit('SET_TOKEN', '');
-    commit('SET_USERINFO', '');
+    commit('setToken', '');
+    commit('setUserInfo', '');
     await removeCache('TOKEN');
-    await dispatch("cloudbase/logout", null, { root: true });
+    await dispatch("trtc/logout", null, { root: true });
     await dispatch("tim/logout", null, { root: true });
-    await resetRouter();
   },
 
   async getUserInfo({ commit }) {
     try {
-      var res = await getInfo();
-      const {
-        data: { info },
-        message
-      } = res;
-      if (info) {
-        commit('SET_USERINFO', info);
-        return info;
-      }
-      return message;
+      var user = await getUserInfo();
+      commit('setUserInfo', user);
+      return user;
     } catch (error) {
-      return error;
+      console.log(error)
+      return null;
     }
   },
 
-  updateInfo({ commit }, userInfo) {
-    return new Promise((resolve, reject) => {
-      commit('SET_USERINFO', userInfo);
-      resolve();
-    });
+  async updateInfo({ commit }, userInfo) {
+    try {
+      commit('setUserInfo', userInfo);
+    } catch (error) {
+      return null;
+    }
   }
 };
 export default {

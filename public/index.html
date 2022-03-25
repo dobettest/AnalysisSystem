@@ -15,12 +15,6 @@
   <% for (var css of cdn.css) { %>
     <link rel="stylesheet" href="<%= css %>" />
     <% } %>
-      <!-- <style>
-        body {
-          overflow: visible !important;
-          width: 100% !important;
-        }
-      </style> -->
 </head>
 
 <body>
@@ -28,19 +22,6 @@
   <% for (var js of cdn.js) { %>
     <script type="text/javascript" defer src="<%= js %>"></script>
     <% } %>
-      <script>
-        window.addEventListener('load', function () {
-          if ("Notification" in window) {
-            if (Notification.permission !== "granted") {
-              Notification.requestPermission(function (status) {
-                if (Notification.permission !== status) {
-                  Notification.permission = status;
-                }
-              })
-            }
-          }
-        })
-      </script>
 </body>
 
 </html>

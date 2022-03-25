@@ -1,15 +1,13 @@
 <template>
   <div class="loading-container" :style="{ background: background }" v-if="show">
     <div class="loading-wrapper">
-      <svg-icon v-if="spin === 'loading'" icon="loading" color="#3ff9dc" :size="25" class="loading-icon" />
-      <component :is="spin + '-spin'" v-else />
-      <div class="text" :style="{ color: textColor }">{{ text }}</div>
+      <component :is="spin + '-spin'" />
     </div>
   </div>
 </template>
 
 <script>
-import { pulseSpin, rectSpin, planeSpin, cubeSpin, preloaderSpin, chaseSpin } from './spin';
+import { rectSpin, planeSpin, cubeSpin, chaseSpin } from './spin';
 export default {
   name: 'loading',
   props: {
@@ -17,24 +15,16 @@ export default {
       type: Boolean,
       default: false
     },
-    text: {
-      type: String,
-      default: '正在加载中...'
-    },
-    textColor: {
-      type: String,
-      default: '#3ff9dc'
-    },
     background: {
       type: String,
-      default: 'rgba(0,0,0,0.7)'
+      default: 'rgba(255,255,255,0.6)'
     },
     spin: {
       type: String,
       default: 'rect'
     }
   },
-  components: { pulseSpin, rectSpin, planeSpin, cubeSpin, preloaderSpin, chaseSpin }
+  components: { rectSpin, planeSpin, cubeSpin, chaseSpin }
 };
 </script>
 <style lang="scss" scoped>
@@ -48,16 +38,11 @@ export default {
   .loading-wrapper {
     position: absolute;
     top: 50%;
-    margin-top: -21px;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    width: 100%;
-    .text {
-      margin: 8px 0;
-      width: 100%;
-    }
-    .loading-icon {
-      animation: rotating 1.5s linear infinite;
-    }
+    width: unquote('max(30px, 10%)');
+    height: unquote('max(20%, 30px)');
   }
 }
 @keyframes rotating {

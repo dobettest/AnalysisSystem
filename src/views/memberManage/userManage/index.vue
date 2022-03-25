@@ -2,16 +2,14 @@
   <div class="userManage-wrapper">
     <a-card :hoverable="true" :bordered="false">
       <div slot="title" class="flex flex-wrap">
-        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd"> 新增用户 </a-button>
+        <a-button type="primary" icon="plus" class="select-bottom" @click="handleAdd">新增用户</a-button>
         <a-button
           type="danger"
           icon="delete"
           style="margin: 0 16px 10px"
           :loading="deleteLoading"
           @click="handleBatchDelete"
-        >
-          批量删除
-        </a-button>
+        >批量删除</a-button>
         <a-input
           placeholder="过滤器"
           class="select-width"
@@ -26,35 +24,43 @@
           allowClear
           @change="changeTime"
         />
-        <a-button type="primary" icon="search" class="select-bottom" style="margin-right: 16px" @click="handleSearch">
-          查询
-        </a-button>
-        <a-button type="primary" icon="export" class="select-bottom" @click="handleExport" :loading="exportLoading">
-          导出
-        </a-button>
+        <a-button
+          type="primary"
+          icon="search"
+          class="select-bottom"
+          style="margin-right: 16px"
+          @click="handleSearch"
+        >查询</a-button>
+        <a-button
+          type="primary"
+          icon="export"
+          class="select-bottom"
+          @click="handleExport"
+          :loading="exportLoading"
+        >导出</a-button>
       </div>
       <standard-table
+        size="middle"
         :tableData="tableData"
         :tableHead="tableHead"
         :loading="loading"
         :pagination="false"
         :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: handleSelect, getCheckboxProps: getCheckboxProps }"
       >
-        <div slot="index" slot-scope="{ index }">
-          {{ index + 1 }}
-        </div>
+        <div slot="index" slot-scope="{ index }">{{ index + 1 }}</div>
         <div slot="avatar" slot-scope="{ text }">
           <a-avatar :src="text" shape="square" :size="60"></a-avatar>
         </div>
         <div slot="role" slot-scope="{ text }">
-          <a-tag :color="text | statusFilter">
-            {{ text }}
-          </a-tag>
+          <a-tag :color="text | statusFilter">{{ text }}</a-tag>
         </div>
         <div slot="action" slot-scope="{ text }">
-          <a-button type="primary" size="small" @click="handleEdit(text)" :disabled="text.role && text.role == 'admin'">
-            {{ $t('common.edit') }}
-          </a-button>
+          <a-button
+            type="primary"
+            size="small"
+            @click="handleEdit(text)"
+            :disabled="text.role && text.role == 'admin'"
+          >{{ $t('common.edit') }}</a-button>
           <a-popconfirm
             title="你确定要删除当前列吗?"
             ok-text="是"
@@ -62,9 +68,12 @@
             :disabled="text.role && text.role == 'admin'"
             @confirm="handleDelete(text)"
           >
-            <a-button type="danger" size="small" style="margin-left: 8px" :disabled="text.role && text.role == 'admin'">
-              {{ $t('common.del') }}
-            </a-button>
+            <a-button
+              type="danger"
+              size="small"
+              style="margin-left: 8px"
+              :disabled="text.role && text.role == 'admin'"
+            >{{ $t('common.del') }}</a-button>
           </a-popconfirm>
         </div>
       </standard-table>
@@ -89,23 +98,16 @@ import { xlsx } from '@/plugins/cdn';
 
 const tableHead = [
   {
-    title: '序号',
-    dataIndex: 'index',
-    scopedSlots: { customRender: 'index' },
-    align: 'center',
-    width: 80
-  },
-  {
     title: '头像',
     dataIndex: 'avatar',
     scopedSlots: { customRender: 'avatar' },
     align: 'center',
-    width: 120
+    width: 100
   },
   {
     title: '用户名',
     dataIndex: 'username',
-    align:'center',
+    align: 'center',
   },
   {
     title: '职位',
@@ -126,7 +128,7 @@ const tableHead = [
   {
     title: '操作',
     scopedSlots: { customRender: 'action' },
-    align:'center',
+    align: 'center',
     width: 140
   }
 ];

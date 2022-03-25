@@ -19,14 +19,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .cube-wrapper {
-  width: 60px;
-  height: 60px;
-  display: inline-block;
+  display: flex;
+  width: 80%;
+  height: 80%;
+  flex-wrap: wrap;
 }
 .cube {
-  width: 33%;
-  height: 33%;
-  float: left;
+  width: 33.3%;
+  height: 33.3%;
   background: $color-primary;
   animation: cube-loader 1.3s infinite ease-in-out;
   animation-delay: 0.2s;

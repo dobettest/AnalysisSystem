@@ -2,7 +2,7 @@
   <div class="nav-wrapper flex-box">
     <a-icon
       :type="collapsed ? 'menu-fold' : 'menu-unfold'"
-      class="nav-fold boxHover"
+      class="nav-fold boxHover flex-box"
       @click="toggleOpen"
       v-show="!horizontal"
     />
@@ -12,17 +12,38 @@
       <a-tooltip placement="bottom">
         <template slot="title"> 系统设置 </template>
         <div class="right-menu-item boxHover" @click="changeVisible">
-          <svg-icon icon="globalSetting" :size="20" />
+          <my-svg-icon icon="globalSetting" :size="23" />
         </div>
       </a-tooltip>
-      <a-tooltip placement="bottom">
-        <template slot="title">未读消息{{ unread }}</template>
-        <div class="right-menu-item boxHover" style="margin-right: 15px" @click="toNotice">
-          <a-badge :count="unread" :overflow-count="99" :offset="[10, -10]">
-            <svg-icon icon="bell" :size="20" :class="{ notice }" />
-          </a-badge>
+      <workstation-control />
+      <a-popover placement="bottom" trigger="click" :getPopupContainer="getPopupContainer">
+        <template slot="content">
+          <dl class="message-list">
+            <dt class="text-center border-bottom message-title"><h3>未读消息</h3></dt>
+            <dd v-for="(item, idx) in conversationList" :key="idx" class="message-item hover">
+              <my-badge :count="100" :offset="[-6, -4]" class="message-avatar flex-box">
+                <a-avatar icon="user" shape="square" size="large"></a-avatar>
+              </my-badge>
+              <div class="message-content">
+                <h4 v-text="conversationName(item)" style="color: #121212; font-size: 15px"></h4>
+                <div class="text-elipise" v-text="messageForShow(item)" style="color: #8590a6; font-size: 14px"></div>
+              </div>
+            </dd>
+          </dl>
+          <div class="clearfix" style="border-top: 1px solid #ebebeb; padding: 6px; color: #8590a6">
+            <router-link style="float: right; cursor: pointer" to="/im"
+              >查看全部<a-icon type="right-circle" style="padding-left: 4px"></a-icon
+            ></router-link>
+          </div>
+        </template>
+        <div class="right-menu-item boxHover">
+          <my-badge :count="unread" :offset="[-8, 5]">
+            <p class="bell-container">
+              <my-svg-icon icon="bell" :size="23" :class="{ notice }" />
+            </p>
+          </my-badge>
         </div>
-      </a-tooltip>
+      </a-popover>
       <nav-user class="right-menu-item boxHover flex-sub" />
     </div>
   </div>
@@ -32,6 +53,7 @@
 import navUser from './navUser';
 import screenfull from 'screenfull';
 import breadCrumb from './breadCrumb';
+import workstationControl from './workstation-control';
 let timer = null;
 export default {
   name: 'navBar',
@@ -45,7 +67,7 @@ export default {
       default: false
     }
   },
-  components: { navUser, breadCrumb },
+  components: { navUser, breadCrumb, workstationControl },
   data() {
     return {
       isFullscreen: false,
@@ -55,9 +77,39 @@ export default {
   computed: {
     unread() {
       return this.$store.state.tim.unread;
+    },
+    conversationList() {
+      return this.$store.state.tim.conversationList;
     }
   },
   methods: {
+    getPopupContainer() {
+      return this.$parent.$refs.headerBar;
+    },
+    conversationName: function (conversation) {
+      if (conversation.type === TIM.TYPES.CONV_C2C) {
+        return conversation.userProfile.nick || conversation.userProfile.userID;
+      }
+      if (conversation.type === TIM.TYPES.CONV_GROUP) {
+        return conversation.groupProfile.name || conversation.groupProfile.groupID;
+      }
+      if (conversation.type === TIM.TYPES.CONV_SYSTEM) {
+        return '系统通知';
+      }
+      return '';
+    },
+    messageForShow(conversation) {
+      if (conversation.lastMessage.isRevoked) {
+        if (conversation.lastMessage.fromAccount === currentUserProfile.userID) {
+          return '你撤回了一条消息';
+        }
+        if (conversation.type === TIM.TYPES.CONV_C2C) {
+          return '对方撤回了一条消息';
+        }
+        return `${conversation.lastMessage.fromAccount}撤回了一条消息`;
+      }
+      return conversation.lastMessage.messageForShow;
+    },
     notify() {
       timer && clearTimeout(timer);
       this.notice = true;
@@ -115,7 +167,7 @@ export default {
     }
   }
   .nav-fold {
-    padding: 0 18px;
+    padding: 0 10px 0 18px;
     height: 100%;
     cursor: pointer;
     font-size: 20px;
@@ -132,6 +184,9 @@ export default {
       line-height: 60px;
       cursor: pointer;
     }
+  }
+  .bell-container {
+    width: 35px;
   }
 }
 </style>

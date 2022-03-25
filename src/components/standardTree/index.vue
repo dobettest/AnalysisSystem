@@ -4,8 +4,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { asyncRoutes } from '@/router';
-import { getRoleRoute } from '@/api/roleManage';
+// import { asyncRoutes } from '@/router';
+import { getRole } from '@/api/role';
 export default {
   name: 'standardTree',
   props: {
@@ -18,21 +18,21 @@ export default {
     return {
       treeData: [],
       checkKeyList: [],
-      asyncRoutes
+      // asyncRoutes
     };
   },
   computed: {
-    ...mapGetters(['baseRoute'])
+    ...mapGetters(['asyncRoute'])
   },
   created() {
-    const data = this.asyncRoutes[0].children;
-    this.treeData = this.generateRoutes(data);
-    this.getRoleRoute();
+    // const data = this.asyncRoutes[0].children;
+    // this.treeData = this.generateRoutes(data);
+    // this.getRoles();
   },
   methods: {
-    async getRoleRoute() {
+    async getRoles() {
       if (this.role) {
-        const { data: checkKeyList } = await getRoleRoute({ role: this.role });
+        const { data: checkKeyList } = await getRole({ role: this.role });
         this.checkKeyList = checkKeyList;
       }
     },

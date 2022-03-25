@@ -3,47 +3,63 @@ const state = {
     ready: false,
     userInfo: null,
     conversationList: [],
+    conversationID: '',
     friendList: [],
-    unread: 100,
+    unread: 0,
     status: 'error'
 }
 const mutations = {
     setState(state, ready) {
         state.ready = ready;
     },
+    setConversationID(state, conversationID) {
+        state.conversationID = conversationID;
+    },
     setStatus(state, status) {
         state.status = status;
     },
     setUserInfo(state, userInfo) {
         state.userInfo = userInfo
+    },
+    setConversationList(state, conversationList) {
+        state.conversationList = conversationList;
+    },
+    setFriendList(state, friendList) {
+        state.friendList = friendList;
+    },
+    setUnread(state, unread) {
+        state.unread = unread;
     }
 }
 
 const actions = {
     setState({ commit }, ready) {
-        return new Promise((resolve, reject) => {
-            commit("setState", ready);
-            resolve();
-        })
+        commit("setState", ready);
     },
-    async setStatus({ commit }, status) {
-        await commit('setStatus', status)
+    setConversationID({ commit }, conversationID) {
+        commit('setConversationID', conversationID)
     },
-    async login({ commit, dispatch }, { userID }) {
-        let { userSign } = await dispatch('cloudbase/callFunction', {
-            name: "tim-login",
-            data: {
-                userID
-            }
-        }, {
-            root: true
-        })
-        await tim.login(({ userID, userSig: userSign }));
+    setStatus({ commit }, status) {
+        commit('setStatus', status)
+    },
+    login({ commit }, { userID, userSig }) {
+        tim.login({ userID, userSig });
     },
     async logout({ commit }) {
         await tim.logout();
         commit('setStatus', 'error');
         commit('setState', false);
+    },
+    setConversationList({ commit }, data) {
+        let unread = data.reduce((a, b) => {
+            return a + b['unreadCount']
+        }, 0);
+        commit('setUnread', unread);
+        console.log('unread', unread)
+        commit("setConversationList", data);
+    },
+    setFriendList({ commit }, data) {
+        commit("setFriendList", data)
     }
 }
 export default {

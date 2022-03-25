@@ -47,7 +47,7 @@
 <script>
 import {addTable } from '@/api/userManage';
 import {updateUserInfo } from '@/api/user.js';
-import { getRoleTable } from '@/api/roleManage';
+import { getRoles } from '@/api/role';
 export default {
   name: 'userModel',
   props: {
@@ -69,7 +69,7 @@ export default {
     };
   },
   async created() {
-    let { data: roleOption } = await getRoleTable();
+    let { data: roleOption } = await getRoles();
     this.roleOption = roleOption.map(r => {
       return r.role;
     });

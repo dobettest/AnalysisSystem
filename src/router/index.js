@@ -14,6 +14,7 @@ VueRouter.prototype.replace = function replace(location, onResolve, onReject) {
   return originalReplace.call(this, location).catch(err => err);
 };
 import Layout from '@/layouts';
+import baseLayout from '@/layouts/base';
 import mainLayout from '@/layouts/mainLayout';
 import echartRouter from './modules/echarts';
 import componentsRouter from './modules/components';
@@ -21,123 +22,150 @@ import componentsRouter from './modules/components';
 //基础路由
 export const baseRoute = [
   {
-    name: 'login',
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
+    name: 'home',
+    path: '/home',
+    component: baseLayout,
+    redirect: '/home',
+    children: [
+      {
+        path: '/home',
+        component: () => import('@/views/home/index'),
+      }
+    ]
+  },
+  {
+    name: 'solutions',
+    path: '/solutions',
+    component: baseLayout,
+    redirect: '/',
+    children: [
+      {
+        path: '/',
+        component: () => import('@/views/solutions/index'),
+      }
+    ]
+  },
+  {
+    name: 'about',
+    path: '/about',
+    component: baseLayout,
+    redirect: '/',
+    children: [
+      {
+        path: '/',
+        component: () => import('@/views/about/index'),
+      }
+    ]
   },
   {
     path: '/403',
-    component: () => import('@/views/error/403'),
-    hidden: true
+    component: () => import('@/views/error/403')
   },
   {
     path: '/404',
-    component: () => import('@/views/error/404'),
-    hidden: true
+    component: () => import('@/views/error/404')
   },
   {
     path: '/500',
-    component: () => import('@/views/error/500'),
-    hidden: true
+    component: () => import('@/views/error/500')
   }
 ];
 
 export const asyncRoutes = [
+  echartRouter,
+  componentsRouter,
   {
-    path: '/',
-    component: Layout,
-    redirect: '/index',
-    hidden: true,
+    name: 'memberManage',
+    component: mainLayout,
+    path: '/memberManage',
+    redirect: '/memberManage/userManage',
+    meta: {
+      title: 'memberManage',
+      icon: 'memberManage'
+    },
     children: [
       {
-        name: 'index',
-        path: '/index',
-        component: () => import('@/views/index/index'),
-        meta: {
-          title: 'index',
-          icon: 'dashboard'
-        }
+        name: 'userManage',
+        path: '/memberManage/userManage',
+        component: () => import('@/views/memberManage/userManage/index'),
+        meta: { title: 'userManage' }
       },
       {
-        name: 'icon',
-        path: '/icon',
-        component: () => import('@/views/icon/index'),
-        meta: {
-          title: 'icon',
-          icon: 'icon'
-        }
-      },
-      {
-        name: 'storage',
-        path: '/storage',
-        component: () => import('@/views/storage/index'),
-        meta: {
-          title: 'storage',
-          icon: 'storage'
-        }
-      },
-      {
-        name: 'im',
-        path: '/im',
-        component: () => import('@/views/chatRoom/index.vue'),
-        meta: {
-          title: 'im',
-          icon: 'im'
-        }
-      },
-      echartRouter,
-      componentsRouter,
-      {
-        name: 'userInfo',
-        path: '/userInfo',
-        component: () => import('@/views/userInfo/index'),
-        meta: { title: 'userSystem', icon: 'user' }
-      },
-      {
-        name: 'memberManage',
-        component: mainLayout,
-        path: '/memberManage',
-        redirect: '/memberManage/userManage',
-        meta: {
-          title: 'memberManage',
-          icon: 'memberManage'
-        },
-        children: [
-          {
-            name: 'userManage',
-            path: '/memberManage/userManage',
-            component: () => import('@/views/memberManage/userManage/index'),
-            meta: { title: 'userManage' }
-          },
-          {
-            name: 'roleManage',
-            path: '/memberManage/roleManage',
-            component: () => import('@/views/memberManage/roleManage/index'),
-            meta: { title: 'roleManage' }
-          }
-        ]
+        name: 'role',
+        path: '/memberManage/role',
+        component: () => import('@/views/memberManage/role/index'),
+        meta: { title: 'role' }
       }
     ]
-  },
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ];
-
+export const commonRoutes = [
+  {
+    name: 'index',
+    path: '/index',
+    component: () => import('@/views/index/index'),
+    meta: {
+      title: 'index',
+      icon: 'dashboard'
+    }
+  },
+  {
+    name: 'icon',
+    path: '/icon',
+    component: () => import('@/views/icon/index'),
+    meta: {
+      title: 'icon',
+      icon: 'icon'
+    }
+  },
+  {
+    name: 'storage',
+    path: '/storage',
+    component: () => import('@/views/storage/index'),
+    meta: {
+      title: 'storage',
+      icon: 'storage'
+    }
+  },
+  {
+    name: 'im',
+    path: '/im',
+    component: () => import('@/views/chatRoom/index.vue'),
+    meta: {
+      title: 'im',
+      icon: 'im'
+    }
+  },
+  {
+    name: 'userInfo',
+    path: '/userInfo',
+    component: () => import('@/views/userInfo/index'),
+    meta: { title: 'userSystem', icon: 'user' }
+  }
+]
+const routes = [
+  ...baseRoute,
+  {
+    path: '/',
+    name: 'Layout',
+    component: Layout,
+    redirect: '/index',
+    children: commonRoutes
+  },
+  { path: '*', redirect: '/404' }
+]
 const createRouter = function () {
   return new VueRouter({
-    routes: baseRoute,
+    routes,
     scrollBehavior: () => ({ y: 0 })
-  });
+  })
 };
 
 const router = createRouter();
 
 export function resetRouter() {
-  return new Promise((resolve, reject) => {
-    let matcher = createRouter().matcher;
-    router.matcher = matcher;
-    resolve();
-  })
+  let matcher = createRouter().matcher;
+  router.matcher = matcher;
 }
 
 export default router;

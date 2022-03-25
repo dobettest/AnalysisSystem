@@ -1,9 +1,9 @@
 {
-    "globalSetting":"全局设置",
+    "globalSetting": "全局设置",
     "customSetting": "个性化设置",
-    "securitySetting":"安全设置",
-    "communitySetting":"社交设置",
-    "allowType":"加好友验证方式",
+    "securitySetting": "安全设置",
+    "communitySetting": "社交设置",
+    "allowType": "加好友验证方式",
     "theme": "主题",
     "layout": "布局设置",
     "lang": "系统语言",
@@ -14,5 +14,7 @@
     "grass": "草原绿",
     "sideNav": "左侧导航",
     "topNav": "头部导航",
-    "bell":"消息铃声"
+    "bell": "消息铃声",
+    "findMeByPhone": "通过手机号添加",
+    "notice": "消息弹窗"
 }

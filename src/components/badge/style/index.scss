@@ -1,0 +1,18 @@
+.my-badge {
+    position: relative;
+    .unread {
+      position: absolute;
+      vertical-align: bottom;
+      background-color: red;
+      border-radius: 10px;
+      color: #fff;
+      display: inline-block;
+      font-size: 12px;
+      height: 18px;
+      max-width: 40px;
+      line-height: 18px;
+      padding: 0 6px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }

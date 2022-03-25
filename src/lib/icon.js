@@ -43,3 +43,15 @@ export { default as CheckOutline } from '@ant-design/icons/lib/outline/CheckOutl
 export { default as CaretUpFill } from '@ant-design/icons/lib/fill/CaretUpFill';
 export { default as QuestionCircleOutline } from '@ant-design/icons/lib/outline/QuestionCircleOutline';
 export { default as QuestionOutline } from '@ant-design/icons/lib/outline/QuestionOutline';
+export { default as LockOutline } from '@ant-design/icons/lib/outline/LockOutline';
+export { default as UserAddOutline } from '@ant-design/icons/lib/outline/UserAddOutline';
+export { default as UsergroupAddOutline } from '@ant-design/icons/lib/outline/UsergroupAddOutline';
+export { default as RightCircleOutline } from '@ant-design/icons/lib/outline/RightCircleOutline';
+export { default as FolderOpenFill } from '@ant-design/icons/lib/fill/FolderOpenFill';
+export { default as FolderFill } from '@ant-design/icons/lib/fill/FolderFill';
+export { default as FolderOpenOutline } from '@ant-design/icons/lib/outline/FolderOpenOutline';
+export { default as FolderOutline } from '@ant-design/icons/lib/outline/FolderOutline';
+export { default as TagOutline } from '@ant-design/icons/lib/outline/TagOutline';
+export { default as EnvironmentOutline } from '@ant-design/icons/lib/outline/EnvironmentOutline';
+export { default as EyeInvisibleOutline } from '@ant-design/icons/lib/outline/EyeInvisibleOutline';
+export { default as EyeOutline } from '@ant-design/icons/lib/outline/EyeOutline';

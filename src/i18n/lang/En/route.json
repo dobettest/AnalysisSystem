@@ -25,7 +25,7 @@
     "userSetting": "userSetting",
     "system": "system",
     "userManage": "userManage",
-    "roleManage": "roleManage",
+    "role": "role",
     "im": "chatRoom",
     "conversation": "conversation",
     "addressBook": "addressBook",

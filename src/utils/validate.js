@@ -1,3 +1,15 @@
+const code = /\d{6}/;
+const illegal = /[^-+=|,0-9a-zA-Z!@#$%^&*?_.~+\/\\(){}\[\]<>]/;
+const allNumber = /^\d+$/;
+const allLetter = /^[a-zA-Z]+$/;
+const allCharacter = /^[-+=|,!@#$%^&*?_.~+\/\\(){}\[\]<>]+$/;
+const allSame = /^([\s\S])\1*$/;
+const upperLetter = /[A-Z]/;
+const lowerLetter = /[a-z]/;
+const number = /\d/g;
+const phone = /^1\d{10}$/;
+const character = /[-+=|,!@#$%^&*?_.~+\/\\()|{}\[\]<>]/;
+const mail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 /**
  * @description 验证手机号
  * @param value
@@ -26,4 +38,18 @@ export function isPassWord(value) {
 export function isCode(value) {
   const reg = /^\d{6}$/;
   return reg.test(value);
+}
+export {
+  code,
+  illegal,
+  allNumber,
+  allLetter,
+  allCharacter,
+  allSame,
+  upperLetter,
+  lowerLetter,
+  number,
+  phone,
+  character,
+  mail
 }

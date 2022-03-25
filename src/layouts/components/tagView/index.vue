@@ -12,7 +12,7 @@
           ref="tagWrapper"
         >
           <span class="tag-title">{{ $t('route.' + item.meta.title) }}</span>
-          <svg-icon
+          <my-svg-icon
             icon="close"
             v-if="index != 0"
             class="verticalMiddle tag-icon"

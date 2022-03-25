@@ -1,37 +1,33 @@
-import router from './router';
-import { getCache } from '@/utils/session';
+import router, { baseRoute } from './router';
+// import { getCache } from '@/utils/session';
 import getPageTitle from '@/utils/getPageTitle';
+import store from '@/store';
 import NProgress from 'nprogress'; // progress bar
 import 'nprogress/nprogress.css'; // progress bar style
-import { message } from 'ant-design-vue';
-import store from './store';
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
-router.beforeEach(async (to, from, next) => {
-  NProgress.start();
-  document.title = getPageTitle(to.meta.title);
-  if (to.path === '/login') {
-    next();
-  } else {
-    const isLogin = getCache('TOKEN');
-    if (!isLogin) {
-      next('/login');
-    } else {
-      const userInfo = store.state.user.accountInfo;
-      if (userInfo) {
+router.beforeEach(async function (to, from, next) {
+  try {
+    NProgress.start();
+    document.title = getPageTitle(to.meta.title);
+    switch (true) {
+      case baseRoute.some(v => to['path'].startsWith(v['path']))://基本路由不限制
         next();
-      } else {
-        try {
-          const { role, config } = await store.dispatch('user/getUserInfo');
-          await store.dispatch('setting/bootstrap', config);
-          const accountRoute = await store.dispatch('permission/getRoute', role);
-          router.addRoutes(accountRoute);
+        break;
+      case !!store.getters['token']://已登录
+        let user = store.getters['userInfo'];
+        if (user) {
+          next();
+        } else {
+          await store.dispatch('user/getUserInfo');
           next({ ...to, replace: true });
-        } catch {
-          message.error('获取用户信息失败');
-          next('/login');
         }
-      }
+        break;
+      default:
+        next('/home');
+        break;
     }
+  } catch (error) {
+    next('/home');
   }
 });
 

@@ -23,8 +23,8 @@
       <a-col :span="8">
         <a-card title="热门搜索" :hoverable="true" :bordered="false">
           <div slot="extra">
-            <svg-icon icon="screencut"></svg-icon>
-            <svg-icon icon="excel"></svg-icon>
+            <my-svg-icon icon="screencut"></my-svg-icon>
+            <my-svg-icon icon="excel"></my-svg-icon>
           </div>
           <hot-chart :chartData="hotData" />
         </a-card>
@@ -32,8 +32,8 @@
       <a-col :span="8">
         <a-card title="到店人数统计" :hoverable="true" :bordered="false">
           <div slot="extra">
-            <svg-icon icon="screencut"></svg-icon>
-            <svg-icon icon="excel"></svg-icon>
+            <my-svg-icon icon="screencut"></my-svg-icon>
+            <my-svg-icon icon="excel"></my-svg-icon>
           </div>
           <more-chart :chartData="moreData" />
         </a-card>
@@ -120,7 +120,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .index-container {
-  padding: 24px 24px 32px 24px;
+  padding: 15px;
   background: #f0f2f5;
   .sale-card {
     background: #fff;
@@ -128,10 +128,10 @@ export default {
     margin-top: 6px;
 
     .sale-container {
-      margin: 24px 0;
+      margin-top: 24px;
       height: 350px;
-      box-sizing: border-box;
       padding: 0 24px;
+      box-sizing: border-box;
       .shop-title {
         height: 50px;
         font-size: 1rem;
@@ -139,9 +139,9 @@ export default {
     }
   }
   .sale-list {
-    margin: 25px 0;
+    margin-top: 25px;
   }
-  /deep/ .ant-card {
+  ::v-deep .ant-card {
     .ant-card-extra {
       visibility: hidden;
       .svgClass {

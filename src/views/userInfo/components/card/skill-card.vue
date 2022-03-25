@@ -11,17 +11,16 @@
       <div class="skill-edit-container" v-show="editMode">
         <div class="skill-item" v-for="(item, idx) in copyedSkills" :key="idx">
           <span class="skill-name">{{ item.name }}</span>
+          <span>{{ item['value'] }}</span>
           <input type="range" v-model="item['value']" max="100" class="skill-progress-bar" />
-          <a-icon type="delete" class="skill-dele-btn" @click="deleteSkill(idx)"></a-icon>
+          <a-icon type="close" class="skill-dele-btn" @click="deleteSkill(idx)"></a-icon>
         </div>
         <div class="skill-item" v-if="adding">
           <a-input class="skill-name" ref="skillName" v-model="newSkill['name']" allow-clear @change="check"></a-input>
           <input type="range" v-model="newSkill['value']" max="100" class="skill-progress-bar" />
-          <a-icon type="delete" class="skill-dele-btn" @click="adding = false"></a-icon>
+          <a-icon type="close" class="skill-dele-btn" @click="adding = false"></a-icon>
         </div>
-        <div class="add-skill" @click="addSkill">
-          <a-icon type="plus"></a-icon>
-        </div>
+        <a-button class="add-skill" @click="addSkill" icon="plus" block> 新增技能 </a-button>
       </div>
       <div class="skill-echart" ref="skillCard" v-show="!editMode"></div>
     </div>
@@ -73,11 +72,10 @@ export default {
   props: {
     canEdit: {
       type: Boolean,
-      required: true
+      default: true
     },
     skills: {
-      type: [Array, String],
-      required: true
+      type: Array
     }
   },
   mounted() {
@@ -175,3 +173,58 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.skill-card-container {
+  background-color: #fff;
+  width: 348px;
+  margin-top: 10px;
+  .skill-echart,
+  .skill-edit-container {
+    height: 300px;
+    width: 300px;
+  }
+  .skill-edit-container {
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+      }
+    }
+    .skill-item {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      .skill-name {
+        width: 48px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .skill-progress-bar {
+        flex: 1;
+        flex-grow: 1;
+        cursor: pointer;
+        outline: none;
+        margin: 0 4px;
+      }
+      .skill-dele-btn {
+        font-size: 18px;
+        color: red;
+        cursor: pointer;
+      }
+    }
+    .add-skill {
+      margin-top: 10px;
+      border: 1px solid #c1b1c1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+      cursor: pointer;
+    }
+  }
+}
+</style>

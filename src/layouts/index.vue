@@ -2,7 +2,7 @@
   <div class="all-container" :class="{ closeSide: !open, horizontal: horizontal }">
     <side-bar class="aside-container" :collapsed="open" v-if="!horizontal" />
     <div class="main-container" :class="{ hasTag: tagShow }">
-      <div class="fixed-header">
+      <div class="fixed-header" ref="headerBar">
         <nav-bar :collapsed="open" v-if="!horizontal" />
         <div v-else class="horizontal-nav flex">
           <horizontal-side />
@@ -12,6 +12,7 @@
       </div>
       <setting />
       <div class="app-main">
+        <!-- <a-button @click="bamp">BMap</a-button> -->
         <router-view />
         <back-top />
       </div>
@@ -24,36 +25,73 @@ import { sideBar, navBar, tagView, setting, horizontalSide } from './components'
 import backTop from '@/components/backTop/index';
 import { mapState } from 'vuex';
 import timMx from '@/mixins/tim.js';
-import cloudbaseMx from '@/mixins/cloudbase.js';
-import { auth } from '../lib/cloudbase';
+import trtcMx from '@/mixins/trtc.js';
 export default {
   name: 'layout',
   components: { sideBar, navBar, tagView, setting, backTop, horizontalSide },
-  mixins: [cloudbaseMx, timMx],
+  mixins: [timMx, trtcMx],
   computed: {
     ...mapState({
+      userSig: state => state.user.userSig,
       open: state => state.setting.open,
       fixHeader: state => state.setting.fixHeader,
       tagShow: state => state.setting.tagShow,
       layout: state => state.setting.layout,
-      userInfo: state => state.user.accountInfo
+      userInfo: state => state.user.accountInfo,
+      notice: state => state.setting.notice,
+      currentRole: state => state.role.currentRole
     }),
     horizontal() {
       return this.layout == 'horizontal';
     }
   },
-  async created() {
-    let {
-      userInfo: { userID }
-    } = this;
-    await this.$store.dispatch('cloudbase/login', { userID });
-    console.log("login",auth.hasLoginState(),userID)
-    await this.$store.dispatch('tim/login', { userID });
-    console.log("login")
+  created() {
+    this.$store.dispatch('user/createTimTicket');
+    this.$store.dispatch('user/getWorkstations');
   },
   methods: {
+    bamp() {
+      this.$BMap.show();
+    },
     changeVisivle() {
       this.$store.dispatch('setting/changeSetting', { key: 'settingVisible', value: true });
+    }
+  },
+  watch: {
+    notice: {
+      handler(nl, ol) {
+        if (nl && 'Notification' in window) {
+          if (Notification.permission !== 'granted') {
+            Notification.requestPermission(status => {
+              if (status === 'granted') {
+                Notification.permission = status;
+              } else {
+                this.$message.error('消息弹窗开启失败,请打开授权');
+              }
+            });
+          }
+        }
+      },
+      immediate: true
+    },
+    userSig: {
+      handler(userSig, ol) {
+        if (userSig) {
+          let { userID } = this.userInfo;
+          this.timLogin({ userID, userSig });
+          this.trtcLogin({ userID, userSig });
+        }
+      },
+      immediate: true
+    },
+    currentRole: {
+      handler(nl, ol) {
+        if (nl) {
+          this.$store.dispatch('cloudbase/login');
+        }
+      },
+      deep:true,
+      immediate:true
     }
   }
 };
@@ -90,6 +128,7 @@ export default {
 }
 .app-main {
   width: 100%;
+  height: 100%;
 }
 
 .main-container {
@@ -103,16 +142,40 @@ export default {
     z-index: 996;
     transition: width 0.28s;
     width: calc(100% - 256px);
+    ::v-deep .ant-popover-inner-content {
+      padding: 4px;
+    }
+    ::v-deep .message-list {
+      .message-item {
+        display: flex;
+        align-items: center;
+        width: 280px;
+      }
+      .message-avatar {
+        width: 50px;
+        height: 50px;
+        padding: 5px;
+      }
+      .message-content {
+        width: calc(100% - 50px);
+        padding: 6px;
+      }
+      .message-title {
+        padding: 4px 0;
+        color: #121212;
+        font-weight: 700;
+      }
+    }
     & ~ .app-main {
       padding-top: 60px;
     }
   }
 }
 .hasTag {
+  .nav-wrapper {
+    border-bottom-color: #e7e7e7;
+  }
   .fixed-header {
-    .nav-wrapper {
-      border-bottom-color: #e7e7e7;
-    }
     & ~ .app-main {
       padding-top: 106px;
       height: 100%;
@@ -150,6 +213,9 @@ export default {
   }
   .fixed-header {
     width: 100%;
+  }
+  .nav-wrapper {
+    border-bottom: none;
   }
   .nav-user {
     background: #293348;

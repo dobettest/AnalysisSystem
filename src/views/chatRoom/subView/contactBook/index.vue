@@ -70,10 +70,10 @@ export default {
   height: 100%;
   .notice-wrapper {
     height: 56px;
+    border-bottom: 1px solid #ccc;
     .notice-item {
       height: 28px;
       line-height: 28px;
-      // border-bottom: 1px solid #ebedf0;
     }
   }
   .tab-bars {

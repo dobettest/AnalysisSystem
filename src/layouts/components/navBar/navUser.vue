@@ -4,7 +4,7 @@
       <a-badge :status="status" :offset="[-4, 12]">
         <img v-lazy="accountInfo['avatar']" class="userImg" alt="" />
       </a-badge>
-      <span class="userTitle">{{ accountInfo.username }}</span>
+      <span class="userTitle">{{ accountInfo['userName'] }}</span>
       <a-icon type="caret-down" style="margin-left: 5px" />
     </div>
 
@@ -33,12 +33,15 @@ export default {
       status: state => state.tim.status
     })
   },
+  created() {
+    this.$store.dispatch('role/getServices');
+  },
   methods: {
     async logout() {
       await this.$store.dispatch('user/logout');
       await this.$store.dispatch('tagsView/clearTag');
       this.$router.replace({
-        path: '/login'
+        path: '/home'
       });
     }
   }

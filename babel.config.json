@@ -6,6 +6,8 @@
     "@vue/babel-preset-jsx"
   ],
   "plugins": [
+    "module:@vue/babel-sugar-v-model",
+    "module:@vue/babel-sugar-v-on",
     "@babel/plugin-transform-runtime",
     [
       "import",
