@@ -41,7 +41,8 @@ import {
   Popover,
   Skeleton,
   Spin,
-  Steps
+  Steps,
+  ConfigProvider
 } from 'ant-design-vue';
 [
   BackTop,
@@ -85,7 +86,8 @@ import {
   Carousel,
   Popover,
   Skeleton,
-  Steps
+  Steps,
+  ConfigProvider
 ].forEach(v => {
   Vue.use(v);
 });

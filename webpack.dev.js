@@ -36,7 +36,7 @@ module.exports = {
             'my-vue-ui': resolve("src/components")
         },
         extensions: ['.mjs', '.js', '.jsx', '.vue'],
-        fallback: { "crypto": require.resolve("crypto-browserify"), "stream": require.resolve("stream-browserify"), vm: require.resolve('vm-browserify'),"path": require.resolve("path-browserify") }
+        fallback: { "crypto": require.resolve("crypto-browserify"), "stream": require.resolve("stream-browserify"), vm: require.resolve('vm-browserify'), "path": require.resolve("path-browserify") }
     },
     module: {
         rules: [
@@ -153,7 +153,8 @@ module.exports = {
         }),
         new ProvidePlugin({
             TIM: 'tim-js-sdk/tim-js-friendship.js',
-            _:'lodash'
+            _: 'lodash',
+            'Mock': 'mockjs'
         })
     ]
 }
